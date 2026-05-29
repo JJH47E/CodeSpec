@@ -25,5 +25,10 @@ contextBridge.exposeInMainWorld('api', {
       ipcRenderer.on('cli:data', handler as Parameters<typeof ipcRenderer.on>[1])
       return () => ipcRenderer.removeListener('cli:data', handler as Parameters<typeof ipcRenderer.on>[1])
     },
+    onProposalReady: (cb: () => void) => {
+      const handler = () => cb()
+      ipcRenderer.on('cli:proposalReady', handler as Parameters<typeof ipcRenderer.on>[1])
+      return () => ipcRenderer.removeListener('cli:proposalReady', handler as Parameters<typeof ipcRenderer.on>[1])
+    },
   },
 })

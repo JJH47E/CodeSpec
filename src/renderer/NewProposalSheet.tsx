@@ -15,10 +15,11 @@ interface Props {
 type Phase = 'input' | 'running' | 'complete' | 'error'
 
 export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props) {
-  const [phase, setPhase]             = useState<Phase>('input')
-  const [description, setDescription] = useState('')
-  const [toolId, setToolId]           = useState(prefs.defaultTool ?? prefs.cliTools[0]?.id ?? '')
-  const [exitCode, setExitCode]       = useState<number | null>(null)
+  const [phase, setPhase]               = useState<Phase>('input')
+  const [description, setDescription]   = useState('')
+  const [toolId, setToolId]             = useState(prefs.defaultTool ?? prefs.cliTools[0]?.id ?? '')
+  const [exitCode, setExitCode]         = useState<number | null>(null)
+  const [proposalReady, setProposalReady] = useState(false)
   const terminalRef  = useRef<TerminalPaneHandle>(null)
   const cancelledRef = useRef(false)
 
@@ -26,6 +27,13 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
   useEffect(() => {
     return window.api.cli.onData((data) => {
       terminalRef.current?.write(data)
+    })
+  }, [])
+
+  // Detect proposal.md creation and surface it in the UI
+  useEffect(() => {
+    return window.api.cli.onProposalReady(() => {
+      setProposalReady(true)
     })
   }, [])
 
@@ -52,6 +60,7 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
     cancelledRef.current = false
     setPhase('running')
     setExitCode(null)
+    setProposalReady(false)
 
     const escapedDesc = description.replace(/"/g, '\\"')
     const command = `/opsx:propose "${escapedDesc}"`
@@ -148,6 +157,19 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
             </div>
           )}
 
+          {/* Proposal detected while terminal still running */}
+          {phase === 'running' && proposalReady && (
+            <div style={{
+              display: 'flex', alignItems: 'flex-start', gap: 10,
+              padding: '12px 14px', borderRadius: 'var(--radius-md)',
+              background: 'var(--success-muted)', color: 'var(--success-fg)',
+              fontSize: 'var(--text-sm)',
+            }}>
+              <Icon name="check-circle" size={16} style={{ flexShrink: 0, marginTop: 1 }} />
+              Proposal created. Click <strong>Done</strong> to view it.
+            </div>
+          )}
+
           {/* Success banner */}
           {phase === 'complete' && (
             <div style={{
@@ -211,8 +233,14 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
             </>
           )}
 
-          {phase === 'running' && (
+          {phase === 'running' && !proposalReady && (
             <Button variant="danger" size="sm" onClick={handleCancel}>Cancel</Button>
+          )}
+
+          {phase === 'running' && proposalReady && (
+            <Button variant="primary" size="sm" icon={<Icon name="check-circle" size={14} />} onClick={onSuccess}>
+              Done
+            </Button>
           )}
 
           {phase === 'complete' && (

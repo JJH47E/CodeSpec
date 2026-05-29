@@ -1,6 +1,7 @@
 import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
 import { join } from 'path'
-import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs'
+import { existsSync, readFileSync, writeFileSync, readdirSync, watch } from 'fs'
+import type { FSWatcher } from 'fs'
 import { execFile } from 'child_process'
 import * as pty from 'node-pty'
 import type { IPty } from 'node-pty'
@@ -191,11 +192,33 @@ ipcMain.handle('cli:invoke', (event, opts: { toolId: string; command: string; re
       return
     }
 
+    // Watch for tasks.md appearing in any active change directory, then notify after 5s
+    let proposalWatcher: FSWatcher | null = null
+    let proposalNotified = false
+    let notifyTimer: ReturnType<typeof setTimeout> | null = null
+    const changesDir = join(opts.repoPath, 'openspec', 'changes')
+    if (existsSync(changesDir)) {
+      proposalWatcher = watch(changesDir, { recursive: true }, (_evt, filename) => {
+        if (proposalNotified || !filename) return
+        if ((filename as string).endsWith('tasks.md')) {
+          const fullPath = join(changesDir, filename as string)
+          if (existsSync(fullPath)) {
+            proposalNotified = true
+            notifyTimer = setTimeout(() => {
+              event.sender.send('cli:proposalReady')
+            }, 5000)
+          }
+        }
+      })
+    }
+
     proc.onData(data => {
       event.sender.send('cli:data', data)
     })
 
     proc.onExit(({ exitCode }) => {
+      proposalWatcher?.close()
+      if (notifyTimer) clearTimeout(notifyTimer)
       activeProcess = null
       resolve({ exitCode })
     })

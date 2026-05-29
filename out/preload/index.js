@@ -22,6 +22,11 @@ electron.contextBridge.exposeInMainWorld("api", {
       const handler = (_event, data) => cb(data);
       electron.ipcRenderer.on("cli:data", handler);
       return () => electron.ipcRenderer.removeListener("cli:data", handler);
+    },
+    onProposalReady: (cb) => {
+      const handler = () => cb();
+      electron.ipcRenderer.on("cli:proposalReady", handler);
+      return () => electron.ipcRenderer.removeListener("cli:proposalReady", handler);
     }
   }
 });

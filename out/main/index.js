@@ -163,10 +163,26 @@ electron.ipcMain.handle("cli:invoke", (event, opts) => {
       resolve({ exitCode: 1 });
       return;
     }
+    let proposalWatcher = null;
+    let proposalNotified = false;
+    const changesDir = path.join(opts.repoPath, "openspec", "changes");
+    if (fs.existsSync(changesDir)) {
+      proposalWatcher = fs.watch(changesDir, { recursive: true }, (_evt, filename) => {
+        if (proposalNotified || !filename) return;
+        if (filename.endsWith("proposal.md")) {
+          const fullPath = path.join(changesDir, filename);
+          if (fs.existsSync(fullPath)) {
+            proposalNotified = true;
+            event.sender.send("cli:proposalReady");
+          }
+        }
+      });
+    }
     proc.onData((data) => {
       event.sender.send("cli:data", data);
     });
     proc.onExit(({ exitCode }) => {
+      proposalWatcher?.close();
       activeProcess = null;
       resolve({ exitCode });
     });
