@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Icon, Button, Field, Input } from './components'
-import type { CliTool, Prefs } from '../shared/types'
+import { Icon, Button, Field, Input, Select, Spinner } from './components'
+import type { SelectGroup } from './components'
+import type { CliTool, DetectedTool, Prefs } from '../shared/types'
 
 interface Props {
   prefs: Prefs
@@ -24,6 +25,9 @@ export function SettingsSheet({ prefs, onPrefsChange, onClose }: Props) {
   const [adding, setAdding]         = useState(false)
   const [form, setForm]             = useState<ToolFormState>(EMPTY_FORM)
   const [confirmRemove, setConfirmRemove] = useState<string | null>(null)
+  const [detectedTools, setDetectedTools] = useState<DetectedTool[]>([])
+  const [detecting, setDetecting]   = useState(true)
+  const [quickAddValue, setQuickAddValue] = useState('')
 
   // Escape key closes the sheet
   useEffect(() => {
@@ -31,6 +35,14 @@ export function SettingsSheet({ prefs, onPrefsChange, onClose }: Props) {
     document.addEventListener('keydown', handler)
     return () => document.removeEventListener('keydown', handler)
   }, [onClose])
+
+  // Detect available AI CLI tools on mount
+  useEffect(() => {
+    window.api.cli.detectTools().then(found => {
+      setDetectedTools(found)
+      setDetecting(false)
+    })
+  }, [])
 
   function commit(nextTools: CliTool[], nextDefault: string | null) {
     setTools(nextTools)
@@ -182,21 +194,55 @@ export function SettingsSheet({ prefs, onPrefsChange, onClose }: Props) {
             </div>
           )}
 
-          {/* 5.3 — Add Tool button */}
+          {/* Quick add / Add Tool */}
           {!adding && editingId === null && (
-            <Button
-              variant="secondary"
-              size="sm"
-              icon={<Icon name="plus" size={14} />}
-              onClick={() => { setAdding(true); setForm(EMPTY_FORM) }}
-            >
-              Add Tool
-            </Button>
+            detecting ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Spinner size={14} />
+                <span style={{ fontSize: 'var(--text-sm)', color: 'var(--fg-subtle)' }}>Detecting tools…</span>
+              </div>
+            ) : detectedTools.length > 0 ? (
+              <Select
+                groups={buildQuickAddGroups(detectedTools)}
+                value={quickAddValue}
+                onChange={v => {
+                  if (v === '__manual__') {
+                    setAdding(true); setForm(EMPTY_FORM); setQuickAddValue('')
+                  } else if (v) {
+                    const tool = detectedTools.find(t => t.id === v)
+                    if (tool) {
+                      setAdding(true)
+                      setForm({ label: tool.label, command: tool.command, argsStr: tool.args.join(' ') })
+                    }
+                    setQuickAddValue('')
+                  }
+                }}
+              />
+            ) : (
+              <Button
+                variant="secondary"
+                size="sm"
+                icon={<Icon name="plus" size={14} />}
+                onClick={() => { setAdding(true); setForm(EMPTY_FORM) }}
+              >
+                Add Tool
+              </Button>
+            )
           )}
         </div>
       </div>
     </div>
   )
+}
+
+// ---- Quick-add dropdown builder --------------------------------------------
+
+function buildQuickAddGroups(detected: DetectedTool[]): SelectGroup[] {
+  return [
+    { options: [{ value: '', label: 'Quick add…', icon: 'plus' }] },
+    { label: 'Detected', options: detected.map(t => ({ value: t.id, label: t.label, icon: 'terminal' as const })) },
+    { options: [{ value: '__manual__', label: 'Enter manually', icon: 'pencil' }] },
+  ]
 }
 
 // ---- Tool row --------------------------------------------------------------

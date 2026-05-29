@@ -1,11 +1,47 @@
 import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs'
+import { execFile } from 'child_process'
 import * as pty from 'node-pty'
 import type { IPty } from 'node-pty'
-import type { Prefs, Change } from '../shared/types'
+import type { Prefs, Change, DetectedTool } from '../shared/types'
 
 const isDev = !app.isPackaged
+
+// ---- Shell PATH resolution -------------------------------------------------
+
+let resolvedPath: string = process.env.PATH ?? ''
+let detectionCache: DetectedTool[] | null = null
+
+const KNOWN_TOOLS: DetectedTool[] = [
+  { id: 'claude-code',  label: 'Claude Code',     command: 'claude', args: ['-p', '{command}'] },
+  { id: 'aider',        label: 'Aider',            command: 'aider',  args: ['--message', '{command}'] },
+  { id: 'gh-copilot',   label: 'GitHub Copilot',   command: 'gh',     args: ['copilot', 'suggest', '-s', '{command}'] },
+]
+
+function resolveShellPath(): Promise<string> {
+  return new Promise(resolve => {
+    const shell = process.env.SHELL ?? '/bin/zsh'
+    execFile(shell, ['-lc', 'printf "%s" "$PATH"'], { timeout: 3000 }, (err, stdout) => {
+      if (err || !stdout.trim()) resolve(process.env.PATH ?? '')
+      else resolve(stdout.trim())
+    })
+  })
+}
+
+async function detectTools(): Promise<DetectedTool[]> {
+  if (detectionCache !== null) return detectionCache
+  const env = { ...process.env, PATH: resolvedPath }
+  const results = await Promise.all(
+    KNOWN_TOOLS.map(tool =>
+      new Promise<DetectedTool | null>(resolve => {
+        execFile('which', [tool.command], { env }, err => resolve(err ? null : { ...tool }))
+      })
+    )
+  )
+  detectionCache = results.filter((t): t is DetectedTool => t !== null)
+  return detectionCache
+}
 
 // ---- Prefs -----------------------------------------------------------------
 
@@ -147,7 +183,7 @@ ipcMain.handle('cli:invoke', (event, opts: { toolId: string; command: string; re
         cols: opts.cols ?? 80,
         rows: opts.rows ?? 24,
         cwd: opts.repoPath,
-        env: process.env as Record<string, string>,
+        env: { ...process.env, PATH: resolvedPath } as Record<string, string>,
       })
       activeProcess = proc
     } catch {
@@ -184,9 +220,13 @@ ipcMain.handle('cli:resize', (_e, { cols, rows }: { cols: number; rows: number }
   activeProcess?.resize(cols, rows)
 })
 
+// cli:detectTools — probe known AI CLI tools on the resolved PATH
+ipcMain.handle('cli:detectTools', () => detectTools())
+
 // ---- App lifecycle ---------------------------------------------------------
 
 app.whenReady().then(() => {
+  resolveShellPath().then(p => { resolvedPath = p })
   createWindow()
   app.on('activate', () => {
     if (!BrowserWindow.getAllWindows().length) createWindow()

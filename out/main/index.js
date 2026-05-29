@@ -2,6 +2,7 @@
 const electron = require("electron");
 const path = require("path");
 const fs = require("fs");
+const child_process = require("child_process");
 const pty = require("node-pty");
 function _interopNamespaceDefault(e) {
   const n = Object.create(null, { [Symbol.toStringTag]: { value: "Module" } });
@@ -21,6 +22,35 @@ function _interopNamespaceDefault(e) {
 }
 const pty__namespace = /* @__PURE__ */ _interopNamespaceDefault(pty);
 const isDev = !electron.app.isPackaged;
+let resolvedPath = process.env.PATH ?? "";
+let detectionCache = null;
+const KNOWN_TOOLS = [
+  { id: "claude-code", label: "Claude Code", command: "claude", args: ["-p", "{command}"] },
+  { id: "aider", label: "Aider", command: "aider", args: ["--message", "{command}"] },
+  { id: "gh-copilot", label: "GitHub Copilot", command: "gh", args: ["copilot", "suggest", "-s", "{command}"] }
+];
+function resolveShellPath() {
+  return new Promise((resolve) => {
+    const shell2 = process.env.SHELL ?? "/bin/zsh";
+    child_process.execFile(shell2, ["-lc", 'printf "%s" "$PATH"'], { timeout: 3e3 }, (err, stdout) => {
+      if (err || !stdout.trim()) resolve(process.env.PATH ?? "");
+      else resolve(stdout.trim());
+    });
+  });
+}
+async function detectTools() {
+  if (detectionCache !== null) return detectionCache;
+  const env = { ...process.env, PATH: resolvedPath };
+  const results = await Promise.all(
+    KNOWN_TOOLS.map(
+      (tool) => new Promise((resolve) => {
+        child_process.execFile("which", [tool.command], { env }, (err) => resolve(err ? null : { ...tool }));
+      })
+    )
+  );
+  detectionCache = results.filter((t) => t !== null);
+  return detectionCache;
+}
 function prefsPath() {
   return path.join(electron.app.getPath("userData"), "prefs.json");
 }
@@ -126,7 +156,7 @@ electron.ipcMain.handle("cli:invoke", (event, opts) => {
         cols: opts.cols ?? 80,
         rows: opts.rows ?? 24,
         cwd: opts.repoPath,
-        env: process.env
+        env: { ...process.env, PATH: resolvedPath }
       });
       activeProcess = proc;
     } catch {
@@ -154,7 +184,11 @@ electron.ipcMain.handle("cli:write", (_e, text) => {
 electron.ipcMain.handle("cli:resize", (_e, { cols, rows }) => {
   activeProcess?.resize(cols, rows);
 });
+electron.ipcMain.handle("cli:detectTools", () => detectTools());
 electron.app.whenReady().then(() => {
+  resolveShellPath().then((p) => {
+    resolvedPath = p;
+  });
   createWindow();
   electron.app.on("activate", () => {
     if (!electron.BrowserWindow.getAllWindows().length) createWindow();

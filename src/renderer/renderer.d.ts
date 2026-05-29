@@ -1,4 +1,4 @@
-import type { Prefs, Change } from '../shared/types'
+import type { Prefs, Change, DetectedTool } from '../shared/types'
 
 export {}
 
@@ -17,11 +17,12 @@ declare global {
         readProposal:   (changePath: string) => Promise<string | null>
       }
       cli: {
-        invoke:   (opts: { toolId: string; command: string; repoPath: string; cols?: number; rows?: number }) => Promise<{ exitCode: number }>
-        cancel:   () => Promise<void>
-        write:    (text: string) => Promise<void>
-        resize:   (size: { cols: number; rows: number }) => Promise<void>
-        onData:   (cb: (data: string) => void) => () => void
+        invoke:      (opts: { toolId: string; command: string; repoPath: string; cols?: number; rows?: number }) => Promise<{ exitCode: number }>
+        cancel:      () => Promise<void>
+        write:       (text: string) => Promise<void>
+        resize:      (size: { cols: number; rows: number }) => Promise<void>
+        detectTools: () => Promise<DetectedTool[]>
+        onData:      (cb: (data: string) => void) => () => void
       }
     }
   }

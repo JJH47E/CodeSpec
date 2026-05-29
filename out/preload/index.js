@@ -17,6 +17,7 @@ electron.contextBridge.exposeInMainWorld("api", {
     cancel: () => electron.ipcRenderer.invoke("cli:cancel"),
     write: (text) => electron.ipcRenderer.invoke("cli:write", text),
     resize: (size) => electron.ipcRenderer.invoke("cli:resize", size),
+    detectTools: () => electron.ipcRenderer.invoke("cli:detectTools"),
     onData: (cb) => {
       const handler = (_event, data) => cb(data);
       electron.ipcRenderer.on("cli:data", handler);

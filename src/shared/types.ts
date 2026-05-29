@@ -5,6 +5,8 @@ export interface CliTool {
   args: string[]
 }
 
+export type DetectedTool = CliTool
+
 export interface Prefs {
   repoPath: string | null
   cliTools: CliTool[]
