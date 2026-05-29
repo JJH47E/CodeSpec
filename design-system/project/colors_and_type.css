@@ -1,0 +1,370 @@
+/* ============================================================================
+   CodeSpec — Design Tokens
+   A calm, neutral, precise design system for a desktop GUI over OpenSpec +
+   local AI CLIs. Light default, full dark support.
+
+   Load order in your Electron/React app:
+     1. Import the fonts (Google Fonts link below, or vendor locally — see README)
+     2. Import this file once at the app root.
+     3. Toggle dark mode by setting  <html data-theme="dark">.
+
+   Naming: tokens are SEMANTIC first (--bg-surface, --fg-muted, --accent-emphasis).
+   Raw ramps (--gray-500, --blue-500) exist for building new semantic tokens but
+   should not be referenced directly in product code.
+   ============================================================================ */
+
+/* Fonts — Geist (UI) + Geist Mono (code). For offline Electron, vendor these
+   into /fonts and replace this import with @font-face rules (see README). */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;450;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap');
+
+/* ----------------------------------------------------------------------------
+   1. RAW RAMPS  (do not use directly in product code)
+   ---------------------------------------------------------------------------- */
+:root {
+  /* Cool neutral gray ramp */
+  --gray-0:   #ffffff;
+  --gray-25:  #fbfcfd;
+  --gray-50:  #f6f8fa;
+  --gray-100: #eef1f4;
+  --gray-150: #e6eaee;
+  --gray-200: #dce1e7;
+  --gray-300: #c8cfd7;
+  --gray-400: #a5aeb8;
+  --gray-500: #79828d;
+  --gray-600: #5b6470;
+  --gray-700: #404853;
+  --gray-800: #2b323b;
+  --gray-900: #1a1f26;
+  --gray-950: #0e1116;
+
+  /* Accent — blue */
+  --blue-50:  #eef4fd;
+  --blue-100: #d8e6fb;
+  --blue-200: #b3cdf6;
+  --blue-300: #84acf0;
+  --blue-400: #5189e8;
+  --blue-500: #2a6fdb;
+  --blue-600: #1f57b8;
+  --blue-700: #1b4794;
+  --blue-800: #1a3c78;
+  --blue-900: #182f5c;
+
+  /* Green — success / applied */
+  --green-50:  #e9f6ef;
+  --green-100: #cdebda;
+  --green-300: #6fc298;
+  --green-500: #1f8a5b;
+  --green-600: #167049;
+  --green-700: #11593a;
+
+  /* Amber — warning / draft-attention */
+  --amber-50:  #fbf2e2;
+  --amber-100: #f6e2bd;
+  --amber-300: #e0b25a;
+  --amber-500: #b8730a;
+  --amber-600: #98600a;
+  --amber-700: #784c0c;
+
+  /* Red — danger / destructive */
+  --red-50:  #fceceb;
+  --red-100: #f8d4d0;
+  --red-300: #e89189;
+  --red-500: #c4392e;
+  --red-600: #a32a22;
+  --red-700: #82221c;
+
+  /* Violet — archived accent (muted, used sparingly) */
+  --violet-50:  #f1eefb;
+  --violet-100: #ddd5f5;
+  --violet-500: #6b53c9;
+  --violet-600: #57429f;
+
+  /* ----------------------------------------------------------------------------
+     2. SPACING  (4px base grid)
+     ---------------------------------------------------------------------------- */
+  --space-0:  0;
+  --space-1:  2px;
+  --space-2:  4px;
+  --space-3:  6px;
+  --space-4:  8px;
+  --space-5:  12px;
+  --space-6:  16px;
+  --space-7:  20px;
+  --space-8:  24px;
+  --space-9:  32px;
+  --space-10: 40px;
+  --space-11: 48px;
+  --space-12: 64px;
+  --space-13: 80px;
+
+  /* ----------------------------------------------------------------------------
+     3. RADIUS  (subtly rounded — 4px is the workhorse)
+     ---------------------------------------------------------------------------- */
+  --radius-sm:   3px;
+  --radius-md:   4px;   /* default: buttons, inputs, list rows */
+  --radius-lg:   6px;   /* cards, panels, popovers */
+  --radius-xl:   10px;  /* modals, large surfaces */
+  --radius-full: 999px; /* pills, avatars */
+
+  /* ----------------------------------------------------------------------------
+     4. TYPOGRAPHY
+     ---------------------------------------------------------------------------- */
+  --font-sans: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, monospace;
+
+  /* Sizes — comfortable density, 14px UI base */
+  --text-xs:   12px;
+  --text-sm:   13px;
+  --text-base: 14px;   /* default UI text */
+  --text-md:   15px;
+  --text-lg:   16px;
+  --text-xl:   18px;
+  --text-2xl:  20px;
+  --text-3xl:  24px;
+  --text-4xl:  30px;
+  --text-5xl:  36px;
+
+  /* Line heights */
+  --leading-tight:   1.25;
+  --leading-snug:    1.4;
+  --leading-normal:  1.55;
+  --leading-relaxed: 1.7;
+
+  /* Weights — Geist */
+  --weight-regular: 400;
+  --weight-book:    450;
+  --weight-medium:  500;
+  --weight-semibold:600;
+  --weight-bold:    700;
+
+  /* Letter spacing */
+  --tracking-tight:  -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.02em;
+  --tracking-caps:   0.06em;  /* for ALL-CAPS labels */
+
+  /* ----------------------------------------------------------------------------
+     5. ELEVATION  (shadows — subtle, GitHub-Desktop-calm)
+     ---------------------------------------------------------------------------- */
+  --shadow-xs: 0 1px 1px rgba(16, 24, 40, 0.04);
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 1px rgba(16, 24, 40, 0.04);
+  --shadow-md: 0 2px 4px rgba(16, 24, 40, 0.06), 0 4px 12px rgba(16, 24, 40, 0.08);
+  --shadow-lg: 0 4px 8px rgba(16, 24, 40, 0.06), 0 12px 28px rgba(16, 24, 40, 0.12);
+  --shadow-popover: 0 6px 16px rgba(16, 24, 40, 0.14), 0 2px 4px rgba(16, 24, 40, 0.08);
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.2, 0, 0.2, 1);
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 110ms;
+  --duration-base: 160ms;
+  --duration-slow: 240ms;
+}
+
+/* ============================================================================
+   6. SEMANTIC TOKENS — LIGHT (default)
+   ============================================================================ */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* Backgrounds */
+  --bg-app:           var(--gray-50);   /* window chrome / app shell */
+  --bg-surface:       var(--gray-0);    /* cards, panels, content */
+  --bg-surface-raised:var(--gray-0);    /* popovers, menus, modals */
+  --bg-subtle:        var(--gray-100);  /* zebra rows, wells */
+  --bg-inset:         var(--gray-50);   /* inputs, code blocks */
+  --bg-hover:         var(--gray-100);
+  --bg-active:        var(--gray-150);
+  --bg-selected:      var(--blue-50);
+  --bg-backdrop:      rgba(16, 24, 40, 0.32);
+
+  /* Foreground / text */
+  --fg-default: var(--gray-900);
+  --fg-muted:   var(--gray-600);
+  --fg-subtle:  var(--gray-500);
+  --fg-faint:   var(--gray-400);
+  --fg-on-accent: #ffffff;
+
+  /* Borders */
+  --border-muted:   var(--gray-150);
+  --border-default: var(--gray-200);
+  --border-strong:  var(--gray-300);
+  --border-focus:   var(--blue-500);
+
+  /* Accent (blue) */
+  --accent-fg:             var(--blue-600);  /* links, accent text/icons */
+  --accent-emphasis:       var(--blue-500);  /* primary button bg */
+  --accent-emphasis-hover: var(--blue-600);
+  --accent-emphasis-active:var(--blue-700);
+  --accent-muted:          var(--blue-100);  /* badge bg, subtle fills */
+  --accent-subtle:         var(--blue-50);   /* hover wash, selection */
+
+  /* Focus ring */
+  --ring: 0 0 0 3px rgba(42, 111, 219, 0.35);
+
+  /* Semantic — success */
+  --success-fg:       var(--green-600);
+  --success-emphasis: var(--green-500);
+  --success-muted:    var(--green-100);
+  --success-subtle:   var(--green-50);
+
+  /* Semantic — warning */
+  --warning-fg:       var(--amber-600);
+  --warning-emphasis: var(--amber-500);
+  --warning-muted:    var(--amber-100);
+  --warning-subtle:   var(--amber-50);
+
+  /* Semantic — danger */
+  --danger-fg:        var(--red-600);
+  --danger-emphasis:  var(--red-500);
+  --danger-emphasis-hover: var(--red-600);
+  --danger-muted:     var(--red-100);
+  --danger-subtle:    var(--red-50);
+
+  /* Domain — OpenSpec change states */
+  --state-draft-fg:    var(--gray-600);   --state-draft-bg:    var(--gray-150);
+  --state-proposed-fg: var(--blue-600);   --state-proposed-bg: var(--blue-100);
+  --state-partial-fg:  var(--amber-600);  --state-partial-bg:  var(--amber-100);
+  --state-applied-fg:  var(--green-600);  --state-applied-bg:  var(--green-100);
+  --state-archived-fg: var(--violet-600); --state-archived-bg: var(--violet-100);
+}
+
+/* ============================================================================
+   7. SEMANTIC TOKENS — DARK
+   ============================================================================ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Dark surfaces — calm, slightly cool, never pure black */
+  --bg-app:           #0e1116;
+  --bg-surface:       #161b22;
+  --bg-surface-raised:#1c222b;
+  --bg-subtle:        #1a2029;
+  --bg-inset:         #0f141a;
+  --bg-hover:         #1f2630;
+  --bg-active:        #28303b;
+  --bg-selected:      #15263f;
+  --bg-backdrop:      rgba(1, 4, 9, 0.6);
+
+  --fg-default: #e6edf3;
+  --fg-muted:   #9aa4af;
+  --fg-subtle:  #6e7681;
+  --fg-faint:   #4d545d;
+  --fg-on-accent: #ffffff;
+
+  --border-muted:   #21262d;
+  --border-default: #2c333d;
+  --border-strong:  #3a424d;
+  --border-focus:   #4d8eea;
+
+  --accent-fg:             #6ba2f0;
+  --accent-emphasis:       #2f72de;
+  --accent-emphasis-hover: #4084e8;
+  --accent-emphasis-active:#5290ec;
+  --accent-muted:          #16335c;
+  --accent-subtle:         #11233d;
+
+  --ring: 0 0 0 3px rgba(77, 142, 234, 0.4);
+
+  --success-fg:       #4cc38a;
+  --success-emphasis: #2a9d65;
+  --success-muted:    #133a2a;
+  --success-subtle:   #0f261d;
+
+  --warning-fg:       #e0b25a;
+  --warning-emphasis: #b8730a;
+  --warning-muted:    #3a2c12;
+  --warning-subtle:   #241c0f;
+
+  --danger-fg:        #f0857a;
+  --danger-emphasis:  #d24437;
+  --danger-emphasis-hover: #e0584b;
+  --danger-muted:     #3d1b18;
+  --danger-subtle:    #29130f;
+
+  --state-draft-fg:    #9aa4af;  --state-draft-bg:    #21262d;
+  --state-proposed-fg: #6ba2f0;  --state-proposed-bg: #16335c;
+  --state-partial-fg:  #e0b25a;  --state-partial-bg:  #3a2c12;
+  --state-applied-fg:  #4cc38a;  --state-applied-bg:  #133a2a;
+  --state-archived-fg: #a892ea;  --state-archived-bg: #271f47;
+
+  /* Shadows are nearly invisible on dark — lean on borders instead */
+  --shadow-xs: 0 1px 1px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.36);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.4), 0 12px 28px rgba(0, 0, 0, 0.5);
+  --shadow-popover: 0 6px 16px rgba(0, 0, 0, 0.55), 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================================================
+   8. SEMANTIC TYPE CLASSES  (optional helpers — use vars directly if preferred)
+   ============================================================================ */
+.cs-display {
+  font-family: var(--font-sans);
+  font-size: var(--text-5xl);
+  line-height: var(--leading-tight);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-default);
+}
+.cs-h1 {
+  font-family: var(--font-sans);
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-default);
+}
+.cs-h2 {
+  font-family: var(--font-sans);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-semibold);
+  color: var(--fg-default);
+}
+.cs-h3 {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-semibold);
+  color: var(--fg-default);
+}
+.cs-body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  font-weight: var(--weight-regular);
+  color: var(--fg-default);
+}
+.cs-body-sm {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--fg-muted);
+}
+.cs-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--fg-default);
+}
+.cs-caption {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
+  color: var(--fg-subtle);
+}
+.cs-overline {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+.cs-code {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--fg-default);
+}

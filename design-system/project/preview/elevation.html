@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font-sans);background:var(--bg-surface);color:var(--fg-default);padding:22px 24px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .col{display:flex;flex-direction:column;}
+  .sw{display:flex;flex-direction:column;gap:6px;}
+  .chip{height:46px;border-radius:var(--radius-md);border:1px solid rgba(16,24,40,.08);}
+  .nm{font-size:11px;font-weight:600;color:var(--fg-default);font-family:var(--font-mono);}
+  .hx{font-size:10.5px;color:var(--fg-subtle);font-family:var(--font-mono);}
+  
+  .eb{flex:1;height:74px;background:var(--bg-surface);border:1px solid var(--border-muted);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--fg-muted);}
+
+</style>
+</head>
+<body>
+
+  <div style="background:var(--bg-app);padding:20px;border-radius:var(--radius-lg)">
+    <div class="row" style="gap:18px">
+      <div class="eb" style="box-shadow:var(--shadow-xs)">xs · cards</div>
+      <div class="eb" style="box-shadow:var(--shadow-sm)">sm</div>
+      <div class="eb" style="box-shadow:var(--shadow-md)">md</div>
+      <div class="eb" style="box-shadow:var(--shadow-popover)">popover</div>
+    </div>
+  </div>
+  <div style="margin-top:14px;font-size:12px;color:var(--fg-muted)">Shadows stay quiet — borders do the structural work. In dark mode shadows nearly vanish.</div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font-sans);background:var(--bg-surface);color:var(--fg-default);padding:22px 24px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .col{display:flex;flex-direction:column;}
+  .sw{display:flex;flex-direction:column;gap:6px;}
+  .chip{height:46px;border-radius:var(--radius-md);border:1px solid rgba(16,24,40,.08);}
+  .nm{font-size:11px;font-weight:600;color:var(--fg-default);font-family:var(--font-mono);}
+  .hx{font-size:10.5px;color:var(--fg-subtle);font-family:var(--font-mono);}
+  
+  .panel{flex:1;border-radius:var(--radius-lg);border:1px solid var(--border-default);overflow:hidden;}
+  .panelhd{padding:8px 12px;font-size:11px;font-weight:600;border-bottom:1px solid var(--border-muted);}
+  .lyr{padding:9px 12px;font-size:11.5px;font-family:var(--font-mono);display:flex;justify-content:space-between;align-items:center;}
+
+</style>
+</head>
+<body>
+
+  <div class="row" style="gap:16px">
+    <div class="panel" style="background:var(--bg-app)">
+      <div class="panelhd" style="background:var(--bg-surface)">LIGHT</div>
+      <div class="lyr" style="background:var(--bg-app)">--bg-app<span style="color:var(--fg-subtle)">shell</span></div>
+      <div class="lyr" style="background:var(--bg-surface)">--bg-surface<span style="color:var(--fg-subtle)">card</span></div>
+      <div class="lyr" style="background:var(--bg-subtle)">--bg-subtle<span style="color:var(--fg-subtle)">well</span></div>
+      <div class="lyr" style="background:var(--bg-inset)">--bg-inset<span style="color:var(--fg-subtle)">input</span></div>
+      <div class="lyr" style="background:var(--bg-selected)">--bg-selected<span style="color:var(--fg-subtle)">row</span></div>
+    </div>
+  </div>
+</body>
+</html>

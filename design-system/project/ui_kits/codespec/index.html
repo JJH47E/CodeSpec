@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodeSpec — UI kit</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<link rel="stylesheet" href="components.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg-app); color: var(--fg-default); font-family: var(--font-sans);
+    font-size: var(--text-base); -webkit-font-smoothing: antialiased; }
+
+  /* app shell */
+  .topbar { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 16px;
+    height: 52px; padding: 0 20px; background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-default); }
+  .brand { display: flex; align-items: center; gap: 9px; font-weight: var(--weight-semibold);
+    font-size: var(--text-md); letter-spacing: var(--tracking-tight); }
+  .brand .logo { width: 26px; height: 26px; border-radius: var(--radius-md);
+    background: var(--accent-emphasis); color: #fff; display: flex; align-items: center; justify-content: center; }
+  .spacer { flex: 1; }
+
+  .page { max-width: 1080px; margin: 0 auto; padding: 28px 24px 80px; display: flex; flex-direction: column; gap: 30px; }
+  .lead-block { display: flex; flex-direction: column; gap: 6px; }
+  .lead-block h1 { margin: 0; }
+  .lead-block p { margin: 0; color: var(--fg-muted); max-width: 60ch; }
+
+  section.demo { display: flex; flex-direction: column; gap: 14px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; }
+  .sec-head .num { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--fg-faint); }
+  .sec-head h2 { margin: 0; }
+  .panel { background: var(--bg-surface); border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg); padding: 22px; box-shadow: var(--shadow-xs); }
+  .cluster { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
+  .divider { height: 1px; background: var(--border-muted); margin: 4px 0; }
+  .mini-label { font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-faint); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="Icon.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel">
+const { useState } = React;
+
+const MODEL_GROUPS = [
+  { label: 'Claude Code', options: [
+    { value: 'cc-sonnet', label: 'Claude Code · Sonnet', icon: 'cpu' },
+    { value: 'cc-opus',   label: 'Claude Code · Opus', icon: 'cpu' },
+  ]},
+  { label: 'Other tools', options: [
+    { value: 'copilot', label: 'Copilot CLI', icon: 'terminal' },
+    { value: 'gemini',  label: 'Gemini CLI', icon: 'sparkle' },
+    { value: 'codex',   label: 'Codex CLI', icon: 'terminal' },
+  ]},
+];
+
+const CHANGES = [
+  { id: 'add-auth-flow',    icon: 'pull-request', tone: 'accent',  sub: '3 specs · 7 tasks',  state: 'proposed' },
+  { id: 'split-billing-svc', icon: 'progress',    tone: 'warning', sub: '4 of 9 tasks applied', state: 'partial' },
+  { id: 'refactor-db-layer',icon: 'check-circle', tone: 'success', sub: '2 specs · 12 tasks', state: 'applied' },
+  { id: 'rename-cli-flags', icon: 'pencil',       tone: 'muted',   sub: '1 spec · 3 tasks',   state: 'draft' },
+  { id: 'legacy-export',    icon: 'archive',      tone: 'archived',sub: 'archived 2d ago',    state: 'archived' },
+];
+
+function Section({ n, title, children }) {
+  return (
+    <section className="demo">
+      <div className="sec-head"><span className="num">{n}</span><h2 className="cs-h2">{title}</h2></div>
+      {children}
+    </section>
+  );
+}
+
+function App() {
+  const [theme, setTheme] = useState('light');
+  const [model, setModel] = useState('cc-sonnet');
+  const [selected, setSelected] = useState('refactor-db-layer');
+  const [seg, setSeg] = useState('open');
+  const [tog, setTog] = useState(true);
+  const [chk, setChk] = useState(true);
+  const [name, setName] = useState('add-auth-flow');
+
+  const setT = (t) => { setTheme(t); document.documentElement.setAttribute('data-theme', t); };
+  const nameError = /[^a-z0-9-]/.test(name);
+  const shown = CHANGES.filter(c => seg === 'open' ? c.state !== 'archived' : c.state === 'archived');
+
+  return (
+    <React.Fragment>
+      <header className="topbar">
+        <div className="brand"><span className="logo"><Icon name="file-text" size={15} /></span>CodeSpec</div>
+        <div className="spacer" />
+        <div style={{ width: 304 }}>
+          <Select groups={MODEL_GROUPS} value={model} onChange={setModel} />
+        </div>
+        <Segmented value={theme} onChange={setT} options={[
+          { value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }]} />
+      </header>
+
+      <div className="page">
+        <div className="lead-block">
+          <h1 className="cs-h1">Core components</h1>
+          <p>A calm, neutral component set for a desktop GUI over OpenSpec and a local AI CLI.
+             Toggle the theme above — every token has a dark counterpart. Everything here is interactive.</p>
+        </div>
+
+        <Section n="01" title="Buttons">
+          <div className="panel" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+            <div className="cluster">
+              <Button variant="primary" icon="pull-request">Propose</Button>
+              <Button variant="secondary" icon="compass">Explore</Button>
+              <Button variant="ghost" icon="archive">Archive</Button>
+              <Button variant="danger" icon="trash">Discard</Button>
+              <Button variant="secondary" icon="plus" />
+            </div>
+            <div className="divider" />
+            <div className="cluster">
+              <Button variant="secondary" size="sm">Small</Button>
+              <Button variant="secondary">Medium</Button>
+              <Button variant="secondary" size="lg">Large</Button>
+              <Button variant="secondary" disabled>Disabled</Button>
+              <Button variant="primary" disabled>Disabled</Button>
+              <Button variant="primary" loading>Applying…</Button>
+            </div>
+          </div>
+        </Section>
+
+        <Section n="02" title="Inputs & fields">
+          <div className="panel">
+            <div className="cols">
+              <Field label="Change name" help={nameError ? 'Lowercase, hyphenated — no spaces or capitals.' : 'Lowercase, hyphenated.'} error={nameError}>
+                <Input value={name} onChange={e => setName(e.target.value)} className="mono" />
+              </Field>
+              <Field label="Search changes" help="⌘K from anywhere.">
+                <SearchInput placeholder="Search specs and changes…" />
+              </Field>
+              <Field label="Proposal summary" help="Shown in the change list.">
+                <textarea className="input" defaultValue="Add an email + OAuth sign-in flow with session persistence."></textarea>
+              </Field>
+            </div>
+          </div>
+        </Section>
+
+        <Section n="03" title="Select · model / tool picker">
+          <div className="panel cluster" style={{ gap: 28 }}>
+            <div style={{ width: 284 }}>
+              <div className="mini-label" style={{ marginBottom: 8 }}>Active model</div>
+              <Select groups={MODEL_GROUPS} value={model} onChange={setModel} />
+            </div>
+            <div style={{ fontSize: 'var(--text-sm)', color: 'var(--fg-muted)' }}>
+              Selected: <code style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent-fg)' }}>{model}</code>
+            </div>
+          </div>
+        </Section>
+
+        <Section n="04" title="Cards · change list & menu">
+          <div className="cols" style={{ alignItems: 'start' }}>
+            <Card>
+              <div className="card-head">
+                <Icon name="git-branch" size={16} style={{ color: 'var(--fg-muted)' }} />
+                <span className="card-title">Changes</span>
+                <div className="spacer" style={{ flex: 1 }} />
+                <Segmented value={seg} onChange={setSeg} options={[
+                  { value: 'open', label: 'Open' }, { value: 'archived', label: 'Archived' }]} />
+              </div>
+              {shown.map(c => (
+                <RowItem key={c.id} icon={c.icon} iconTone={c.tone === 'accent' ? null : c.tone}
+                  title={c.id} sub={c.sub} selected={selected === c.id}
+                  onClick={() => setSelected(c.id)}
+                  right={<Badge state={c.state} />} />
+              ))}
+            </Card>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <div className="mini-label">Context menu</div>
+              <Menu items={[
+                { icon: 'compass', label: 'Explore', kbd: '⌘E' },
+                { icon: 'pull-request', label: 'Propose change', kbd: '⌘P' },
+                { icon: 'check-circle', label: 'Apply', kbd: '⌘⏎' },
+                { sep: true },
+                { icon: 'archive', label: 'Archive' },
+                { icon: 'trash', label: 'Discard change', danger: true },
+              ]} />
+            </div>
+          </div>
+        </Section>
+
+        <Section n="05" title="Badges, tags & controls">
+          <div className="panel" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <div>
+              <div className="mini-label" style={{ marginBottom: 10 }}>Change states</div>
+              <div className="cluster">
+                <Badge state="draft" /><Badge state="proposed" /><Badge state="partial" /><Badge state="applied" /><Badge state="archived" />
+              </div>
+            </div>
+            <div>
+              <div className="mini-label" style={{ marginBottom: 10 }}>Status & meta</div>
+              <div className="cluster">
+                <Badge tone="success" icon="check-circle">Applied</Badge>
+                <Badge tone="warning" icon="warning">Needs review</Badge>
+                <Badge tone="danger" icon="x-circle">Failed</Badge>
+                <Tag>spec</Tag><Tag>v0.4.2</Tag><Tag icon="git-branch">main</Tag>
+                <Count>3</Count>
+              </div>
+            </div>
+            <div className="divider" />
+            <div className="cluster" style={{ gap: 28 }}>
+              <Toggle checked={tog} onChange={setTog} label="Auto-apply on approve" />
+              <Checkbox checked={chk} onChange={setChk} label="Run tests after apply" />
+              <Segmented value={seg} onChange={setSeg} options={[
+                { value: 'open', label: 'Open', icon: 'pull-request' },
+                { value: 'archived', label: 'Archived', icon: 'archive' }]} />
+            </div>
+          </div>
+        </Section>
+
+        <Section n="06" title="Loading">
+          <div className="panel" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <div>
+              <div className="mini-label" style={{ marginBottom: 12 }}>Spinner sizes</div>
+              <div className="cluster" style={{ gap: 24 }}>
+                <Spinner size={14} /><Spinner size={18} /><Spinner size={24} /><Spinner size={32} />
+                <span className="loading-inline"><Spinner size={16} />Applying change…</span>
+              </div>
+            </div>
+            <div className="divider" />
+            <div className="cluster" style={{ gap: 14 }}>
+              <Button variant="primary" loading>Applying…</Button>
+              <Button variant="secondary" loading>Exploring…</Button>
+              <Button variant="secondary" size="sm" loading>Saving</Button>
+              <span className="loading-inline" style={{ marginLeft: 4 }}>
+                <Spinner size={16} tone="current" style={{ color: 'var(--fg-subtle)' }} />Inherits text color
+              </span>
+            </div>
+          </div>
+        </Section>
+      </div>
+    </React.Fragment>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

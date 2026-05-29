@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font-sans);background:var(--bg-surface);color:var(--fg-default);padding:22px 24px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .col{display:flex;flex-direction:column;}
+  .sw{display:flex;flex-direction:column;gap:6px;}
+  .chip{height:46px;border-radius:var(--radius-md);border:1px solid rgba(16,24,40,.08);}
+  .nm{font-size:11px;font-weight:600;color:var(--fg-default);font-family:var(--font-mono);}
+  .hx{font-size:10.5px;color:var(--fg-subtle);font-family:var(--font-mono);}
+  
+  .rb{width:84px;height:60px;background:var(--accent-subtle);border:1.5px solid var(--accent-emphasis);display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;font-family:var(--font-mono);font-size:10.5px;color:var(--accent-fg);}
+
+</style>
+</head>
+<body>
+
+  <div class="row" style="gap:14px">
+    <div class="rb" style="border-radius:var(--radius-sm)">sm 3</div>
+    <div class="rb" style="border-radius:var(--radius-md)">md 4</div>
+    <div class="rb" style="border-radius:var(--radius-lg)">lg 6</div>
+    <div class="rb" style="border-radius:var(--radius-xl)">xl 10</div>
+    <div class="rb" style="border-radius:var(--radius-full);width:60px">full</div>
+  </div>
+  <div style="margin-top:14px;font-size:12px;color:var(--fg-muted)"><b style="color:var(--fg-default)">md (4px)</b> is the workhorse: buttons, inputs, rows. Cards/popovers 6px, modals 10px, pills full.</div>
+</body>
+</html>

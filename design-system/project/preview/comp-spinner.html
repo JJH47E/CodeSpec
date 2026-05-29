@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--font-sans);background:var(--bg-surface);color:var(--fg-default);padding:22px 24px}
+  .row{display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+  @keyframes cs-spin{to{transform:rotate(360deg)}}
+  .spinner{display:inline-block;transform-origin:center;animation:cs-spin .7s linear infinite;color:var(--accent-fg)}
+  .spinner .sp-track{opacity:.2}
+  .spinner .sp-arc{stroke-linecap:round}
+  .li{display:inline-flex;align-items:center;gap:9px;font-size:var(--text-sm);color:var(--fg-muted)}
+  .btn{display:inline-flex;align-items:center;gap:7px;font-size:var(--text-sm);font-weight:500;border-radius:var(--radius-md);padding:8px 13px;border:1px solid transparent;background:var(--accent-emphasis);color:#fff;opacity:.85}
+</style></head>
+<body>
+  <div class="row">
+    <svg class="spinner" width="14" height="14" viewBox="0 0 24 24" fill="none"><circle class="sp-track" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4"/><circle class="sp-arc" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4" stroke-dasharray="15 60"/></svg>
+    <svg class="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle class="sp-track" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4"/><circle class="sp-arc" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4" stroke-dasharray="15 60"/></svg>
+    <svg class="spinner" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle class="sp-track" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4"/><circle class="sp-arc" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4" stroke-dasharray="15 60"/></svg>
+    <svg class="spinner" width="32" height="32" viewBox="0 0 24 24" fill="none"><circle class="sp-track" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4"/><circle class="sp-arc" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4" stroke-dasharray="15 60"/></svg>
+    <span class="li"><svg class="spinner" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle class="sp-track" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4"/><circle class="sp-arc" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4" stroke-dasharray="15 60"/></svg>Applying change…</span>
+    <span class="btn"><svg class="spinner" width="15" height="15" viewBox="0 0 24 24" fill="none" style="color:#fff"><circle class="sp-track" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4"/><circle class="sp-arc" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4" stroke-dasharray="15 60"/></svg>Applying…</span>
+  </div>
+  <div style="margin-top:18px;font-size:12px;color:var(--fg-muted)">Accent ring + rotating arc (0.7s linear). Uses <code style="font-family:var(--font-mono)">currentColor</code> so it inherits inside buttons; honors <code style="font-family:var(--font-mono)">prefers-reduced-motion</code>.</div>
+</body></html>

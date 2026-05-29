@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font-sans);background:var(--bg-surface);color:var(--fg-default);padding:22px 24px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-sans);font-size:var(--text-sm);font-weight:500;
+       border-radius:var(--radius-md);padding:7px 13px;border:1px solid transparent;cursor:pointer;line-height:1;}
+  .btn i{font-size:15px;}
+  .btn-primary{background:var(--accent-emphasis);color:var(--fg-on-accent);}
+  .btn-secondary{background:var(--bg-surface);color:var(--fg-default);border-color:var(--border-default);box-shadow:var(--shadow-xs);}
+  .btn-ghost{background:transparent;color:var(--fg-default);}
+  .btn-danger{background:var(--danger-emphasis);color:#fff;}
+  .btn-sm{font-size:var(--text-xs);padding:5px 10px;}
+  .btn-lg{font-size:var(--text-base);padding:9px 16px;}
+  .lbl{font-size:10px;font-family:var(--font-mono);color:var(--fg-faint);margin-bottom:7px;}
+  
+  .field{display:flex;flex-direction:column;gap:6px;width:280px;}
+  .ilbl{font-size:var(--text-sm);font-weight:500;color:var(--fg-default);}
+  .inp{font-family:var(--font-sans);font-size:var(--text-sm);color:var(--fg-default);background:var(--bg-inset);
+       border:1px solid var(--border-default);border-radius:var(--radius-md);padding:8px 11px;outline:none;width:100%;}
+  .inp::placeholder{color:var(--fg-faint);}
+  .help{font-size:var(--text-xs);color:var(--fg-subtle);}
+
+</style>
+</head>
+<body>
+
+  <div class="row" style="gap:22px;align-items:flex-start">
+    <div class="field">
+      <span class="ilbl">Change name</span>
+      <input class="inp" placeholder="add-auth-flow">
+      <span class="help">Lowercase, hyphenated.</span>
+    </div>
+    <div class="field">
+      <span class="ilbl">Focused</span>
+      <input class="inp" value="add-auth-flow" style="border-color:var(--border-focus);box-shadow:var(--ring)">
+      <span class="help">Active editing state.</span>
+    </div>
+    <div class="field">
+      <span class="ilbl" style="color:var(--danger-fg)">Error</span>
+      <input class="inp" value="Add Auth" style="border-color:var(--danger-emphasis)">
+      <span class="help" style="color:var(--danger-fg)">No spaces or capitals allowed.</span>
+    </div>
+  </div>
+</body>
+</html>

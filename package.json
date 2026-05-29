@@ -1,0 +1,32 @@
+{
+  "name": "codespec",
+  "version": "0.1.0",
+  "description": "Desktop GUI for OpenSpec + local AI coding CLIs",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "electron": "^31.0.0",
+    "electron-vite": "^2.0.0",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.4.0",
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "@phosphor-icons/react": "^2.1.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  }
+}

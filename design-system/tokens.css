@@ -1,0 +1,9 @@
+/* CodeSpec design tokens — import this once at the app root.
+   Source of truth lives in project/colors_and_type.css (design handoff).
+   This file is the canonical import for the production app.
+
+   Fonts: Geist + Geist Mono are loaded via <link> in index.html rather than
+   the @import url() in colors_and_type.css, so the CSS bundler keeps ordering
+   correct. For offline Electron builds, vendor the fonts into /fonts and add
+   @font-face rules here. */
+@import "./project/colors_and_type.css";

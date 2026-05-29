@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font-sans);background:var(--bg-surface);color:var(--fg-default);padding:22px 24px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  svg{display:block;}
+  .btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-sans);font-size:var(--text-sm);font-weight:500;
+       border-radius:var(--radius-md);padding:7px 13px;border:1px solid transparent;cursor:pointer;line-height:1;}
+  .btn-primary{background:var(--accent-emphasis);color:var(--fg-on-accent);}
+  .btn-secondary{background:var(--bg-surface);color:var(--fg-default);border-color:var(--border-default);box-shadow:var(--shadow-xs);}
+  .btn-ghost{background:transparent;color:var(--fg-default);}
+  .btn-danger{background:var(--danger-emphasis);color:#fff;}
+  .btn-sm{font-size:var(--text-xs);padding:5px 10px;}
+  .btn-lg{font-size:var(--text-base);padding:9px 16px;}
+  .lbl{font-size:10px;font-family:var(--font-mono);color:var(--fg-faint);margin-bottom:7px;}
+  
+  .sel{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;min-width:236px;
+       font-family:var(--font-sans);font-size:var(--text-sm);font-weight:500;color:var(--fg-default);
+       background:var(--bg-surface);border:1px solid var(--border-default);border-radius:var(--radius-md);
+       padding:7px 11px;box-shadow:var(--shadow-xs);cursor:pointer;}
+  .sel .lead{display:flex;align-items:center;gap:8px;white-space:nowrap;}
+  .sel .lead svg{color:var(--accent-fg);}
+  .pop{margin-top:8px;width:252px;background:var(--bg-surface-raised);border:1px solid var(--border-default);
+       border-radius:var(--radius-lg);box-shadow:var(--shadow-popover);padding:5px;}
+  .opt{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:var(--radius-sm);font-size:var(--text-sm);cursor:pointer;color:var(--fg-default);}
+  .opt svg{color:var(--fg-muted);}
+  .opt.sel-on{background:var(--bg-selected);color:var(--accent-fg);}
+  .opt.sel-on svg{color:var(--accent-fg);}
+  .opt .tick{margin-left:auto;}
+  .grp{font-size:10px;font-weight:600;letter-spacing:.06em;color:var(--fg-faint);padding:8px 9px 4px;}
+
+</style>
+</head>
+<body>
+
+  <div class="row" style="align-items:flex-start;gap:30px">
+    <div>
+      <div class="lbl">MODEL / TOOL PICKER</div>
+      <div class="sel"><span class="lead"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex:none"><g fill="currentColor" stroke="none" opacity="0.2"><rect x="6" y="6" width="12" height="12" rx="2"/></g><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 6V3.5M15 6V3.5M9 20.5V18M15 20.5V18M6 9H3.5M6 15H3.5M20.5 9H18M20.5 15H18"/></g></svg>Claude Code · Sonnet</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex:none"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5 12 15l6-5.5"/></g></svg></div>
+    </div>
+    <div>
+      <div class="lbl">OPEN</div>
+      <div class="pop">
+        <div class="grp">CLAUDE CODE</div>
+        <div class="opt sel-on"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex:none"><g fill="currentColor" stroke="none" opacity="0.2"><rect x="6" y="6" width="12" height="12" rx="2"/></g><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 6V3.5M15 6V3.5M9 20.5V18M15 20.5V18M6 9H3.5M6 15H3.5M20.5 9H18M20.5 15H18"/></g></svg>Sonnet<span class="tick"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex:none"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7"/></g></svg></span></div>
+        <div class="opt"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex:none"><g fill="currentColor" stroke="none" opacity="0.2"><rect x="6" y="6" width="12" height="12" rx="2"/></g><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 6V3.5M15 6V3.5M9 20.5V18M15 20.5V18M6 9H3.5M6 15H3.5M20.5 9H18M20.5 15H18"/></g></svg>Opus</div>
+        <div class="grp">OTHER TOOLS</div>
+        <div class="opt"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex:none"><g fill="currentColor" stroke="none" opacity="0.2"><rect x="3" y="5" width="18" height="14" rx="2"/></g><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7.5 10 10.5 12.5 7.5 15"/><path d="M12.5 15h4"/></g></svg>Copilot CLI</div>
+        <div class="opt"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex:none"><g fill="currentColor" stroke="none" opacity="0.2"><path d="M12 3.5l1.7 5.8L19.5 11l-5.8 1.7L12 18.5l-1.7-5.8L4.5 11l5.8-1.7z"/></g><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.6 5.4L19 11l-5.4 1.6L12 18l-1.6-5.4L5 11l5.4-1.6z"/></g></svg>Gemini CLI</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

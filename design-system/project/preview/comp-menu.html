@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font-sans);background:var(--bg-surface);color:var(--fg-default);padding:22px 24px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  svg{display:block;}
+  .btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-sans);font-size:var(--text-sm);font-weight:500;
+       border-radius:var(--radius-md);padding:7px 13px;border:1px solid transparent;cursor:pointer;line-height:1;}
+  .btn-primary{background:var(--accent-emphasis);color:var(--fg-on-accent);}
+  .btn-secondary{background:var(--bg-surface);color:var(--fg-default);border-color:var(--border-default);box-shadow:var(--shadow-xs);}
+  .btn-ghost{background:transparent;color:var(--fg-default);}
+  .btn-danger{background:var(--danger-emphasis);color:#fff;}
+  .btn-sm{font-size:var(--text-xs);padding:5px 10px;}
+  .btn-lg{font-size:var(--text-base);padding:9px 16px;}
+  .lbl{font-size:10px;font-family:var(--font-mono);color:var(--fg-faint);margin-bottom:7px;}
+  
+  .menu{width:236px;background:var(--bg-surface-raised);border:1px solid var(--border-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-popover);padding:5px;}
+  .mi{display:flex;align-items:center;gap:10px;padding:7px 9px;border-radius:var(--radius-sm);font-size:var(--text-sm);color:var(--fg-default);cursor:pointer;}
+  .mi svg{color:var(--fg-muted);flex:none;}
+  .mi.hov{background:var(--bg-hover);}
+  .mi .kbd{margin-left:auto;font-family:var(--font-mono);font-size:11px;color:var(--fg-faint);}
+  .mi.danger{color:var(--danger-fg);} .mi.danger svg{color:var(--danger-fg);}
+  .div{height:1px;background:var(--border-muted);margin:5px 0;}
+
+</style>
+</head>
+<body>
+
+  <div class="menu">
+    <div class="mi hov"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex:none"><g fill="currentColor" stroke="none" opacity="0.2"><circle cx="12" cy="12" r="9"/></g><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5 11 11l-2.5 4.5L13 13z" fill="currentColor" stroke="none"/></g></svg>Explore<span class="kbd">⌘E</span></div>
+    <div class="mi"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex:none"><g fill="currentColor" stroke="none" opacity="0.2"><circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><circle cx="18" cy="18" r="2.6"/></g><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><circle cx="18" cy="18" r="2.6"/><path d="M6 8.6v6.8"/><path d="M18 15.4V11a4 4 0 0 0-4-4h-3.2"/><path d="M13 4.8 10.2 7 13 9.2"/></g></svg>Propose change<span class="kbd">⌘P</span></div>
+    <div class="mi"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex:none"><g fill="currentColor" stroke="none" opacity="0.2"><circle cx="12" cy="12" r="9"/></g><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.2 12.2 11 15l4.8-5.8"/></g></svg>Apply<span class="kbd">⌘⏎</span></div>
+    <div class="div"></div>
+    <div class="mi"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex:none"><g fill="currentColor" stroke="none" opacity="0.2"><rect x="3.5" y="4.5" width="17" height="4" rx="1"/><rect x="5" y="8.5" width="14" height="11" rx="1.5"/></g><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="4" rx="1"/><path d="M5 8.5h14v9.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 18z"/><path d="M10 12h4"/></g></svg>Archive</div>
+    <div class="mi danger"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex:none"><g fill="currentColor" stroke="none" opacity="0.2"><path d="M6.5 8h11l-1 11.5a2 2 0 0 1-2 1.8H9.5a2 2 0 0 1-2-1.8z"/></g><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M9 6V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V6"/><path d="M6.5 6 7.5 19.5A2 2 0 0 0 9.5 21.3h5A2 2 0 0 0 16.5 19.5L17.5 6"/><path d="M10 10.5v6.5M14 10.5v6.5"/></g></svg>Discard change</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font-sans);background:var(--bg-surface);color:var(--fg-default);padding:22px 24px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .col{display:flex;flex-direction:column;}
+  .sw{display:flex;flex-direction:column;gap:6px;}
+  .chip{height:46px;border-radius:var(--radius-md);border:1px solid rgba(16,24,40,.08);}
+  .nm{font-size:11px;font-weight:600;color:var(--fg-default);font-family:var(--font-mono);}
+  .hx{font-size:10.5px;color:var(--fg-subtle);font-family:var(--font-mono);}
+  
+  .bar{height:14px;background:var(--accent-muted);border-radius:2px;}
+  .sr{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:11px;color:var(--fg-muted);}
+  .sr b{color:var(--fg-default);width:74px;display:inline-block;}
+
+</style>
+</head>
+<body>
+
+  <div class="col" style="gap:7px">
+    <div class="sr"><b>--space-2</b><span style="width:30px">4px</span><div class="bar" style="width:4px"></div></div><div class="sr"><b>--space-3</b><span style="width:30px">6px</span><div class="bar" style="width:6px"></div></div><div class="sr"><b>--space-4</b><span style="width:30px">8px</span><div class="bar" style="width:8px"></div></div><div class="sr"><b>--space-5</b><span style="width:30px">12px</span><div class="bar" style="width:12px"></div></div><div class="sr"><b>--space-6</b><span style="width:30px">16px</span><div class="bar" style="width:16px"></div></div><div class="sr"><b>--space-7</b><span style="width:30px">20px</span><div class="bar" style="width:20px"></div></div><div class="sr"><b>--space-8</b><span style="width:30px">24px</span><div class="bar" style="width:24px"></div></div><div class="sr"><b>--space-9</b><span style="width:30px">32px</span><div class="bar" style="width:32px"></div></div><div class="sr"><b>--space-10</b><span style="width:30px">40px</span><div class="bar" style="width:40px"></div></div><div class="sr"><b>--space-11</b><span style="width:30px">48px</span><div class="bar" style="width:48px"></div></div><div class="sr"><b>--space-12</b><span style="width:30px">64px</span><div class="bar" style="width:64px"></div></div>
+  </div>
+  <div style="margin-top:14px;font-size:12px;color:var(--fg-muted)">4px base grid. Comfortable density — 12–16px gutters, 16–24px panel padding.</div>
+</body>
+</html>
