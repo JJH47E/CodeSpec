@@ -2,7 +2,24 @@
 const electron = require("electron");
 const path = require("path");
 const fs = require("fs");
-const child_process = require("child_process");
+const pty = require("node-pty");
+function _interopNamespaceDefault(e) {
+  const n = Object.create(null, { [Symbol.toStringTag]: { value: "Module" } });
+  if (e) {
+    for (const k in e) {
+      if (k !== "default") {
+        const d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: () => e[k]
+        });
+      }
+    }
+  }
+  n.default = e;
+  return Object.freeze(n);
+}
+const pty__namespace = /* @__PURE__ */ _interopNamespaceDefault(pty);
 const isDev = !electron.app.isPackaged;
 function prefsPath() {
   return path.join(electron.app.getPath("userData"), "prefs.json");
@@ -104,33 +121,24 @@ electron.ipcMain.handle("cli:invoke", (event, opts) => {
   return new Promise((resolve) => {
     let proc;
     try {
-      proc = child_process.spawn(tool.command, resolvedArgs, {
+      proc = pty__namespace.spawn(tool.command, resolvedArgs, {
+        name: "xterm-256color",
+        cols: opts.cols ?? 80,
+        rows: opts.rows ?? 24,
         cwd: opts.repoPath,
-        env: { ...process.env },
-        stdio: ["pipe", "pipe", "pipe"]
+        env: process.env
       });
       activeProcess = proc;
-      proc.stdin?.end();
     } catch {
       resolve({ exitCode: 1 });
       return;
     }
-    const forward = (data) => {
-      for (const line of data.toString().split("\n")) {
-        if (line.trim()) event.sender.send("cli:output", line);
-      }
-    };
-    proc.stdout?.on("data", forward);
-    proc.stderr?.on("data", forward);
-    proc.on("error", (err) => {
-      const isEnoent = err.code === "ENOENT";
-      event.sender.send("cli:output", `Error: ${err.message}`);
-      activeProcess = null;
-      resolve({ exitCode: isEnoent ? -2 : 1 });
+    proc.onData((data) => {
+      event.sender.send("cli:data", data);
     });
-    proc.on("close", (code) => {
+    proc.onExit(({ exitCode }) => {
       activeProcess = null;
-      resolve({ exitCode: code ?? -1 });
+      resolve({ exitCode });
     });
   });
 });
@@ -141,7 +149,10 @@ electron.ipcMain.handle("cli:cancel", () => {
   }
 });
 electron.ipcMain.handle("cli:write", (_e, text) => {
-  activeProcess?.stdin?.write(text);
+  activeProcess?.write(text);
+});
+electron.ipcMain.handle("cli:resize", (_e, { cols, rows }) => {
+  activeProcess?.resize(cols, rows);
 });
 electron.app.whenReady().then(() => {
   createWindow();

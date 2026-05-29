@@ -18,11 +18,11 @@ contextBridge.exposeInMainWorld('api', {
     invoke: (opts: unknown) => ipcRenderer.invoke('cli:invoke', opts),
     cancel: ()             => ipcRenderer.invoke('cli:cancel'),
     write:  (text: string) => ipcRenderer.invoke('cli:write', text),
-    // 1.7 — renderer-side listener helper; returns unsubscribe function
-    onOutput: (cb: (line: string) => void) => {
-      const handler = (_event: unknown, line: string) => cb(line)
-      ipcRenderer.on('cli:output', handler as Parameters<typeof ipcRenderer.on>[1])
-      return () => ipcRenderer.removeListener('cli:output', handler as Parameters<typeof ipcRenderer.on>[1])
+    resize: (size: { cols: number; rows: number }) => ipcRenderer.invoke('cli:resize', size),
+    onData: (cb: (data: string) => void) => {
+      const handler = (_event: unknown, data: string) => cb(data)
+      ipcRenderer.on('cli:data', handler as Parameters<typeof ipcRenderer.on>[1])
+      return () => ipcRenderer.removeListener('cli:data', handler as Parameters<typeof ipcRenderer.on>[1])
     },
   },
 })

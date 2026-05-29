@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import { Icon, Button, Field, TextArea, Select } from './components'
 import type { SelectGroup } from './components'
 import type { Prefs } from '../shared/types'
+import { TerminalPane } from './TerminalPane'
+import type { TerminalPaneHandle } from './TerminalPane'
 
 interface Props {
   repoPath: string
@@ -16,20 +18,18 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
   const [phase, setPhase]             = useState<Phase>('input')
   const [description, setDescription] = useState('')
   const [toolId, setToolId]           = useState(prefs.defaultTool ?? prefs.cliTools[0]?.id ?? '')
-  const [outputLines, setOutputLines] = useState<string[]>([])
   const [exitCode, setExitCode]       = useState<number | null>(null)
-  const logRef      = useRef<HTMLDivElement>(null)
+  const terminalRef  = useRef<TerminalPaneHandle>(null)
   const cancelledRef = useRef(false)
 
-  // Register output listener for the lifetime of this component — avoids
-  // race conditions where final output lines arrive after invoke() resolves.
+  // Pipe raw PTY data into the terminal widget for the lifetime of this component
   useEffect(() => {
-    return window.api.cli.onOutput((line) => {
-      setOutputLines(prev => [...prev, line])
+    return window.api.cli.onData((data) => {
+      terminalRef.current?.write(data)
     })
   }, [])
 
-  // Escape closes only in input phase; disabled while running
+  // Escape closes only when not running
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && (phase === 'input' || phase === 'complete' || phase === 'error')) {
@@ -39,11 +39,6 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
     document.addEventListener('keydown', handler)
     return () => document.removeEventListener('keydown', handler)
   }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Auto-scroll log
-  useEffect(() => {
-    if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight
-  }, [outputLines])
 
   const hasTools  = prefs.cliTools.length > 0
   const canSubmit = description.trim().length > 0 && hasTools && toolId !== ''
@@ -56,26 +51,29 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
     if (!canSubmit) return
     cancelledRef.current = false
     setPhase('running')
-    setOutputLines([])
     setExitCode(null)
 
     const escapedDesc = description.replace(/"/g, '\\"')
     const command = `/opsx:propose "${escapedDesc}"`
 
-    const result = await window.api.cli.invoke({ toolId, command, repoPath })
+    // getDimensions() is called here while still in input phase (terminal hidden).
+    // TerminalPane.getDimensions() returns || 80/24 fallbacks so the PTY always
+    // starts with at least 80×24; the ResizeObserver will issue a cli:resize
+    // with the real dimensions once the container becomes visible.
+    const dims = terminalRef.current?.getDimensions() ?? { cols: 80, rows: 24 }
+
+    const result = await window.api.cli.invoke({ toolId, command, repoPath, ...dims })
     setExitCode(result.exitCode)
 
     if (cancelledRef.current) return
 
     if (result.exitCode === 0) {
-      // Show complete phase so the user can review output before the list refreshes
       setPhase('complete')
     } else {
       if (result.exitCode === -2) {
-        setOutputLines(prev => [
-          ...prev,
-          'Executable not found — verify the command in Settings or launch the app from a terminal.',
-        ])
+        terminalRef.current?.write(
+          '\r\nExecutable not found — verify the command in Settings or launch the app from a terminal.\r\n'
+        )
       }
       setPhase('error')
     }
@@ -95,15 +93,15 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
     }
   }
 
-const showLog    = phase === 'running' || phase === 'complete' || phase === 'error'
-  const showInputs = phase === 'input' || phase === 'error'
+  const showTerminal = phase === 'running' || phase === 'complete' || phase === 'error'
+  const showInputs   = phase === 'input' || phase === 'error'
 
   return (
     <div
       className="sheet-overlay"
       onClick={e => { if (e.target === e.currentTarget && phase !== 'running') handleClose() }}
     >
-      <div className="sheet" style={{ width: 560 }}>
+      <div className="sheet" style={{ width: 640 }}>
 
         {/* Header */}
         <div className="sheet-head">
@@ -184,48 +182,17 @@ const showLog    = phase === 'running' || phase === 'complete' || phase === 'err
             </>
           )}
 
-          {/* Running status */}
-          {phase === 'running' && (
-            <div className="loading-inline">
-              <span className="spinner" style={{ display: 'inline-block', width: 14, height: 14 }}>
-                <svg viewBox="0 0 14 14" fill="none" width={14} height={14}>
-                  <circle className="sp-track" cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="2.5" />
-                  <path className="sp-arc" d="M7 1.5A5.5 5.5 0 0 1 12.5 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-                </svg>
-              </span>
-              Running…
-            </div>
-          )}
-
-          {/* Output log */}
-          {showLog && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <div
-                ref={logRef}
-                style={{
-                  background: 'var(--bg-inset)',
-                  border: '1px solid var(--border-muted)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '10px 12px',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 12,
-                  color: 'var(--fg-muted)',
-                  lineHeight: 1.6,
-                  overflowY: 'auto',
-                  maxHeight: 260,
-                  minHeight: 80,
-                  whiteSpace: 'pre-wrap',
-                  wordBreak: 'break-all',
-                }}
-              >
-                {outputLines.length === 0
-                  ? <span style={{ color: 'var(--fg-faint)' }}>Waiting for output…</span>
-                  : outputLines.map((line, i) => <div key={i}>{line}</div>)
-                }
-              </div>
-
-            </div>
-          )}
+          {/* Terminal — always mounted so xterm initialises; hidden until running */}
+          <TerminalPane
+            ref={terminalRef}
+            active={phase === 'running'}
+            visible={showTerminal}
+            style={{
+              display: showTerminal ? 'block' : 'none',
+              minHeight: 280,
+              maxHeight: 400,
+            }}
+          />
         </div>
 
         {/* Footer */}
@@ -260,7 +227,7 @@ const showLog    = phase === 'running' || phase === 'complete' || phase === 'err
               <Button
                 variant="primary" size="sm"
                 icon={<Icon name="play" size={14} />}
-                onClick={() => { setPhase('input'); setOutputLines([]) }}
+                onClick={() => setPhase('input')}
               >
                 Try Again
               </Button>

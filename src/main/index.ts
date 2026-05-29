@@ -1,8 +1,8 @@
 import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs'
-import { spawn } from 'child_process'
-import type { ChildProcess } from 'child_process'
+import * as pty from 'node-pty'
+import type { IPty } from 'node-pty'
 import type { Prefs, Change } from '../shared/types'
 
 const isDev = !app.isPackaged
@@ -66,7 +66,7 @@ function readChangesDir(dir: string, status: 'active' | 'archived'): Change[] {
 
 // ---- CLI process -----------------------------------------------------------
 
-let activeProcess: ChildProcess | null = null
+let activeProcess: IPty | null = null
 
 // ---- Window ----------------------------------------------------------------
 
@@ -131,8 +131,8 @@ ipcMain.handle('changes:readProposal', (_e, changePath: string) => {
   return readFileSync(p, 'utf-8')
 })
 
-// 1.5 cli:invoke — spawns the CLI tool, streams stdout/stderr via cli:output events
-ipcMain.handle('cli:invoke', (event, opts: { toolId: string; command: string; repoPath: string }) => {
+// 1.5 cli:invoke — spawns the CLI tool in a PTY, streams raw data via cli:data events
+ipcMain.handle('cli:invoke', (event, opts: { toolId: string; command: string; repoPath: string; cols?: number; rows?: number }) => {
   const prefs = readPrefs()
   const tool = prefs.cliTools.find(t => t.id === opts.toolId)
   if (!tool) return Promise.resolve({ exitCode: 1 })
@@ -140,46 +140,33 @@ ipcMain.handle('cli:invoke', (event, opts: { toolId: string; command: string; re
   const resolvedArgs = tool.args.map(a => a.replace('{command}', opts.command))
 
   return new Promise<{ exitCode: number }>((resolve) => {
-    let proc: ChildProcess
+    let proc: IPty
     try {
-      proc = spawn(tool.command, resolvedArgs, {
+      proc = pty.spawn(tool.command, resolvedArgs, {
+        name: 'xterm-256color',
+        cols: opts.cols ?? 80,
+        rows: opts.rows ?? 24,
         cwd: opts.repoPath,
-        env: { ...process.env },
-        stdio: ['pipe', 'pipe', 'pipe'],
+        env: process.env as Record<string, string>,
       })
       activeProcess = proc
-      // Close stdin immediately (equivalent to < /dev/null).
-      // True interactive clarification requires node-pty; plain pipes don't support it.
-      proc.stdin?.end()
     } catch {
       resolve({ exitCode: 1 })
       return
     }
 
-    const forward = (data: Buffer) => {
-      for (const line of data.toString().split('\n')) {
-        if (line.trim()) event.sender.send('cli:output', line)
-      }
-    }
-
-    proc.stdout?.on('data', forward)
-    proc.stderr?.on('data', forward)
-
-    proc.on('error', (err) => {
-      const isEnoent = (err as NodeJS.ErrnoException).code === 'ENOENT'
-      event.sender.send('cli:output', `Error: ${err.message}`)
-      activeProcess = null
-      resolve({ exitCode: isEnoent ? -2 : 1 })
+    proc.onData(data => {
+      event.sender.send('cli:data', data)
     })
 
-    proc.on('close', (code) => {
+    proc.onExit(({ exitCode }) => {
       activeProcess = null
-      resolve({ exitCode: code ?? -1 })
+      resolve({ exitCode })
     })
   })
 })
 
-// 1.6 cli:cancel — kills the active CLI process
+// 1.6 cli:cancel — kills the active PTY process
 ipcMain.handle('cli:cancel', () => {
   if (activeProcess) {
     activeProcess.kill()
@@ -187,9 +174,14 @@ ipcMain.handle('cli:cancel', () => {
   }
 })
 
-// cli:write — forwards text to the active process's stdin (for interactive responses)
+// cli:write — forwards raw keystrokes to the active PTY
 ipcMain.handle('cli:write', (_e, text: string) => {
-  activeProcess?.stdin?.write(text)
+  activeProcess?.write(text)
+})
+
+// cli:resize — updates PTY dimensions when the terminal widget is resized
+ipcMain.handle('cli:resize', (_e, { cols, rows }: { cols: number; rows: number }) => {
+  activeProcess?.resize(cols, rows)
 })
 
 // ---- App lifecycle ---------------------------------------------------------

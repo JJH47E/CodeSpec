@@ -17,10 +17,11 @@ declare global {
         readProposal:   (changePath: string) => Promise<string | null>
       }
       cli: {
-        invoke:   (opts: { toolId: string; command: string; repoPath: string }) => Promise<{ exitCode: number }>
+        invoke:   (opts: { toolId: string; command: string; repoPath: string; cols?: number; rows?: number }) => Promise<{ exitCode: number }>
         cancel:   () => Promise<void>
         write:    (text: string) => Promise<void>
-        onOutput: (cb: (line: string) => void) => () => void
+        resize:   (size: { cols: number; rows: number }) => Promise<void>
+        onData:   (cb: (data: string) => void) => () => void
       }
     }
   }

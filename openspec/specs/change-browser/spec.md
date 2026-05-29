@@ -1,0 +1,54 @@
+## Requirements
+
+### Requirement: List active and archived changes in sidebar
+The system SHALL read the `openspec/changes/` and `openspec/archive/` directories of the active repository and render the discovered changes in a sidebar list, grouped by status.
+
+#### Scenario: Repository with active changes
+- **WHEN** a repository is loaded that contains one or more directories under `openspec/changes/`
+- **THEN** the sidebar displays each change as a list item under an "Active" group, showing the change name and creation date from `.openspec.yaml`
+
+#### Scenario: Repository with archived changes
+- **WHEN** a repository contains one or more directories under `openspec/archive/`
+- **THEN** the sidebar displays those changes under an "Archived" group below the active group
+
+#### Scenario: Repository with no changes
+- **WHEN** the `openspec/changes/` directory exists but contains no change subdirectories
+- **THEN** the sidebar shows an empty state message within the list area
+
+#### Scenario: openspec/changes directory does not exist
+- **WHEN** the loaded repository has no `openspec/changes/` directory at all
+- **THEN** the sidebar shows an empty state message indicating no changes have been created yet
+
+### Requirement: Display change detail in main pane
+The system SHALL render the contents of a selected change's `proposal.md` in the main detail pane.
+
+#### Scenario: User selects a change
+- **WHEN** the user clicks a change in the sidebar
+- **THEN** the main pane renders the change's `proposal.md` content with basic formatting (headings, bold, bullet lists)
+
+#### Scenario: Change has no proposal.md
+- **WHEN** the selected change directory does not contain a `proposal.md` file
+- **THEN** the main pane shows a placeholder message indicating the proposal has not been written yet
+
+#### Scenario: No change selected
+- **WHEN** a repository is loaded but no change has been selected yet
+- **THEN** the main pane shows a neutral empty state prompting the user to select a change
+
+### Requirement: Refresh change list
+The system SHALL provide a manual refresh control so the user can reload changes after external modifications.
+
+#### Scenario: User triggers refresh
+- **WHEN** the user clicks the refresh button in the header
+- **THEN** the system re-reads `openspec/changes/` and `openspec/archive/` from disk
+- **AND** the sidebar list is updated to reflect the current state
+
+### Requirement: Filter changes by status
+The system SHALL provide tab or toggle controls to filter the change list to show active changes only, archived changes only, or all changes.
+
+#### Scenario: Filtering to active only
+- **WHEN** the user selects the "Active" filter
+- **THEN** only changes from `openspec/changes/` are visible in the sidebar
+
+#### Scenario: Filtering to archived only
+- **WHEN** the user selects the "Archived" filter
+- **THEN** only changes from `openspec/archive/` are visible in the sidebar

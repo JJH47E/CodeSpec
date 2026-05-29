@@ -1,0 +1,8 @@
+appId: com.codespec.app
+productName: CodeSpec
+directories:
+  buildResources: resources
+files:
+  - out/**/*
+asarUnpack:
+  - node_modules/node-pty/**/*

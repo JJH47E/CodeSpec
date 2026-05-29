@@ -16,11 +16,11 @@ electron.contextBridge.exposeInMainWorld("api", {
     invoke: (opts) => electron.ipcRenderer.invoke("cli:invoke", opts),
     cancel: () => electron.ipcRenderer.invoke("cli:cancel"),
     write: (text) => electron.ipcRenderer.invoke("cli:write", text),
-    // 1.7 — renderer-side listener helper; returns unsubscribe function
-    onOutput: (cb) => {
-      const handler = (_event, line) => cb(line);
-      electron.ipcRenderer.on("cli:output", handler);
-      return () => electron.ipcRenderer.removeListener("cli:output", handler);
+    resize: (size) => electron.ipcRenderer.invoke("cli:resize", size),
+    onData: (cb) => {
+      const handler = (_event, data) => cb(data);
+      electron.ipcRenderer.on("cli:data", handler);
+      return () => electron.ipcRenderer.removeListener("cli:data", handler);
     }
   }
 });
