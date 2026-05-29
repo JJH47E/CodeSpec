@@ -25,9 +25,9 @@ const isDev = !electron.app.isPackaged;
 let resolvedPath = process.env.PATH ?? "";
 let detectionCache = null;
 const KNOWN_TOOLS = [
-  { id: "claude-code", label: "Claude Code", command: "claude", args: ["-p", "{command}"] },
+  { id: "claude-code", label: "Claude Code", command: "claude", args: ["{command}"] },
   { id: "aider", label: "Aider", command: "aider", args: ["--message", "{command}"] },
-  { id: "gh-copilot", label: "GitHub Copilot", command: "gh", args: ["copilot", "suggest", "-s", "{command}"] }
+  { id: "gh-copilot", label: "GitHub Copilot", command: "gh", args: ["copilot", "suggest", "{command}"] }
 ];
 function resolveShellPath() {
   return new Promise((resolve) => {

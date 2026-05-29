@@ -14,9 +14,9 @@ let resolvedPath: string = process.env.PATH ?? ''
 let detectionCache: DetectedTool[] | null = null
 
 const KNOWN_TOOLS: DetectedTool[] = [
-  { id: 'claude-code',  label: 'Claude Code',     command: 'claude', args: ['-p', '{command}'] },
+  { id: 'claude-code',  label: 'Claude Code',     command: 'claude', args: ['{command}'] },
   { id: 'aider',        label: 'Aider',            command: 'aider',  args: ['--message', '{command}'] },
-  { id: 'gh-copilot',   label: 'GitHub Copilot',   command: 'gh',     args: ['copilot', 'suggest', '-s', '{command}'] },
+  { id: 'gh-copilot',   label: 'GitHub Copilot',   command: 'gh',     args: ['copilot', 'suggest', '{command}'] },
 ]
 
 function resolveShellPath(): Promise<string> {
