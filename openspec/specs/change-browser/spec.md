@@ -1,7 +1,7 @@
 ## Requirements
 
 ### Requirement: List active and archived changes in sidebar
-The system SHALL read the `openspec/changes/` and `openspec/archive/` directories of the active repository and render the discovered changes in a sidebar list, grouped by status. Changes with status `in-progress` or `done` SHALL appear within the Active group alongside `active` changes.
+The system SHALL read the `openspec/changes/` and `openspec/archive/` directories of the active repository and render the discovered changes in a sidebar list, grouped by status. Changes with status `in-progress` or `done` SHALL appear within the Active group alongside `active` changes. The sidebar width SHALL be user-adjustable via a drag handle on its right edge.
 
 #### Scenario: Repository with active changes
 - **WHEN** a repository is loaded that contains one or more directories under `openspec/changes/`
