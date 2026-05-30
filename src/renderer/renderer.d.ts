@@ -16,6 +16,8 @@ declare global {
         readChangeList: (repoPath: string) => Promise<Change[]>
         readProposal:   (changePath: string) => Promise<string | null>
         readArtifact:   (changePath: string, filename: string) => Promise<string | null>
+        delete:         (changePath: string) => Promise<{ ok: true } | { error: string }>
+        archive:        (changePath: string) => Promise<{ ok: true } | { error: string }>
       }
       cli: {
         invoke:      (opts: { toolId: string; command: string; repoPath: string; cols?: number; rows?: number }) => Promise<{ exitCode: number }>

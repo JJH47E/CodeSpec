@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
-import { Icon, Badge, Button } from './components'
+import { Icon, Badge, Button, ConfirmDialog } from './components'
 import type { Change } from '../shared/types'
 
 type Tab = 'proposal' | 'design' | 'tasks'
+type ConfirmAction = 'delete' | 'archive' | null
 
 interface Props {
   change: Change | null
@@ -12,15 +13,29 @@ interface Props {
   tasksText: string | null
   onApply?: () => void
   onContinue?: () => void
+  onDelete?: () => void
+  onArchive?: () => void
+}
+
+function isStarted(tasksText: string | null): boolean {
+  if (!tasksText) return false
+  return /^- \[[ x]\]/m.test(tasksText)
+}
+
+function countIncomplete(tasksText: string | null): number {
+  if (!tasksText) return 0
+  return (tasksText.match(/^- \[ \]/gm) ?? []).length
 }
 
 // 4.4 / 4.5 / 4.6 — Change detail pane with artifact tab navigation and markdown renderer
-export function ChangeDetail({ change, proposalText, designText, tasksText, onApply, onContinue }: Props) {
+export function ChangeDetail({ change, proposalText, designText, tasksText, onApply, onContinue, onDelete, onArchive }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>('proposal')
+  const [confirmAction, setConfirmAction] = useState<ConfirmAction>(null)
 
-  // Reset to proposal tab whenever the selected change switches
+  // Reset to proposal tab and clear any pending confirmation whenever the selected change switches
   useEffect(() => {
     setActiveTab('proposal')
+    setConfirmAction(null)
   }, [change?.path])
 
   // 4.6 — No change selected
@@ -73,6 +88,18 @@ export function ChangeDetail({ change, proposalText, designText, tasksText, onAp
     activeTab === 'design'   ? 'No design document yet.'  :
                                'No tasks written yet.'
 
+  const started = isStarted(tasksText)
+  const incomplete = countIncomplete(tasksText)
+
+  const confirmTitle =
+    confirmAction === 'delete' ? 'Delete this change?' : 'Archive this change?'
+
+  const confirmMessage = confirmAction && change?.status === 'in-progress'
+    ? `${incomplete} task${incomplete !== 1 ? 's are' : ' is'} not yet complete. Are you sure you want to ${confirmAction} this change?`
+    : confirmAction === 'delete'
+      ? 'This will permanently remove the change directory. This cannot be undone.'
+      : 'This will move the change to the archive.'
+
   return (
     <main style={{
       flex: 1,
@@ -80,6 +107,7 @@ export function ChangeDetail({ change, proposalText, designText, tasksText, onAp
       flexDirection: 'column',
       overflow: 'hidden',
       background: 'var(--bg-app)',
+      position: 'relative',
     }}>
       {/* Detail header */}
       <div style={{
@@ -132,6 +160,25 @@ export function ChangeDetail({ change, proposalText, designText, tasksText, onAp
               onClick={onContinue}
             >
               Continue
+            </Button>
+          )}
+          {change.status !== 'archived' && started && onArchive && (
+            <Button
+              variant="secondary"
+              size="sm"
+              icon={<Icon name="archive" size={14} />}
+              onClick={() => setConfirmAction('archive')}
+            >
+              Archive
+            </Button>
+          )}
+          {change.status !== 'archived' && onDelete && (
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => setConfirmAction('delete')}
+            >
+              Delete
             </Button>
           )}
           <Badge tone={badgeTone} icon={icon}>
@@ -194,6 +241,20 @@ export function ChangeDetail({ change, proposalText, designText, tasksText, onAp
           </div>
         )}
       </div>
+
+      {confirmAction && (
+        <ConfirmDialog
+          title={confirmTitle}
+          message={confirmMessage}
+          confirmLabel={confirmAction === 'delete' ? 'Delete' : 'Archive'}
+          onConfirm={() => {
+            setConfirmAction(null)
+            if (confirmAction === 'delete') onDelete?.()
+            else onArchive?.()
+          }}
+          onCancel={() => setConfirmAction(null)}
+        />
+      )}
     </main>
   )
 }

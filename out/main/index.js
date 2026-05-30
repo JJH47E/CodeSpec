@@ -158,6 +158,34 @@ electron.ipcMain.handle("changes:readArtifact", (_e, changePath, filename) => {
   if (!fs.existsSync(p)) return null;
   return fs.readFileSync(p, "utf-8");
 });
+electron.ipcMain.handle("changes:delete", (_e, changePath) => {
+  try {
+    fs.rmSync(changePath, { recursive: true });
+    return { ok: true };
+  } catch (err) {
+    return { error: String(err) };
+  }
+});
+electron.ipcMain.handle("changes:archive", (_e, changePath) => {
+  try {
+    const tasksPath = path.join(changePath, "tasks.md");
+    if (!fs.existsSync(tasksPath)) return { error: "This change has not been started (no tasks.md)." };
+    const tasksContent = fs.readFileSync(tasksPath, "utf-8");
+    if (!/^- \[[ x]\]/m.test(tasksContent)) return { error: "This change has not been started (no tasks)." };
+    const changesDir = path.join(changePath, "..");
+    const repoRoot = path.join(changesDir, "..");
+    const archiveDir = path.join(repoRoot, "openspec", "archive");
+    fs.mkdirSync(archiveDir, { recursive: true });
+    const date = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
+    const changeName = changePath.split("/").pop();
+    const target = path.join(archiveDir, `${date}-${changeName}`);
+    if (fs.existsSync(target)) return { error: `Archive target already exists: ${target}` };
+    fs.renameSync(changePath, target);
+    return { ok: true };
+  } catch (err) {
+    return { error: String(err) };
+  }
+});
 electron.ipcMain.handle("cli:invoke", (event, opts) => {
   const prefs = readPrefs();
   const tool = prefs.cliTools.find((t) => t.id === opts.toolId);

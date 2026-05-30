@@ -11,7 +11,9 @@ electron.contextBridge.exposeInMainWorld("api", {
   changes: {
     readChangeList: (repoPath) => electron.ipcRenderer.invoke("changes:readChangeList", repoPath),
     readProposal: (changePath) => electron.ipcRenderer.invoke("changes:readProposal", changePath),
-    readArtifact: (changePath, filename) => electron.ipcRenderer.invoke("changes:readArtifact", changePath, filename)
+    readArtifact: (changePath, filename) => electron.ipcRenderer.invoke("changes:readArtifact", changePath, filename),
+    delete: (changePath) => electron.ipcRenderer.invoke("changes:delete", changePath),
+    archive: (changePath) => electron.ipcRenderer.invoke("changes:archive", changePath)
   },
   cli: {
     invoke: (opts) => electron.ipcRenderer.invoke("cli:invoke", opts),

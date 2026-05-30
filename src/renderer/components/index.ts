@@ -21,3 +21,5 @@ export type { MenuItem } from './Menu'
 
 export { Toggle, Segmented, Checkbox } from './Toggle'
 export type { SegmentOption } from './Toggle'
+
+export { ConfirmDialog } from './ConfirmDialog'

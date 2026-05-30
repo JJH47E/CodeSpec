@@ -1,6 +1,6 @@
 import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
 import { join } from 'path'
-import { existsSync, readFileSync, writeFileSync, readdirSync, watch } from 'fs'
+import { existsSync, readFileSync, writeFileSync, readdirSync, rmSync, renameSync, mkdirSync, watch } from 'fs'
 import type { FSWatcher } from 'fs'
 import { execFile } from 'child_process'
 import * as pty from 'node-pty'
@@ -184,6 +184,43 @@ ipcMain.handle('changes:readArtifact', (_e, changePath: string, filename: string
   const p = join(changePath, filename)
   if (!existsSync(p)) return null
   return readFileSync(p, 'utf-8')
+})
+
+// changes:delete — permanently removes a change directory
+ipcMain.handle('changes:delete', (_e, changePath: string) => {
+  try {
+    rmSync(changePath, { recursive: true })
+    return { ok: true }
+  } catch (err) {
+    return { error: String(err) }
+  }
+})
+
+// changes:archive — moves a change to openspec/archive/ with a YYYY-MM-DD prefix
+ipcMain.handle('changes:archive', (_e, changePath: string) => {
+  try {
+    // Guard: change must have tasks with at least one checkbox line
+    const tasksPath = join(changePath, 'tasks.md')
+    if (!existsSync(tasksPath)) return { error: 'This change has not been started (no tasks.md).' }
+    const tasksContent = readFileSync(tasksPath, 'utf-8')
+    if (!/^- \[[ x]\]/m.test(tasksContent)) return { error: 'This change has not been started (no tasks).' }
+
+    // Derive archive root from changePath: go up two levels (changes/<name> → repo root)
+    const changesDir = join(changePath, '..')
+    const repoRoot   = join(changesDir, '..')
+    const archiveDir = join(repoRoot, 'openspec', 'archive')
+    mkdirSync(archiveDir, { recursive: true })
+
+    const date       = new Date().toISOString().slice(0, 10)
+    const changeName = changePath.split('/').pop()!
+    const target     = join(archiveDir, `${date}-${changeName}`)
+    if (existsSync(target)) return { error: `Archive target already exists: ${target}` }
+
+    renameSync(changePath, target)
+    return { ok: true }
+  } catch (err) {
+    return { error: String(err) }
+  }
 })
 
 // 1.5 cli:invoke — spawns the CLI tool in a PTY, streams raw data via cli:data events

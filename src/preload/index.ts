@@ -14,6 +14,8 @@ contextBridge.exposeInMainWorld('api', {
     readChangeList: (repoPath: string)  => ipcRenderer.invoke('changes:readChangeList', repoPath),
     readProposal:   (changePath: string) => ipcRenderer.invoke('changes:readProposal', changePath),
     readArtifact:   (changePath: string, filename: string) => ipcRenderer.invoke('changes:readArtifact', changePath, filename),
+    delete:         (changePath: string) => ipcRenderer.invoke('changes:delete', changePath),
+    archive:        (changePath: string) => ipcRenderer.invoke('changes:archive', changePath),
   },
   cli: {
     invoke:      (opts: unknown) => ipcRenderer.invoke('cli:invoke', opts),

@@ -81,6 +81,17 @@ The system SHALL examine `tasks.md` within each active change directory at list-
 - **WHEN** a change's `tasks.md` exists but contains no checkbox lines
 - **THEN** that change is loaded with status `active`
 
+### Requirement: Refresh change list after lifecycle action
+The system SHALL refresh the sidebar change list and clear the selected change after a successful delete or archive action, returning the detail pane to the empty state.
+
+#### Scenario: Change list refreshes after delete
+- **WHEN** a change is successfully deleted
+- **THEN** the sidebar re-reads `openspec/changes/` and the deleted change no longer appears
+
+#### Scenario: Change list refreshes after archive
+- **WHEN** a change is successfully archived
+- **THEN** the sidebar re-reads both `openspec/changes/` and `openspec/archive/`, the change appears under the Archived group, and the detail pane shows the empty state
+
 ### Requirement: Display in-progress changes with distinct visual treatment
 The system SHALL render changes with `in-progress` status using a distinct icon, badge label, and icon-background colour in both the sidebar list item and the change detail header badge, differentiating them visually from `active` and `archived` changes.
 

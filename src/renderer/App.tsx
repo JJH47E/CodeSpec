@@ -105,6 +105,20 @@ export function App() {
     setProposalVersion(v => v + 1)
   }
 
+  async function handleDelete(change: Change) {
+    const result = await window.api.changes.delete(change.path)
+    if ('error' in result) { alert(result.error); return }
+    setSelectedChange(null)
+    if (repoPath) loadChanges(repoPath)
+  }
+
+  async function handleArchive(change: Change) {
+    const result = await window.api.changes.archive(change.path)
+    if ('error' in result) { alert(result.error); return }
+    setSelectedChange(null)
+    if (repoPath) loadChanges(repoPath)
+  }
+
   // 7.2 — Settings prefs change: persist and update local state
   function handlePrefsChange(updated: Prefs) {
     setPrefs(updated)
@@ -152,6 +166,8 @@ export function App() {
             tasksText={tasksText}
             onApply={() => setApplyOpen(true)}
             onContinue={() => setConversationOpen(true)}
+            onDelete={selectedChange ? () => handleDelete(selectedChange) : undefined}
+            onArchive={selectedChange ? () => handleArchive(selectedChange) : undefined}
           />
         </div>
       </div>
