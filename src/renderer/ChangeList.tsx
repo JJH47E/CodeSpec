@@ -22,11 +22,11 @@ export function ChangeList({ changes, filter, onFilterChange, selectedChange, on
 
   const visible = changes.filter(c => {
     if (filter === 'all') return true
-    if (filter === 'active') return c.status === 'active' || c.status === 'in-progress'
+    if (filter === 'active') return c.status === 'active' || c.status === 'in-progress' || c.status === 'done'
     return c.status === filter
   })
 
-  const active   = visible.filter(c => c.status === 'active' || c.status === 'in-progress')
+  const active   = visible.filter(c => c.status === 'active' || c.status === 'in-progress' || c.status === 'done')
   const archived = visible.filter(c => c.status === 'archived')
 
   return (
@@ -159,21 +159,25 @@ function ChangeListItem({ change, selected, onClick }: {
   const icon =
     change.status === 'archived'    ? 'archive' as const :
     change.status === 'in-progress' ? 'git-branch' as const :
+    change.status === 'done'        ? 'check-circle' as const :
                                       'pull-request' as const
 
   const icStyle =
     change.status === 'archived'    ? { background: 'var(--state-archived-bg)', color: 'var(--state-archived-fg)' } :
     change.status === 'in-progress' ? { background: 'var(--warning-muted)', color: 'var(--warning-fg)' } :
+    change.status === 'done'        ? { background: 'var(--success-muted)', color: 'var(--success-fg)' } :
                                       { background: 'var(--accent-subtle)', color: 'var(--accent-fg)' }
 
   const badgeTone =
     change.status === 'archived'    ? 'neutral' as const :
     change.status === 'in-progress' ? 'warning' as const :
+    change.status === 'done'        ? 'success' as const :
                                       'accent' as const
 
   const badgeLabel =
     change.status === 'archived'    ? 'Archived' :
     change.status === 'in-progress' ? 'In Progress' :
+    change.status === 'done'        ? 'Done' :
                                       'Active'
 
   return (

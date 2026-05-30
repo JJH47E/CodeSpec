@@ -60,16 +60,19 @@ export function ChangeDetail({ change, proposalText, designText, tasksText, onAp
   const icon =
     change.status === 'archived'    ? 'archive' as const :
     change.status === 'in-progress' ? 'git-branch' as const :
+    change.status === 'done'        ? 'check-circle' as const :
                                       'pull-request' as const
 
   const badgeTone =
     change.status === 'archived'    ? 'neutral' as const :
     change.status === 'in-progress' ? 'warning' as const :
+    change.status === 'done'        ? 'success' as const :
                                       'accent' as const
 
   const badgeLabel =
     change.status === 'archived'    ? 'Archived' :
     change.status === 'in-progress' ? 'In Progress' :
+    change.status === 'done'        ? 'Done' :
                                       'Active'
 
   const tabs: { id: Tab; label: string }[] = [
@@ -162,7 +165,7 @@ export function ChangeDetail({ change, proposalText, designText, tasksText, onAp
               Continue
             </Button>
           )}
-          {change.status !== 'archived' && started && onArchive && (
+          {change.status !== 'archived' && onArchive && (
             <Button
               variant="secondary"
               size="sm"

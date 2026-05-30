@@ -1,7 +1,7 @@
 ## Requirements
 
 ### Requirement: List active and archived changes in sidebar
-The system SHALL read the `openspec/changes/` and `openspec/archive/` directories of the active repository and render the discovered changes in a sidebar list, grouped by status. Changes with status `in-progress` SHALL appear within the Active group alongside `active` changes.
+The system SHALL read the `openspec/changes/` and `openspec/archive/` directories of the active repository and render the discovered changes in a sidebar list, grouped by status. Changes with status `in-progress` or `done` SHALL appear within the Active group alongside `active` changes.
 
 #### Scenario: Repository with active changes
 - **WHEN** a repository is loaded that contains one or more directories under `openspec/changes/`
@@ -26,6 +26,14 @@ The system SHALL read the `openspec/changes/` and `openspec/archive/` directorie
 #### Scenario: In-progress changes are excluded from Archived filter
 - **WHEN** the user selects the "Archived" filter
 - **THEN** changes with status `in-progress` are not shown
+
+#### Scenario: Done changes appear in Active group
+- **WHEN** a change has status `done` and the filter is set to "Active" or "All"
+- **THEN** the change appears in the Active group of the sidebar list
+
+#### Scenario: Done changes are excluded from Archived filter
+- **WHEN** the user selects the "Archived" filter
+- **THEN** changes with status `done` are not shown
 
 ### Requirement: Display change detail in main pane
 The system SHALL render the contents of a selected change's artifact files in the main detail pane via a tab bar. The Proposal tab (showing `proposal.md`) SHALL be selected by default. Additional tabs for `design.md` and `tasks.md` SHALL be available.
@@ -63,7 +71,7 @@ The system SHALL provide tab or toggle controls to filter the change list to sho
 - **THEN** only changes from `openspec/archive/` are visible in the sidebar
 
 ### Requirement: Derive in-progress status from task completion
-The system SHALL examine `tasks.md` within each active change directory at list-load time and set the change status to `in-progress` when at least one task is marked complete (`- [x]`) and at least one task remains incomplete (`- [ ]`). Changes with no `tasks.md`, no checkboxes, or all tasks complete SHALL retain `active` status.
+The system SHALL examine `tasks.md` within each active change directory at list-load time and set the change status to `in-progress` when at least one task is marked complete (`- [x]`) and at least one task remains incomplete (`- [ ]`). When all tasks are complete, the status SHALL be `done`. Changes with no `tasks.md`, no checkboxes, or all tasks complete SHALL retain `active` status unless covered by the `done` rule.
 
 #### Scenario: Change with some tasks complete
 - **WHEN** a change's `tasks.md` contains at least one `- [x]` line and at least one `- [ ]` line
@@ -73,9 +81,9 @@ The system SHALL examine `tasks.md` within each active change directory at list-
 - **WHEN** a change directory has no `tasks.md`
 - **THEN** that change is loaded with status `active`
 
-#### Scenario: Change with all tasks complete
+#### Scenario: Change with all tasks complete → done
 - **WHEN** a change's `tasks.md` contains only `- [x]` lines (no `- [ ]` lines)
-- **THEN** that change is loaded with status `active`
+- **THEN** that change is loaded with status `done`
 
 #### Scenario: Change with no checkboxes in tasks file
 - **WHEN** a change's `tasks.md` exists but contains no checkbox lines

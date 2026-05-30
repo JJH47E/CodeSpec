@@ -78,14 +78,16 @@ function parseSimpleYaml(text: string): Record<string, string> {
 
 // ---- Change list reader ----------------------------------------------------
 
-function deriveActiveStatus(changePath: string): 'active' | 'in-progress' {
+function deriveActiveStatus(changePath: string): 'active' | 'in-progress' | 'done' {
   const tasksPath = join(changePath, 'tasks.md')
   if (!existsSync(tasksPath)) return 'active'
   const content = readFileSync(tasksPath, 'utf-8')
   const lines = content.split('\n')
   const complete   = lines.filter(l => /- \[x\]/i.test(l)).length
   const incomplete = lines.filter(l => /- \[ \]/.test(l)).length
-  return complete > 0 && incomplete > 0 ? 'in-progress' : 'active'
+  if (complete > 0 && incomplete === 0) return 'done'
+  if (complete > 0 && incomplete > 0)   return 'in-progress'
+  return 'active'
 }
 
 function readChangesDir(dir: string, status: 'active' | 'archived'): Change[] {
@@ -199,12 +201,6 @@ ipcMain.handle('changes:delete', (_e, changePath: string) => {
 // changes:archive — moves a change to openspec/archive/ with a YYYY-MM-DD prefix
 ipcMain.handle('changes:archive', (_e, changePath: string) => {
   try {
-    // Guard: change must have tasks with at least one checkbox line
-    const tasksPath = join(changePath, 'tasks.md')
-    if (!existsSync(tasksPath)) return { error: 'This change has not been started (no tasks.md).' }
-    const tasksContent = readFileSync(tasksPath, 'utf-8')
-    if (!/^- \[[ x]\]/m.test(tasksContent)) return { error: 'This change has not been started (no tasks).' }
-
     // Derive archive root from changePath: go up two levels (changes/<name> → repo root)
     const changesDir = join(changePath, '..')
     const repoRoot   = join(changesDir, '..')

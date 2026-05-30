@@ -1,38 +1,19 @@
-## Requirements
+## MODIFIED Requirements
 
-### Requirement: Delete a change
-The system SHALL provide a Delete action for any non-archived change that permanently removes the change directory from `openspec/changes/`. The action SHALL require explicit user confirmation before executing.
-
-#### Scenario: User deletes an active change
-- **WHEN** the user clicks the Delete button on an `active` change and confirms
-- **THEN** the change directory is removed from disk, the sidebar refreshes, and the detail pane shows the empty state
-
-#### Scenario: User cancels delete
-- **WHEN** the user clicks the Delete button but then cancels the confirmation dialog
-- **THEN** no files are removed and the change remains selected
-
-#### Scenario: Delete button is not shown for archived changes
-- **WHEN** a change with status `archived` is selected
-- **THEN** no Delete button is visible in the detail header
-
-### Requirement: Archive a non-archived change
-The system SHALL provide an Archive action for all non-archived changes (`active`, `in-progress`, and `done`). Archiving moves the change directory to `openspec/archive/YYYY-MM-DD-<name>/`.
-
-#### Scenario: User archives an active change with tasks
-- **WHEN** an `active` change has a tasks.md with checkbox lines and the user clicks Archive and confirms
-- **THEN** the change directory is moved to `openspec/archive/` with a date-prefixed name, the sidebar refreshes, and the detail pane shows the empty state
+### Requirement: Archive a started change
+The system SHALL provide an Archive action for all non-archived changes. Archiving moves the change directory to `openspec/archive/YYYY-MM-DD-<name>/`. The Archive button SHALL be visible for all non-archived changes regardless of task state.
 
 #### Scenario: User archives a done change
 - **WHEN** a `done` change is selected and the user clicks Archive and confirms
 - **THEN** the change directory is moved to `openspec/archive/` with a date-prefixed name, the sidebar refreshes, and the detail pane shows the empty state
 
-#### Scenario: User archives an active change without tasks
-- **WHEN** an `active` change has no tasks.md or no checkbox lines and the user clicks Archive and confirms
+#### Scenario: User archives an active change
+- **WHEN** an `active` change (with or without tasks) is selected and the user clicks Archive and confirms
 - **THEN** the change directory is moved to `openspec/archive/` with a date-prefixed name, the sidebar refreshes, and the detail pane shows the empty state
 
 #### Scenario: Archive button is visible for all non-archived changes
-- **WHEN** a change with status `active`, `in-progress`, or `done` is selected
-- **THEN** the Archive button is visible in the detail header
+- **WHEN** any non-archived change is selected
+- **THEN** an Archive button is visible in the detail header
 
 #### Scenario: Archive button is not shown for archived changes
 - **WHEN** a change with status `archived` is selected
@@ -53,10 +34,17 @@ When the user initiates Delete or Archive on an `in-progress` change, the system
 - **WHEN** the user clicks Archive on an `in-progress` change
 - **THEN** the confirmation dialog shows a warning message and the number of incomplete tasks
 
+#### Scenario: No warning shown for done changes
+- **WHEN** the user clicks Delete or Archive on a `done` change
+- **THEN** the confirmation dialog shows a neutral message with no task-count warning
+
 #### Scenario: User confirms action after warning
 - **WHEN** the warning dialog is shown and the user clicks Confirm
 - **THEN** the delete or archive operation proceeds
 
-#### Scenario: No warning shown for done changes
-- **WHEN** the user clicks Delete or Archive on a `done` change
-- **THEN** the standard confirmation dialog is shown with no incomplete task warning
+
+## REMOVED Requirements
+
+### Requirement: Unstarted active changes cannot be archived
+**Reason**: All non-archived changes are now archivable regardless of task state; the distinction between started and unstarted is no longer relevant for the archive action.
+**Migration**: No migration needed; the IPC handler no longer rejects unstarted changes and the Archive button is visible for all non-archived changes.
