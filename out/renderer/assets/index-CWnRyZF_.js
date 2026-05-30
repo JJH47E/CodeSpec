@@ -8000,14 +8000,14 @@ const ICON_MAP = {
   warning: c,
   "x-circle": s
 };
-function Icon({ name, size = 16, className, style }) {
+function Icon({ name, size = 16, weight = "duotone", className, style }) {
   const Component = ICON_MAP[name];
   if (!Component) return null;
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     Component,
     {
       size,
-      weight: "duotone",
+      weight,
       className,
       style: { display: "block", flex: "none", ...style }
     }
@@ -8200,7 +8200,7 @@ function RepoSelectorScreen({ onOpenRepo }) {
       alignItems: "center",
       justifyContent: "center",
       color: "var(--accent-fg)"
-    }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "terminal", size: 28 }) }),
+    }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "terminal", size: 28, weight: "regular" }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", gap: 8 }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
         fontSize: "var(--text-xl, 1.25rem)",
@@ -17643,7 +17643,7 @@ function Header({ repoPath, prefs, onNewProposal, onRefresh, onOpenRepo, onSetti
     padding: "0 12px"
   }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 8, color: "var(--accent-fg)" }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "terminal", size: 18 }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "terminal", size: 18, weight: "regular" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: {
         fontSize: "var(--text-sm)",
         fontWeight: "var(--weight-semibold)",
@@ -17685,7 +17685,7 @@ function Header({ repoPath, prefs, onNewProposal, onRefresh, onOpenRepo, onSetti
       {
         variant: "primary",
         size: "sm",
-        icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "plus", size: 14 }),
+        icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "plus", size: 14, weight: "regular" }),
         onClick: onNewProposal,
         disabled: !hasTools,
         title: hasTools ? "Create a new proposal" : "Add a CLI tool in Settings first",
@@ -17697,7 +17697,7 @@ function Header({ repoPath, prefs, onNewProposal, onRefresh, onOpenRepo, onSetti
       {
         variant: "ghost",
         size: "sm",
-        icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "arrows-clockwise", size: 15 }),
+        icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "arrows-clockwise", size: 15, weight: "regular" }),
         loading: refreshing,
         onClick: handleRefresh,
         title: "Refresh changes",
@@ -17954,7 +17954,7 @@ function ChangeDetail({ change, proposalText, designText, tasksText, onApply, on
           {
             variant: "secondary",
             size: "sm",
-            icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "terminal", size: 14 }),
+            icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "terminal", size: 14, weight: "regular" }),
             onClick: onContinue,
             children: "Continue"
           }
