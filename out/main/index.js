@@ -28,7 +28,8 @@ let detectionCache = null;
 const KNOWN_TOOLS = [
   { id: "claude-code", label: "Claude Code", command: "claude", args: ["{command}"] },
   { id: "aider", label: "Aider", command: "aider", args: ["--message", "{command}"] },
-  { id: "gh-copilot", label: "GitHub Copilot", command: "gh", args: ["copilot", "suggest", "{command}"] }
+  { id: "gh-copilot", label: "GitHub Copilot", command: "gh", args: ["copilot", "suggest", "{command}"] },
+  { id: "gemini", label: "Gemini CLI", command: "gemini", args: ["-p", "{command}"] }
 ];
 function resolveShellPath() {
   return new Promise((resolve) => {
@@ -110,6 +111,7 @@ function readChangesDir(dir, status) {
   return changes;
 }
 let activeProcess = null;
+let onboardProcess = null;
 function resolveIconPath() {
   const base = electron.app.getAppPath();
   if (process.platform === "darwin") return path.join(base, "resources", "icon.icns");
@@ -146,8 +148,41 @@ electron.ipcMain.handle("repo:openDirectory", async (event) => {
   const result = await electron.dialog.showOpenDialog(win, { properties: ["openDirectory"] });
   if (result.canceled || !result.filePaths[0]) return null;
   const selected = result.filePaths[0];
-  if (!fs.existsSync(path.join(selected, "openspec"))) return { error: "not-openspec-repo" };
+  if (!fs.existsSync(path.join(selected, "openspec"))) return { error: "not-openspec-repo", path: selected };
   return { path: selected };
+});
+electron.ipcMain.handle("repo:checkPath", (_e, p) => fs.existsSync(p));
+electron.ipcMain.handle("repo:dirHasEntries", (_e, dirPath) => {
+  try {
+    return fs.existsSync(dirPath) && fs.readdirSync(dirPath).length > 0;
+  } catch {
+    return false;
+  }
+});
+electron.ipcMain.handle("repo:hasAppFiles", (_e, dirPath) => {
+  const SKIP = /* @__PURE__ */ new Set(["openspec", ".git", "node_modules"]);
+  try {
+    for (const entry of fs.readdirSync(dirPath, { withFileTypes: true })) {
+      if (entry.name.startsWith(".")) continue;
+      if (SKIP.has(entry.name)) continue;
+      return true;
+    }
+  } catch {
+  }
+  return false;
+});
+electron.ipcMain.handle("repo:listPackages", (_e, dirPath) => {
+  const packages = [];
+  try {
+    for (const entry of fs.readdirSync(dirPath, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      if (entry.name.startsWith(".") || entry.name === "node_modules") continue;
+      const pkgPath = path.join(dirPath, entry.name, "package.json");
+      if (fs.existsSync(pkgPath)) packages.push({ name: entry.name, path: path.join(dirPath, entry.name) });
+    }
+  } catch {
+  }
+  return packages;
 });
 electron.ipcMain.handle("prefs:get", () => readPrefs());
 electron.ipcMain.handle("prefs:set", (_e, update) => {
@@ -254,6 +289,45 @@ electron.ipcMain.handle("cli:resize", (_e, { cols, rows }) => {
   activeProcess?.resize(cols, rows);
 });
 electron.ipcMain.handle("cli:detectTools", () => detectTools());
+electron.ipcMain.handle("onboard:exec", (event, opts) => {
+  if (onboardProcess) {
+    onboardProcess.kill();
+    onboardProcess = null;
+  }
+  return new Promise((resolve) => {
+    let proc;
+    try {
+      proc = pty__namespace.spawn(opts.command, opts.args, {
+        name: "xterm-256color",
+        cols: opts.cols ?? 80,
+        rows: opts.rows ?? 24,
+        cwd: opts.cwd,
+        env: { ...process.env, PATH: resolvedPath }
+      });
+      onboardProcess = proc;
+    } catch {
+      resolve({ exitCode: 1 });
+      return;
+    }
+    proc.onData((data) => event.sender.send("onboard:data", data));
+    proc.onExit(({ exitCode }) => {
+      onboardProcess = null;
+      resolve({ exitCode });
+    });
+  });
+});
+electron.ipcMain.handle("onboard:cancel", () => {
+  if (onboardProcess) {
+    onboardProcess.kill();
+    onboardProcess = null;
+  }
+});
+electron.ipcMain.handle("onboard:write", (_e, text) => {
+  onboardProcess?.write(text);
+});
+electron.ipcMain.handle("onboard:resize", (_e, { cols, rows }) => {
+  onboardProcess?.resize(cols, rows);
+});
 electron.app.whenReady().then(() => {
   resolveShellPath().then((p) => {
     resolvedPath = p;

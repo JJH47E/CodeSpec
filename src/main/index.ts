@@ -120,6 +120,7 @@ function readChangesDir(dir: string, status: 'active' | 'archived'): Change[] {
 // ---- CLI process -----------------------------------------------------------
 
 let activeProcess: IPty | null = null
+let onboardProcess: IPty | null = null
 
 // ---- Icons -----------------------------------------------------------------
 
@@ -169,8 +170,45 @@ ipcMain.handle('repo:openDirectory', async (event) => {
   const result = await dialog.showOpenDialog(win!, { properties: ['openDirectory'] })
   if (result.canceled || !result.filePaths[0]) return null
   const selected = result.filePaths[0]
-  if (!existsSync(join(selected, 'openspec'))) return { error: 'not-openspec-repo' }
+  if (!existsSync(join(selected, 'openspec'))) return { error: 'not-openspec-repo', path: selected }
   return { path: selected }
+})
+
+// repo:checkPath — returns true if a path exists on disk
+ipcMain.handle('repo:checkPath', (_e, p: string) => existsSync(p))
+
+// repo:dirHasEntries — returns true if a directory exists and has at least one entry
+ipcMain.handle('repo:dirHasEntries', (_e, dirPath: string) => {
+  try {
+    return existsSync(dirPath) && readdirSync(dirPath).length > 0
+  } catch { return false }
+})
+
+// repo:hasAppFiles — returns true if a directory has meaningful content beyond openspec/, .git/, node_modules/, and dotfiles
+ipcMain.handle('repo:hasAppFiles', (_e, dirPath: string) => {
+  const SKIP = new Set(['openspec', '.git', 'node_modules'])
+  try {
+    for (const entry of readdirSync(dirPath, { withFileTypes: true })) {
+      if (entry.name.startsWith('.')) continue
+      if (SKIP.has(entry.name)) continue
+      return true
+    }
+  } catch { /* ignore */ }
+  return false
+})
+
+// repo:listPackages — scans a directory for immediate sub-directories containing package.json
+ipcMain.handle('repo:listPackages', (_e, dirPath: string) => {
+  const packages: { name: string; path: string }[] = []
+  try {
+    for (const entry of readdirSync(dirPath, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue
+      if (entry.name.startsWith('.') || entry.name === 'node_modules') continue
+      const pkgPath = join(dirPath, entry.name, 'package.json')
+      if (existsSync(pkgPath)) packages.push({ name: entry.name, path: join(dirPath, entry.name) })
+    }
+  } catch { /* return what we have */ }
+  return packages
 })
 
 // 1.2 prefs:get / prefs:set
@@ -309,6 +347,42 @@ ipcMain.handle('cli:resize', (_e, { cols, rows }: { cols: number; rows: number }
 
 // cli:detectTools — probe known AI CLI tools on the resolved PATH
 ipcMain.handle('cli:detectTools', () => detectTools())
+
+// onboard:exec — spawns an arbitrary command in a PTY for onboarding steps
+ipcMain.handle('onboard:exec', (event, opts: { command: string; args: string[]; cwd: string; cols?: number; rows?: number }) => {
+  if (onboardProcess) { onboardProcess.kill(); onboardProcess = null }
+  return new Promise<{ exitCode: number }>(resolve => {
+    let proc: IPty
+    try {
+      proc = pty.spawn(opts.command, opts.args, {
+        name: 'xterm-256color',
+        cols: opts.cols ?? 80,
+        rows: opts.rows ?? 24,
+        cwd: opts.cwd,
+        env: { ...process.env, PATH: resolvedPath } as Record<string, string>,
+      })
+      onboardProcess = proc
+    } catch {
+      resolve({ exitCode: 1 })
+      return
+    }
+    proc.onData(data => event.sender.send('onboard:data', data))
+    proc.onExit(({ exitCode }) => { onboardProcess = null; resolve({ exitCode }) })
+  })
+})
+
+// onboard:cancel — kills the active onboarding PTY process
+ipcMain.handle('onboard:cancel', () => {
+  if (onboardProcess) { onboardProcess.kill(); onboardProcess = null }
+})
+
+// onboard:write — forwards keystrokes to the onboarding PTY
+ipcMain.handle('onboard:write', (_e, text: string) => { onboardProcess?.write(text) })
+
+// onboard:resize — updates onboarding PTY dimensions
+ipcMain.handle('onboard:resize', (_e, { cols, rows }: { cols: number; rows: number }) => {
+  onboardProcess?.resize(cols, rows)
+})
 
 // ---- App lifecycle ---------------------------------------------------------
 

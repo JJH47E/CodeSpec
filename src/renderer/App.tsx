@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { RepoSelectorScreen } from './RepoSelectorScreen'
+import { OnboardingWizard } from './OnboardingWizard'
 import { Header } from './Header'
 import { ChangeList } from './ChangeList'
 import { ChangeDetail } from './ChangeDetail'
@@ -13,6 +14,7 @@ import type { Change, Prefs } from '../shared/types'
 export function App() {
   const [prefs, setPrefs]               = useState<Prefs>({ repoPath: null, cliTools: [], defaultTool: null, perChangeTool: {} })
   const [repoPath, setRepoPath]         = useState<string | null>(null)
+  const [pendingOnboardingPath, setPendingOnboardingPath] = useState<string | null>(null)
   const [loading, setLoading]           = useState(true)
   const [changes, setChanges]           = useState<Change[]>([])
   const [selectedChange, setSelectedChange] = useState<Change | null>(null)
@@ -73,14 +75,36 @@ export function App() {
   // Open repo: validate, persist, transition to shell
   async function handleOpenRepo(): Promise<string | null> {
     const result = await window.api.repo.openDirectory()
-    if (!result) return null                              // user cancelled
-    if ('error' in result) return 'Selected directory does not contain an openspec/ folder.'
+    if (!result) return null
+    if ('error' in result && result.error === 'not-openspec-repo') {
+      handleBeginOnboarding((result as { error: string; path: string }).path)
+      return null
+    }
     const newPath = (result as { path: string }).path
     setRepoPath(newPath)
     setSelectedChange(null)
     setChanges([])
     await window.api.prefs.set({ repoPath: newPath })
     return null
+  }
+
+  function handleBeginOnboarding(path: string) {
+    setRepoPath(null)
+    setSelectedChange(null)
+    setChanges([])
+    setPendingOnboardingPath(path)
+  }
+
+  function handleAbandonOnboarding() {
+    setPendingOnboardingPath(null)
+  }
+
+  async function handleCompleteOnboarding(path: string) {
+    setPendingOnboardingPath(null)
+    setRepoPath(path)
+    setSelectedChange(null)
+    setChanges([])
+    await window.api.prefs.set({ repoPath: path })
   }
 
   // 7.1 — Refresh: re-read change list
@@ -151,6 +175,19 @@ export function App() {
 
   // Blank while loading initial prefs
   if (loading) return null
+
+  // Onboarding wizard for uninitialized projects
+  if (pendingOnboardingPath) {
+    return (
+      <OnboardingWizard
+        projectPath={pendingOnboardingPath}
+        prefs={prefs}
+        onPrefsChange={handlePrefsChange}
+        onComplete={handleCompleteOnboarding}
+        onAbandon={handleAbandonOnboarding}
+      />
+    )
+  }
 
   // 2.4 / 2.5 — Show repo selector when no repo is loaded
   if (!repoPath) {

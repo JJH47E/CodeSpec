@@ -4,7 +4,15 @@ import { contextBridge, ipcRenderer } from 'electron'
 contextBridge.exposeInMainWorld('api', {
   repo: {
     openDirectory: () =>
-      ipcRenderer.invoke('repo:openDirectory') as Promise<{ path: string } | { error: string } | null>,
+      ipcRenderer.invoke('repo:openDirectory') as Promise<{ path: string } | { error: string; path: string } | null>,
+    listPackages: (dirPath: string) =>
+      ipcRenderer.invoke('repo:listPackages', dirPath) as Promise<{ name: string; path: string }[]>,
+    hasAppFiles: (dirPath: string) =>
+      ipcRenderer.invoke('repo:hasAppFiles', dirPath) as Promise<boolean>,
+    checkPath: (p: string) =>
+      ipcRenderer.invoke('repo:checkPath', p) as Promise<boolean>,
+    dirHasEntries: (dirPath: string) =>
+      ipcRenderer.invoke('repo:dirHasEntries', dirPath) as Promise<boolean>,
   },
   prefs: {
     get:  ()             => ipcRenderer.invoke('prefs:get'),
@@ -32,6 +40,18 @@ contextBridge.exposeInMainWorld('api', {
       const handler = () => cb()
       ipcRenderer.on('cli:proposalReady', handler as Parameters<typeof ipcRenderer.on>[1])
       return () => ipcRenderer.removeListener('cli:proposalReady', handler as Parameters<typeof ipcRenderer.on>[1])
+    },
+  },
+  onboard: {
+    exec: (opts: { command: string; args: string[]; cwd: string; cols?: number; rows?: number }) =>
+      ipcRenderer.invoke('onboard:exec', opts) as Promise<{ exitCode: number }>,
+    cancel: () => ipcRenderer.invoke('onboard:cancel'),
+    write: (text: string) => ipcRenderer.invoke('onboard:write', text),
+    resize: (size: { cols: number; rows: number }) => ipcRenderer.invoke('onboard:resize', size),
+    onData: (cb: (data: string) => void) => {
+      const handler = (_event: unknown, data: string) => cb(data)
+      ipcRenderer.on('onboard:data', handler as Parameters<typeof ipcRenderer.on>[1])
+      return () => ipcRenderer.removeListener('onboard:data', handler as Parameters<typeof ipcRenderer.on>[1])
     },
   },
 })

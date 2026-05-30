@@ -2,7 +2,11 @@
 const electron = require("electron");
 electron.contextBridge.exposeInMainWorld("api", {
   repo: {
-    openDirectory: () => electron.ipcRenderer.invoke("repo:openDirectory")
+    openDirectory: () => electron.ipcRenderer.invoke("repo:openDirectory"),
+    listPackages: (dirPath) => electron.ipcRenderer.invoke("repo:listPackages", dirPath),
+    hasAppFiles: (dirPath) => electron.ipcRenderer.invoke("repo:hasAppFiles", dirPath),
+    checkPath: (p) => electron.ipcRenderer.invoke("repo:checkPath", p),
+    dirHasEntries: (dirPath) => electron.ipcRenderer.invoke("repo:dirHasEntries", dirPath)
   },
   prefs: {
     get: () => electron.ipcRenderer.invoke("prefs:get"),
@@ -30,6 +34,17 @@ electron.contextBridge.exposeInMainWorld("api", {
       const handler = () => cb();
       electron.ipcRenderer.on("cli:proposalReady", handler);
       return () => electron.ipcRenderer.removeListener("cli:proposalReady", handler);
+    }
+  },
+  onboard: {
+    exec: (opts) => electron.ipcRenderer.invoke("onboard:exec", opts),
+    cancel: () => electron.ipcRenderer.invoke("onboard:cancel"),
+    write: (text) => electron.ipcRenderer.invoke("onboard:write", text),
+    resize: (size) => electron.ipcRenderer.invoke("onboard:resize", size),
+    onData: (cb) => {
+      const handler = (_event, data) => cb(data);
+      electron.ipcRenderer.on("onboard:data", handler);
+      return () => electron.ipcRenderer.removeListener("onboard:data", handler);
     }
   }
 });

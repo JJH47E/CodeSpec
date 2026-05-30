@@ -5,18 +5,13 @@ interface Props {
   onOpenRepo: () => Promise<string | null>
 }
 
-// 2.1 — Full-viewport empty state; 2.3 — inline error display
 export function RepoSelectorScreen({ onOpenRepo }: Props) {
-  const [error, setError]     = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  // 2.2 — wires to repo:openDirectory; 2.5 — gracefully handles null (cancelled)
   async function handleOpen() {
-    setError(null)
     setLoading(true)
-    const err = await onOpenRepo()
+    await onOpenRepo()
     setLoading(false)
-    if (err) setError(err)
   }
 
   return (
@@ -71,25 +66,6 @@ export function RepoSelectorScreen({ onOpenRepo }: Props) {
         >
           Open Repository
         </Button>
-
-        {/* 2.3 — error when selected dir is not an openspec repo */}
-        {error && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            gap: 8,
-            padding: '10px 14px',
-            borderRadius: 'var(--radius-md)',
-            background: 'var(--danger-muted)',
-            color: 'var(--danger-fg)',
-            fontSize: 'var(--text-sm)',
-            textAlign: 'left',
-            width: '100%',
-          }}>
-            <Icon name="warning" size={16} style={{ flexShrink: 0, marginTop: 1 }} />
-            {error}
-          </div>
-        )}
       </div>
     </div>
   )

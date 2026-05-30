@@ -10,8 +10,8 @@ The system SHALL provide a mechanism for the user to select a local directory as
 
 #### Scenario: User selects a directory without openspec
 - **WHEN** the user selects a directory that does NOT contain an `openspec/` sub-folder
-- **THEN** the app displays an inline error message stating the directory is not an OpenSpec repository
-- **AND** the previously active repo (if any) remains unchanged
+- **THEN** the app transitions to the onboarding wizard for that directory instead of showing an inline error
+- **AND** the previously active repo (if any) is deselected for the duration of onboarding
 
 #### Scenario: User cancels the dialog
 - **WHEN** the user dismisses the file-picker without selecting a directory
