@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Icon, Badge, Segmented } from './components'
 import type { Change } from '../shared/types'
 
@@ -9,10 +10,13 @@ interface Props {
   onFilterChange: (f: Filter) => void
   selectedChange: Change | null
   onSelect: (c: Change) => void
+  width: number
+  onDragStart: (startX: number) => void
 }
 
 // 4.1 — Sidebar change list with active/archived grouping
-export function ChangeList({ changes, filter, onFilterChange, selectedChange, onSelect }: Props) {
+export function ChangeList({ changes, filter, onFilterChange, selectedChange, onSelect, width, onDragStart }: Props) {
+  const [handleHovered, setHandleHovered] = useState(false)
   // 4.2 — Filter tabs: All / Active / Archived
   const FILTER_OPTIONS = [
     { value: 'all',      label: 'All' },
@@ -31,8 +35,9 @@ export function ChangeList({ changes, filter, onFilterChange, selectedChange, on
 
   return (
     <aside style={{
-      width: 280,
+      width,
       flexShrink: 0,
+      position: 'relative',
       background: 'var(--bg-surface)',
       borderRight: '1px solid var(--border-default)',
       display: 'flex',
@@ -114,6 +119,24 @@ export function ChangeList({ changes, filter, onFilterChange, selectedChange, on
           </>
         )}
       </div>
+      {/* Drag handle */}
+      <div
+        onPointerDown={e => { e.preventDefault(); onDragStart(e.clientX) }}
+        onMouseEnter={() => setHandleHovered(true)}
+        onMouseLeave={() => setHandleHovered(false)}
+        style={{
+          position: 'absolute',
+          right: -3,
+          top: 0,
+          bottom: 0,
+          width: 6,
+          cursor: 'col-resize',
+          zIndex: 10,
+          background: handleHovered ? 'var(--accent-default)' : 'transparent',
+          opacity: handleHovered ? 0.4 : 1,
+          transition: 'background 0.15s',
+        }}
+      />
     </aside>
   )
 }

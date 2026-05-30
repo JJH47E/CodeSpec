@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { RepoSelectorScreen } from './RepoSelectorScreen'
 import { Header } from './Header'
 import { ChangeList } from './ChangeList'
@@ -25,12 +25,17 @@ export function App() {
   const [proposalOpen, setProposalOpen]       = useState(false)
   const [conversationOpen, setConversationOpen] = useState(false)
   const [applyOpen, setApplyOpen]             = useState(false)
+  const [sidebarWidth, setSidebarWidth]       = useState(280)
+  const sidebarWidthRef = useRef(280)
 
   // 2.4 — Load prefs on startup; restore last repo path
   useEffect(() => {
     window.api.prefs.get().then(p => {
       setPrefs(p)
       if (p.repoPath) setRepoPath(p.repoPath)
+      const w = p.sidebarWidth ?? 280
+      setSidebarWidth(w)
+      sidebarWidthRef.current = w
       setLoading(false)
     })
   }, [])
@@ -119,6 +124,25 @@ export function App() {
     if (repoPath) loadChanges(repoPath)
   }
 
+  function handleSidebarDrag(startX: number) {
+    const startWidth = sidebarWidthRef.current
+
+    function onMove(e: PointerEvent) {
+      const next = Math.min(480, Math.max(180, startWidth + (e.clientX - startX)))
+      setSidebarWidth(next)
+      sidebarWidthRef.current = next
+    }
+
+    function onUp() {
+      document.removeEventListener('pointermove', onMove)
+      document.removeEventListener('pointerup', onUp)
+      window.api.prefs.set({ sidebarWidth: sidebarWidthRef.current })
+    }
+
+    document.addEventListener('pointermove', onMove)
+    document.addEventListener('pointerup', onUp)
+  }
+
   // 7.2 — Settings prefs change: persist and update local state
   function handlePrefsChange(updated: Prefs) {
     setPrefs(updated)
@@ -156,6 +180,8 @@ export function App() {
             onFilterChange={setFilter}
             selectedChange={selectedChange}
             onSelect={setSelectedChange}
+            width={sidebarWidth}
+            onDragStart={handleSidebarDrag}
           />
 
           {/* 4.4 — Change detail main pane */}

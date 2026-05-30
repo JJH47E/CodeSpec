@@ -82,7 +82,9 @@ function deriveActiveStatus(changePath) {
   const lines = content.split("\n");
   const complete = lines.filter((l) => /- \[x\]/i.test(l)).length;
   const incomplete = lines.filter((l) => /- \[ \]/.test(l)).length;
-  return complete > 0 && incomplete > 0 ? "in-progress" : "active";
+  if (complete > 0 && incomplete === 0) return "done";
+  if (complete > 0 && incomplete > 0) return "in-progress";
+  return "active";
 }
 function readChangesDir(dir, status) {
   if (!fs.existsSync(dir)) return [];
@@ -168,10 +170,6 @@ electron.ipcMain.handle("changes:delete", (_e, changePath) => {
 });
 electron.ipcMain.handle("changes:archive", (_e, changePath) => {
   try {
-    const tasksPath = path.join(changePath, "tasks.md");
-    if (!fs.existsSync(tasksPath)) return { error: "This change has not been started (no tasks.md)." };
-    const tasksContent = fs.readFileSync(tasksPath, "utf-8");
-    if (!/^- \[[ x]\]/m.test(tasksContent)) return { error: "This change has not been started (no tasks)." };
     const changesDir = path.join(changePath, "..");
     const repoRoot = path.join(changesDir, "..");
     const archiveDir = path.join(repoRoot, "openspec", "archive");

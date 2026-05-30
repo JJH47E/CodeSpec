@@ -12,6 +12,7 @@ export interface Prefs {
   cliTools: CliTool[]
   defaultTool: string | null
   perChangeTool: Record<string, string>
+  sidebarWidth?: number
 }
 
 export interface Change {
