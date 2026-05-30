@@ -179,6 +179,13 @@ ipcMain.handle('changes:readProposal', (_e, changePath: string) => {
   return readFileSync(p, 'utf-8')
 })
 
+// changes:readArtifact — returns raw text of any named artifact file or null
+ipcMain.handle('changes:readArtifact', (_e, changePath: string, filename: string) => {
+  const p = join(changePath, filename)
+  if (!existsSync(p)) return null
+  return readFileSync(p, 'utf-8')
+})
+
 // 1.5 cli:invoke — spawns the CLI tool in a PTY, streams raw data via cli:data events
 ipcMain.handle('cli:invoke', (event, opts: { toolId: string; command: string; repoPath: string; cols?: number; rows?: number }) => {
   const prefs = readPrefs()

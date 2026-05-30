@@ -153,6 +153,11 @@ electron.ipcMain.handle("changes:readProposal", (_e, changePath) => {
   if (!fs.existsSync(p)) return null;
   return fs.readFileSync(p, "utf-8");
 });
+electron.ipcMain.handle("changes:readArtifact", (_e, changePath, filename) => {
+  const p = path.join(changePath, filename);
+  if (!fs.existsSync(p)) return null;
+  return fs.readFileSync(p, "utf-8");
+});
 electron.ipcMain.handle("cli:invoke", (event, opts) => {
   const prefs = readPrefs();
   const tool = prefs.cliTools.find((t) => t.id === opts.toolId);

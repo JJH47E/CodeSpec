@@ -17,6 +17,8 @@ export function App() {
   const [changes, setChanges]           = useState<Change[]>([])
   const [selectedChange, setSelectedChange] = useState<Change | null>(null)
   const [proposalText, setProposalText] = useState<string | null>(null)
+  const [designText, setDesignText]     = useState<string | null>(null)
+  const [tasksText, setTasksText]       = useState<string | null>(null)
   const [proposalVersion, setProposalVersion] = useState(0)
   const [filter, setFilter]             = useState<'all' | 'active' | 'archived'>('all')
   const [settingsOpen, setSettingsOpen]       = useState(false)
@@ -44,10 +46,23 @@ export function App() {
     if (repoPath) loadChanges(repoPath)
   }, [repoPath, loadChanges])
 
-  // 4.8 — Load proposal text when selected change changes or after a conversation session
+  // 4.8 — Load all artifact texts when selected change changes or after a conversation session
   useEffect(() => {
-    if (!selectedChange) { setProposalText(null); return }
-    window.api.changes.readProposal(selectedChange.path).then(setProposalText)
+    if (!selectedChange) {
+      setProposalText(null)
+      setDesignText(null)
+      setTasksText(null)
+      return
+    }
+    Promise.all([
+      window.api.changes.readProposal(selectedChange.path),
+      window.api.changes.readArtifact(selectedChange.path, 'design.md'),
+      window.api.changes.readArtifact(selectedChange.path, 'tasks.md'),
+    ]).then(([proposal, design, tasks]) => {
+      setProposalText(proposal)
+      setDesignText(design)
+      setTasksText(tasks)
+    })
   }, [selectedChange, proposalVersion])
 
   // Open repo: validate, persist, transition to shell
@@ -133,6 +148,8 @@ export function App() {
           <ChangeDetail
             change={selectedChange}
             proposalText={proposalText}
+            designText={designText}
+            tasksText={tasksText}
             onApply={() => setApplyOpen(true)}
             onContinue={() => setConversationOpen(true)}
           />

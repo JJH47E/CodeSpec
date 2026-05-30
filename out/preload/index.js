@@ -10,7 +10,8 @@ electron.contextBridge.exposeInMainWorld("api", {
   },
   changes: {
     readChangeList: (repoPath) => electron.ipcRenderer.invoke("changes:readChangeList", repoPath),
-    readProposal: (changePath) => electron.ipcRenderer.invoke("changes:readProposal", changePath)
+    readProposal: (changePath) => electron.ipcRenderer.invoke("changes:readProposal", changePath),
+    readArtifact: (changePath, filename) => electron.ipcRenderer.invoke("changes:readArtifact", changePath, filename)
   },
   cli: {
     invoke: (opts) => electron.ipcRenderer.invoke("cli:invoke", opts),

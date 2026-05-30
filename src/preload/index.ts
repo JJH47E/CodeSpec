@@ -13,6 +13,7 @@ contextBridge.exposeInMainWorld('api', {
   changes: {
     readChangeList: (repoPath: string)  => ipcRenderer.invoke('changes:readChangeList', repoPath),
     readProposal:   (changePath: string) => ipcRenderer.invoke('changes:readProposal', changePath),
+    readArtifact:   (changePath: string, filename: string) => ipcRenderer.invoke('changes:readArtifact', changePath, filename),
   },
   cli: {
     invoke:      (opts: unknown) => ipcRenderer.invoke('cli:invoke', opts),

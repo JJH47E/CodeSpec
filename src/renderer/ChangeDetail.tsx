@@ -1,16 +1,28 @@
+import { useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { Icon, Badge, Button } from './components'
 import type { Change } from '../shared/types'
 
+type Tab = 'proposal' | 'design' | 'tasks'
+
 interface Props {
   change: Change | null
   proposalText: string | null
+  designText: string | null
+  tasksText: string | null
   onApply?: () => void
   onContinue?: () => void
 }
 
-// 4.4 / 4.5 / 4.6 — Change detail pane with proposal.md renderer and empty states
-export function ChangeDetail({ change, proposalText, onApply, onContinue }: Props) {
+// 4.4 / 4.5 / 4.6 — Change detail pane with artifact tab navigation and markdown renderer
+export function ChangeDetail({ change, proposalText, designText, tasksText, onApply, onContinue }: Props) {
+  const [activeTab, setActiveTab] = useState<Tab>('proposal')
+
+  // Reset to proposal tab whenever the selected change switches
+  useEffect(() => {
+    setActiveTab('proposal')
+  }, [change?.path])
+
   // 4.6 — No change selected
   if (!change) {
     return (
@@ -44,6 +56,22 @@ export function ChangeDetail({ change, proposalText, onApply, onContinue }: Prop
     change.status === 'archived'    ? 'Archived' :
     change.status === 'in-progress' ? 'In Progress' :
                                       'Active'
+
+  const tabs: { id: Tab; label: string }[] = [
+    { id: 'proposal', label: 'Proposal' },
+    { id: 'design',   label: 'Design'   },
+    { id: 'tasks',    label: 'Tasks'    },
+  ]
+
+  const activeText =
+    activeTab === 'proposal' ? proposalText :
+    activeTab === 'design'   ? designText   :
+                               tasksText
+
+  const emptyMessage =
+    activeTab === 'proposal' ? 'No proposal written yet.' :
+    activeTab === 'design'   ? 'No design document yet.'  :
+                               'No tasks written yet.'
 
   return (
     <main style={{
@@ -112,10 +140,42 @@ export function ChangeDetail({ change, proposalText, onApply, onContinue }: Prop
         </div>
       </div>
 
+      {/* Tab bar */}
+      <div style={{
+        display: 'flex',
+        borderBottom: '1px solid var(--border-default)',
+        background: 'var(--bg-surface)',
+        flexShrink: 0,
+        paddingLeft: 20,
+        gap: 0,
+      }}>
+        {tabs.map(tab => {
+          const isActive = tab.id === activeTab
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              style={{
+                background: 'none',
+                border: 'none',
+                borderBottom: isActive ? '2px solid var(--accent-default)' : '2px solid transparent',
+                padding: '8px 14px',
+                fontSize: 'var(--text-sm)',
+                fontWeight: isActive ? 'var(--weight-semibold)' : 'var(--weight-normal)',
+                color: isActive ? 'var(--fg-default)' : 'var(--fg-subtle)',
+                cursor: 'pointer',
+                marginBottom: -1,
+              }}
+            >
+              {tab.label}
+            </button>
+          )
+        })}
+      </div>
+
       {/* Content */}
       <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
-        {/* 4.5 — no proposal.md */}
-        {proposalText === null ? (
+        {activeText === null ? (
           <div style={{
             display: 'flex',
             flexDirection: 'column',
@@ -126,11 +186,11 @@ export function ChangeDetail({ change, proposalText, onApply, onContinue }: Prop
             color: 'var(--fg-subtle)',
           }}>
             <Icon name="file-text" size={32} />
-            <div style={{ fontSize: 'var(--text-sm)' }}>No proposal written yet.</div>
+            <div style={{ fontSize: 'var(--text-sm)' }}>{emptyMessage}</div>
           </div>
         ) : (
           <div style={{ maxWidth: 680 }}>
-            {renderMarkdown(proposalText)}
+            {renderMarkdown(activeText)}
           </div>
         )}
       </div>
