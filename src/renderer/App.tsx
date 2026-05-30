@@ -159,7 +159,7 @@ export function App() {
           prefs={prefs}
           onPrefsChange={handlePrefsChange}
           onSuccess={handleConversationSuccess}
-          onClose={() => setConversationOpen(false)}
+          onClose={() => { setConversationOpen(false); setProposalVersion(v => v + 1) }}
         />
       )}
     </>
