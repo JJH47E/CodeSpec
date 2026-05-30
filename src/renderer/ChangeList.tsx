@@ -20,11 +20,13 @@ export function ChangeList({ changes, filter, onFilterChange, selectedChange, on
     { value: 'archived', label: 'Archived' },
   ]
 
-  const visible = changes.filter(c =>
-    filter === 'all' ? true : c.status === filter
-  )
+  const visible = changes.filter(c => {
+    if (filter === 'all') return true
+    if (filter === 'active') return c.status === 'active' || c.status === 'in-progress'
+    return c.status === filter
+  })
 
-  const active   = visible.filter(c => c.status === 'active')
+  const active   = visible.filter(c => c.status === 'active' || c.status === 'in-progress')
   const archived = visible.filter(c => c.status === 'archived')
 
   return (
@@ -154,21 +156,32 @@ function ChangeListItem({ change, selected, onClick }: {
   selected: boolean
   onClick: () => void
 }) {
-  const icon = change.status === 'archived' ? 'archive' as const : 'pull-request' as const
+  const icon =
+    change.status === 'archived'    ? 'archive' as const :
+    change.status === 'in-progress' ? 'git-branch' as const :
+                                      'pull-request' as const
+
+  const icStyle =
+    change.status === 'archived'    ? { background: 'var(--state-archived-bg)', color: 'var(--state-archived-fg)' } :
+    change.status === 'in-progress' ? { background: 'var(--warning-muted)', color: 'var(--warning-fg)' } :
+                                      { background: 'var(--accent-subtle)', color: 'var(--accent-fg)' }
+
+  const badgeTone =
+    change.status === 'archived'    ? 'neutral' as const :
+    change.status === 'in-progress' ? 'warning' as const :
+                                      'accent' as const
+
+  const badgeLabel =
+    change.status === 'archived'    ? 'Archived' :
+    change.status === 'in-progress' ? 'In Progress' :
+                                      'Active'
 
   return (
     <div
       className={'row-item' + (selected ? ' selected' : '')}
       onClick={onClick}
     >
-      <div
-        className="row-ic"
-        style={
-          change.status === 'archived'
-            ? { background: 'var(--state-archived-bg)', color: 'var(--state-archived-fg)' }
-            : { background: 'var(--accent-subtle)', color: 'var(--accent-fg)' }
-        }
-      >
+      <div className="row-ic" style={icStyle}>
         <Icon name={icon} size={17} />
       </div>
       <div style={{ minWidth: 0, flex: 1 }}>
@@ -179,11 +192,8 @@ function ChangeListItem({ change, selected, onClick }: {
           <div className="row-sub">{change.createdAt}</div>
         )}
       </div>
-      <Badge
-        tone={change.status === 'archived' ? 'neutral' : 'accent'}
-        icon={icon}
-      >
-        {change.status === 'archived' ? 'Archived' : 'Active'}
+      <Badge tone={badgeTone} icon={icon}>
+        {badgeLabel}
       </Badge>
     </div>
   )

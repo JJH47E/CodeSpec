@@ -30,7 +30,20 @@ export function ChangeDetail({ change, proposalText, onApply, onContinue }: Prop
     )
   }
 
-  const icon = change.status === 'archived' ? 'archive' as const : 'pull-request' as const
+  const icon =
+    change.status === 'archived'    ? 'archive' as const :
+    change.status === 'in-progress' ? 'git-branch' as const :
+                                      'pull-request' as const
+
+  const badgeTone =
+    change.status === 'archived'    ? 'neutral' as const :
+    change.status === 'in-progress' ? 'warning' as const :
+                                      'accent' as const
+
+  const badgeLabel =
+    change.status === 'archived'    ? 'Archived' :
+    change.status === 'in-progress' ? 'In Progress' :
+                                      'Active'
 
   return (
     <main style={{
@@ -73,7 +86,7 @@ export function ChangeDetail({ change, proposalText, onApply, onContinue }: Prop
           )}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          {change.status === 'active' && onApply && (
+          {change.status !== 'archived' && onApply && (
             <Button
               variant="secondary"
               size="sm"
@@ -83,7 +96,7 @@ export function ChangeDetail({ change, proposalText, onApply, onContinue }: Prop
               Apply
             </Button>
           )}
-          {change.status === 'active' && onContinue && (
+          {change.status !== 'archived' && onContinue && (
             <Button
               variant="secondary"
               size="sm"
@@ -93,11 +106,8 @@ export function ChangeDetail({ change, proposalText, onApply, onContinue }: Prop
               Continue
             </Button>
           )}
-          <Badge
-            tone={change.status === 'archived' ? 'neutral' : 'accent'}
-            icon={icon}
-          >
-            {change.status === 'archived' ? 'Archived' : 'Active'}
+          <Badge tone={badgeTone} icon={icon}>
+            {badgeLabel}
           </Badge>
         </div>
       </div>

@@ -75,6 +75,15 @@ function parseSimpleYaml(text) {
   }
   return out;
 }
+function deriveActiveStatus(changePath) {
+  const tasksPath = path.join(changePath, "tasks.md");
+  if (!fs.existsSync(tasksPath)) return "active";
+  const content = fs.readFileSync(tasksPath, "utf-8");
+  const lines = content.split("\n");
+  const complete = lines.filter((l) => /- \[x\]/i.test(l)).length;
+  const incomplete = lines.filter((l) => /- \[ \]/.test(l)).length;
+  return complete > 0 && incomplete > 0 ? "in-progress" : "active";
+}
 function readChangesDir(dir, status) {
   if (!fs.existsSync(dir)) return [];
   const changes = [];
@@ -88,7 +97,7 @@ function readChangesDir(dir, status) {
       changes.push({
         name: entry.name,
         path: changePath,
-        status,
+        status: status === "active" ? deriveActiveStatus(changePath) : status,
         createdAt: meta["created"] ?? "",
         schema: meta["schema"] ?? ""
       });

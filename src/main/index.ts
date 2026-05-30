@@ -78,6 +78,16 @@ function parseSimpleYaml(text: string): Record<string, string> {
 
 // ---- Change list reader ----------------------------------------------------
 
+function deriveActiveStatus(changePath: string): 'active' | 'in-progress' {
+  const tasksPath = join(changePath, 'tasks.md')
+  if (!existsSync(tasksPath)) return 'active'
+  const content = readFileSync(tasksPath, 'utf-8')
+  const lines = content.split('\n')
+  const complete   = lines.filter(l => /- \[x\]/i.test(l)).length
+  const incomplete = lines.filter(l => /- \[ \]/.test(l)).length
+  return complete > 0 && incomplete > 0 ? 'in-progress' : 'active'
+}
+
 function readChangesDir(dir: string, status: 'active' | 'archived'): Change[] {
   if (!existsSync(dir)) return []
   const changes: Change[] = []
@@ -91,7 +101,7 @@ function readChangesDir(dir: string, status: 'active' | 'archived'): Change[] {
       changes.push({
         name: entry.name,
         path: changePath,
-        status,
+        status: status === 'active' ? deriveActiveStatus(changePath) : status,
         createdAt: meta['created'] ?? '',
         schema: meta['schema'] ?? '',
       })

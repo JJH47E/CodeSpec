@@ -17,7 +17,7 @@ export interface Prefs {
 export interface Change {
   name: string
   path: string
-  status: 'active' | 'archived'
+  status: 'active' | 'in-progress' | 'archived'
   createdAt: string
   schema: string
 }
