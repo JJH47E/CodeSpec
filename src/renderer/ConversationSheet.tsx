@@ -80,17 +80,21 @@ export function ConversationSheet({ repoPath, changeName, proposalText, prefs, o
     }
   }
 
+  function killAndClose(callback: () => void) {
+    window.api.cli.cancel()
+    callback()
+  }
+
   function handleCancel() {
     cancelledRef.current = true
-    window.api.cli.cancel()
-    onClose()
+    killAndClose(onClose)
   }
 
   function handleClose() {
     if (phase === 'complete') {
-      onSuccess()
+      killAndClose(onSuccess)
     } else {
-      onClose()
+      killAndClose(onClose)
     }
   }
 
@@ -183,7 +187,7 @@ export function ConversationSheet({ repoPath, changeName, proposalText, prefs, o
         <div className="sheet-footer">
           {phase === 'input' && (
             <>
-              <Button variant="ghost" size="sm" onClick={onClose}>Cancel</Button>
+              <Button variant="ghost" size="sm" onClick={() => killAndClose(onClose)}>Cancel</Button>
               <Button
                 variant="primary" size="sm"
                 icon={<Icon name="terminal" size={14} />}
@@ -207,7 +211,7 @@ export function ConversationSheet({ repoPath, changeName, proposalText, prefs, o
 
           {phase === 'error' && (
             <>
-              <Button variant="ghost" size="sm" onClick={onClose}>Close</Button>
+              <Button variant="ghost" size="sm" onClick={() => killAndClose(onClose)}>Close</Button>
               <Button
                 variant="primary" size="sm"
                 icon={<Icon name="play" size={14} />}

@@ -88,17 +88,21 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
     }
   }
 
+  function killAndClose(callback: () => void) {
+    window.api.cli.cancel()
+    callback()
+  }
+
   function handleCancel() {
     cancelledRef.current = true
-    window.api.cli.cancel()
-    onClose()
+    killAndClose(onClose)
   }
 
   function handleClose() {
     if (phase === 'complete') {
-      onSuccess()
+      killAndClose(onSuccess)
     } else {
-      onClose()
+      killAndClose(onClose)
     }
   }
 
@@ -221,7 +225,7 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
         <div className="sheet-footer">
           {phase === 'input' && (
             <>
-              <Button variant="ghost" size="sm" onClick={onClose}>Cancel</Button>
+              <Button variant="ghost" size="sm" onClick={() => killAndClose(onClose)}>Cancel</Button>
               <Button
                 variant="primary" size="sm"
                 icon={<Icon name="pull-request" size={14} />}
@@ -238,7 +242,7 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
           )}
 
           {phase === 'running' && proposalReady && (
-            <Button variant="primary" size="sm" icon={<Icon name="check-circle" size={14} />} onClick={onSuccess}>
+            <Button variant="primary" size="sm" icon={<Icon name="check-circle" size={14} />} onClick={() => killAndClose(onSuccess)}>
               Done
             </Button>
           )}
@@ -251,7 +255,7 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
 
           {phase === 'error' && (
             <>
-              <Button variant="ghost" size="sm" onClick={onClose}>Close</Button>
+              <Button variant="ghost" size="sm" onClick={() => killAndClose(onClose)}>Close</Button>
               <Button
                 variant="primary" size="sm"
                 icon={<Icon name="play" size={14} />}
