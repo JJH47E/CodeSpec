@@ -8,10 +8,6 @@ CodeSpec does not call OpenSpec directly for mutations — it delegates all AI o
 
 **Welcome screen** — open any repository to get started
 
-![Welcome screen](docs/screenshots/01-launch.png)
-
-**Onboarding wizard** — guided setup for new projects: installs OpenSpec, registers your AI CLI tool, and generates baseline specs
-
 ![Onboarding wizard](docs/screenshots/02-onboarding.png)
 
 **Change browser** — lists active, in-progress, done, and archived changes with status badges
