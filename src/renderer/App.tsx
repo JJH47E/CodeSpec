@@ -6,6 +6,7 @@ import { ChangeDetail } from './ChangeDetail'
 import { SettingsSheet } from './SettingsSheet'
 import { NewProposalSheet } from './NewProposalSheet'
 import { ConversationSheet } from './ConversationSheet'
+import { ApplyProposalSheet } from './ApplyProposalSheet'
 import type { Change, Prefs } from '../shared/types'
 
 // 3.1 — Root: manages repo state; renders RepoSelectorScreen or the 3-panel shell
@@ -21,6 +22,7 @@ export function App() {
   const [settingsOpen, setSettingsOpen]       = useState(false)
   const [proposalOpen, setProposalOpen]       = useState(false)
   const [conversationOpen, setConversationOpen] = useState(false)
+  const [applyOpen, setApplyOpen]             = useState(false)
 
   // 2.4 — Load prefs on startup; restore last repo path
   useEffect(() => {
@@ -83,6 +85,11 @@ export function App() {
     setProposalVersion(v => v + 1)
   }
 
+  function handleApplySuccess() {
+    setApplyOpen(false)
+    setProposalVersion(v => v + 1)
+  }
+
   // 7.2 — Settings prefs change: persist and update local state
   function handlePrefsChange(updated: Prefs) {
     setPrefs(updated)
@@ -126,6 +133,7 @@ export function App() {
           <ChangeDetail
             change={selectedChange}
             proposalText={proposalText}
+            onApply={() => setApplyOpen(true)}
             onContinue={() => setConversationOpen(true)}
           />
         </div>
@@ -147,6 +155,18 @@ export function App() {
           prefs={prefs}
           onSuccess={handleProposalSuccess}
           onClose={() => setProposalOpen(false)}
+        />
+      )}
+
+      {/* Apply proposal sheet (modal) */}
+      {applyOpen && selectedChange && (
+        <ApplyProposalSheet
+          repoPath={repoPath}
+          changeName={selectedChange.name}
+          prefs={prefs}
+          onPrefsChange={handlePrefsChange}
+          onSuccess={handleApplySuccess}
+          onClose={() => { setApplyOpen(false) }}
         />
       )}
 

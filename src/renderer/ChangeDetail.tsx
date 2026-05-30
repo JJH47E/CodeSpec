@@ -5,11 +5,12 @@ import type { Change } from '../shared/types'
 interface Props {
   change: Change | null
   proposalText: string | null
+  onApply?: () => void
   onContinue?: () => void
 }
 
 // 4.4 / 4.5 / 4.6 — Change detail pane with proposal.md renderer and empty states
-export function ChangeDetail({ change, proposalText, onContinue }: Props) {
+export function ChangeDetail({ change, proposalText, onApply, onContinue }: Props) {
   // 4.6 — No change selected
   if (!change) {
     return (
@@ -72,6 +73,16 @@ export function ChangeDetail({ change, proposalText, onContinue }: Props) {
           )}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {change.status === 'active' && onApply && (
+            <Button
+              variant="secondary"
+              size="sm"
+              icon={<Icon name="play" size={14} />}
+              onClick={onApply}
+            >
+              Apply
+            </Button>
+          )}
           {change.status === 'active' && onContinue && (
             <Button
               variant="secondary"
