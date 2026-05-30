@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Icon, Button, Field, Select } from './components'
 import type { SelectGroup } from './components'
 import type { Prefs } from '../shared/types'
+import { buildCliCommand } from '../shared/cliCommands'
 import { TerminalPane } from './TerminalPane'
 import type { TerminalPaneHandle } from './TerminalPane'
 
@@ -50,16 +51,6 @@ export function ApplyProposalSheet({ repoPath, changeName, prefs, onPrefsChange,
     onPrefsChange({ ...prefs, perChangeTool: { ...prefs.perChangeTool, [changeName]: newToolId } })
   }
 
-  function buildCommand(): string {
-    if (toolId === 'claude-code') {
-      return `/opsx:apply "${changeName}"`
-    }
-    return (
-      `Read openspec/changes/${changeName}/proposal.md, design.md, specs/, and tasks.md, ` +
-      `then implement all incomplete tasks marked "- [ ]", updating each to "- [x]" as you complete it.`
-    )
-  }
-
   async function handleSubmit() {
     if (!canSubmit) return
     cancelledRef.current = false
@@ -68,7 +59,7 @@ export function ApplyProposalSheet({ repoPath, changeName, prefs, onPrefsChange,
     setExitCode(null)
 
     const dims = terminalRef.current?.getDimensions() ?? { cols: 80, rows: 24 }
-    const result = await window.api.cli.invoke({ toolId, command: buildCommand(), repoPath, ...dims })
+    const result = await window.api.cli.invoke({ toolId, command: buildCliCommand(toolId, { type: 'apply', changeName }), repoPath, ...dims })
     setExitCode(result.exitCode)
 
     if (cancelledRef.current) return

@@ -20,6 +20,7 @@ const KNOWN_TOOLS: DetectedTool[] = [
   { id: 'claude-code',  label: 'Claude Code',     command: 'claude', args: ['{command}'] },
   { id: 'aider',        label: 'Aider',            command: 'aider',  args: ['--message', '{command}'] },
   { id: 'gh-copilot',   label: 'GitHub Copilot',   command: 'gh',     args: ['copilot', 'suggest', '{command}'] },
+  { id: 'gemini',       label: 'Gemini CLI',        command: 'gemini', args: ['-p', '{command}'] },
 ]
 
 function resolveShellPath(): Promise<string> {

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Icon, Button, Field, TextArea, Select } from './components'
 import type { SelectGroup } from './components'
 import type { Prefs } from '../shared/types'
+import { buildCliCommand } from '../shared/cliCommands'
 import { TerminalPane } from './TerminalPane'
 import type { TerminalPaneHandle } from './TerminalPane'
 
@@ -63,7 +64,7 @@ export function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }: Props)
     setProposalReady(false)
 
     const escapedDesc = description.replace(/"/g, '\\"')
-    const command = `/opsx:propose "${escapedDesc}"`
+    const command = buildCliCommand(toolId, { type: 'propose', description: escapedDesc })
 
     // getDimensions() is called here while still in input phase (terminal hidden).
     // TerminalPane.getDimensions() returns || 80/24 fallbacks so the PTY always
