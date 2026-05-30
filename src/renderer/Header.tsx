@@ -96,11 +96,13 @@ export function Header({ repoPath, prefs, onNewProposal, onRefresh, onOpenRepo, 
       <Button
         variant="ghost"
         size="sm"
-        icon={<Icon name="play" size={15} />}
+        icon={<Icon name="arrows-clockwise" size={15} />}
         loading={refreshing}
         onClick={handleRefresh}
         title="Refresh changes"
-      />
+      >
+        Refresh
+      </Button>
 
       {/* Settings */}
       <Button

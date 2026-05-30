@@ -52,7 +52,7 @@ The system SHALL render the contents of a selected change's artifact files in th
 - **THEN** the main pane shows a neutral empty state prompting the user to select a change
 
 ### Requirement: Refresh change list
-The system SHALL provide a manual refresh control so the user can reload changes after external modifications.
+The system SHALL provide a manual refresh control so the user can reload changes after external modifications. The control SHALL display a refresh icon and be labelled "Refresh" so its purpose is unambiguous.
 
 #### Scenario: User triggers refresh
 - **WHEN** the user clicks the refresh button in the header

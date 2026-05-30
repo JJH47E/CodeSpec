@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import {
   Archive,
+  ArrowsClockwise,
   CaretDown,
   ChatsCircle,
   Check,
@@ -25,8 +26,9 @@ import {
 } from '@phosphor-icons/react'
 
 const ICON_MAP = {
-  archive:      Archive,
-  'caret-down': CaretDown,
+  archive:           Archive,
+  'arrows-clockwise': ArrowsClockwise,
+  'caret-down':      CaretDown,
   chat:         ChatsCircle,
   check:        Check,
   'check-circle': CheckCircle,
