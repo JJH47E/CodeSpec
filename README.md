@@ -10,7 +10,6 @@ CodeSpec does not call OpenSpec directly for mutations — it delegates all AI o
 - **Change detail** — view `proposal.md`, `design.md`, and `tasks.md` for any selected change via a tab bar
 - **Live CLI output** — invoke a configured AI CLI tool and stream its output in real time
 - **New proposal flow** — describe what you want in plain language; the CLI tool derives a name and creates the artifacts
-- **Resizable sidebar** — drag the sidebar edge to your preferred width
 - **Manual refresh** — reload changes after external modifications with the Refresh button
 - **Status filters** — filter the change list to Active, Archived, or All
 
