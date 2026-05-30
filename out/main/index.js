@@ -56,11 +56,12 @@ function prefsPath() {
 }
 function readPrefs() {
   const p = prefsPath();
-  if (!fs.existsSync(p)) return { repoPath: null, cliTools: [], defaultTool: null };
+  if (!fs.existsSync(p)) return { repoPath: null, cliTools: [], defaultTool: null, perChangeTool: {} };
   try {
-    return JSON.parse(fs.readFileSync(p, "utf-8"));
+    const stored = JSON.parse(fs.readFileSync(p, "utf-8"));
+    return { perChangeTool: {}, ...stored };
   } catch {
-    return { repoPath: null, cliTools: [], defaultTool: null };
+    return { repoPath: null, cliTools: [], defaultTool: null, perChangeTool: {} };
   }
 }
 function writePrefs(prefs) {
@@ -165,15 +166,18 @@ electron.ipcMain.handle("cli:invoke", (event, opts) => {
     }
     let proposalWatcher = null;
     let proposalNotified = false;
+    let notifyTimer = null;
     const changesDir = path.join(opts.repoPath, "openspec", "changes");
     if (fs.existsSync(changesDir)) {
       proposalWatcher = fs.watch(changesDir, { recursive: true }, (_evt, filename) => {
         if (proposalNotified || !filename) return;
-        if (filename.endsWith("proposal.md")) {
+        if (filename.endsWith("tasks.md")) {
           const fullPath = path.join(changesDir, filename);
           if (fs.existsSync(fullPath)) {
             proposalNotified = true;
-            event.sender.send("cli:proposalReady");
+            notifyTimer = setTimeout(() => {
+              event.sender.send("cli:proposalReady");
+            }, 5e3);
           }
         }
       });
@@ -183,6 +187,7 @@ electron.ipcMain.handle("cli:invoke", (event, opts) => {
     });
     proc.onExit(({ exitCode }) => {
       proposalWatcher?.close();
+      if (notifyTimer) clearTimeout(notifyTimer);
       activeProcess = null;
       resolve({ exitCode });
     });

@@ -5,19 +5,22 @@ import { ChangeList } from './ChangeList'
 import { ChangeDetail } from './ChangeDetail'
 import { SettingsSheet } from './SettingsSheet'
 import { NewProposalSheet } from './NewProposalSheet'
+import { ConversationSheet } from './ConversationSheet'
 import type { Change, Prefs } from '../shared/types'
 
 // 3.1 — Root: manages repo state; renders RepoSelectorScreen or the 3-panel shell
 export function App() {
-  const [prefs, setPrefs]               = useState<Prefs>({ repoPath: null, cliTools: [], defaultTool: null })
+  const [prefs, setPrefs]               = useState<Prefs>({ repoPath: null, cliTools: [], defaultTool: null, perChangeTool: {} })
   const [repoPath, setRepoPath]         = useState<string | null>(null)
   const [loading, setLoading]           = useState(true)
   const [changes, setChanges]           = useState<Change[]>([])
   const [selectedChange, setSelectedChange] = useState<Change | null>(null)
   const [proposalText, setProposalText] = useState<string | null>(null)
+  const [proposalVersion, setProposalVersion] = useState(0)
   const [filter, setFilter]             = useState<'all' | 'active' | 'archived'>('all')
-  const [settingsOpen, setSettingsOpen] = useState(false)
-  const [proposalOpen, setProposalOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen]       = useState(false)
+  const [proposalOpen, setProposalOpen]       = useState(false)
+  const [conversationOpen, setConversationOpen] = useState(false)
 
   // 2.4 — Load prefs on startup; restore last repo path
   useEffect(() => {
@@ -39,11 +42,11 @@ export function App() {
     if (repoPath) loadChanges(repoPath)
   }, [repoPath, loadChanges])
 
-  // 4.8 — Load proposal text when selected change changes
+  // 4.8 — Load proposal text when selected change changes or after a conversation session
   useEffect(() => {
     if (!selectedChange) { setProposalText(null); return }
     window.api.changes.readProposal(selectedChange.path).then(setProposalText)
-  }, [selectedChange])
+  }, [selectedChange, proposalVersion])
 
   // Open repo: validate, persist, transition to shell
   async function handleOpenRepo(): Promise<string | null> {
@@ -72,6 +75,12 @@ export function App() {
       const newest = list.find(c => c.status === 'active') ?? null
       setSelectedChange(newest)
     }
+  }
+
+  // Re-read proposal after a successful follow-up conversation session
+  function handleConversationSuccess() {
+    setConversationOpen(false)
+    setProposalVersion(v => v + 1)
   }
 
   // 7.2 — Settings prefs change: persist and update local state
@@ -117,6 +126,7 @@ export function App() {
           <ChangeDetail
             change={selectedChange}
             proposalText={proposalText}
+            onContinue={() => setConversationOpen(true)}
           />
         </div>
       </div>
@@ -137,6 +147,19 @@ export function App() {
           prefs={prefs}
           onSuccess={handleProposalSuccess}
           onClose={() => setProposalOpen(false)}
+        />
+      )}
+
+      {/* 6.2 — Continue conversation sheet (modal) */}
+      {conversationOpen && selectedChange && (
+        <ConversationSheet
+          repoPath={repoPath}
+          changeName={selectedChange.name}
+          proposalText={proposalText}
+          prefs={prefs}
+          onPrefsChange={handlePrefsChange}
+          onSuccess={handleConversationSuccess}
+          onClose={() => setConversationOpen(false)}
         />
       )}
     </>

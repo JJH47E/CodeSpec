@@ -11,6 +11,7 @@ export interface Prefs {
   repoPath: string | null
   cliTools: CliTool[]
   defaultTool: string | null
+  perChangeTool: Record<string, string>
 }
 
 export interface Change {

@@ -1,14 +1,15 @@
 import type { ReactNode } from 'react'
-import { Icon, Badge } from './components'
+import { Icon, Badge, Button } from './components'
 import type { Change } from '../shared/types'
 
 interface Props {
   change: Change | null
   proposalText: string | null
+  onContinue?: () => void
 }
 
 // 4.4 / 4.5 / 4.6 — Change detail pane with proposal.md renderer and empty states
-export function ChangeDetail({ change, proposalText }: Props) {
+export function ChangeDetail({ change, proposalText, onContinue }: Props) {
   // 4.6 — No change selected
   if (!change) {
     return (
@@ -70,12 +71,24 @@ export function ChangeDetail({ change, proposalText }: Props) {
             </div>
           )}
         </div>
-        <Badge
-          tone={change.status === 'archived' ? 'neutral' : 'accent'}
-          icon={icon}
-        >
-          {change.status === 'archived' ? 'Archived' : 'Active'}
-        </Badge>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {change.status === 'active' && onContinue && (
+            <Button
+              variant="secondary"
+              size="sm"
+              icon={<Icon name="terminal" size={14} />}
+              onClick={onContinue}
+            >
+              Continue
+            </Button>
+          )}
+          <Badge
+            tone={change.status === 'archived' ? 'neutral' : 'accent'}
+            icon={icon}
+          >
+            {change.status === 'archived' ? 'Archived' : 'Active'}
+          </Badge>
+        </div>
       </div>
 
       {/* Content */}

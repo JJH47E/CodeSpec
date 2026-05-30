@@ -22,7 +22,8 @@ declare global {
         write:       (text: string) => Promise<void>
         resize:      (size: { cols: number; rows: number }) => Promise<void>
         detectTools: () => Promise<DetectedTool[]>
-        onData:      (cb: (data: string) => void) => () => void
+        onData:          (cb: (data: string) => void) => () => void
+        onProposalReady: (cb: () => void) => () => void
       }
     }
   }

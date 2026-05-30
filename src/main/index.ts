@@ -52,11 +52,12 @@ function prefsPath(): string {
 
 function readPrefs(): Prefs {
   const p = prefsPath()
-  if (!existsSync(p)) return { repoPath: null, cliTools: [], defaultTool: null }
+  if (!existsSync(p)) return { repoPath: null, cliTools: [], defaultTool: null, perChangeTool: {} }
   try {
-    return JSON.parse(readFileSync(p, 'utf-8')) as Prefs
+    const stored = JSON.parse(readFileSync(p, 'utf-8')) as Partial<Prefs>
+    return { perChangeTool: {}, ...stored } as Prefs
   } catch {
-    return { repoPath: null, cliTools: [], defaultTool: null }
+    return { repoPath: null, cliTools: [], defaultTool: null, perChangeTool: {} }
   }
 }
 
