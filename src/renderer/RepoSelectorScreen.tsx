@@ -41,7 +41,7 @@ export function RepoSelectorScreen({ onOpenRepo }: Props) {
           justifyContent: 'center',
           color: 'var(--accent-fg)',
         }}>
-          <Icon name="terminal" size={28} />
+          <Icon name="terminal" size={28} weight="regular" />
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

@@ -4,6 +4,28 @@ A desktop GUI for browsing and managing [OpenSpec](https://openspec.dev) changes
 
 CodeSpec does not call OpenSpec directly for mutations — it delegates all AI operations to whichever CLI tool you have configured. The app itself is a read/display layer and a launcher.
 
+## Screenshots
+
+**Welcome screen** — open any repository to get started
+
+![Onboarding wizard](docs/screenshots/02-onboarding.png)
+
+**Change browser** — lists active, in-progress, done, and archived changes with status badges
+
+![Change browser](docs/screenshots/03-main.png)
+
+**Proposal view** — read the full proposal for any change, with actions to apply, continue, archive, or delete
+
+![Proposal view](docs/screenshots/04-proposal.png)
+
+**Tasks view** — step-by-step implementation tasks with completion tracking
+
+![Tasks view](docs/screenshots/05-tasks.png)
+
+**New Proposal** — describe what you want to build in plain language; the configured AI CLI tool derives a name and creates the artifacts
+
+![New Proposal](docs/screenshots/06-new-proposal.png)
+
 ## Features
 
 - **Change browser** — lists active and archived OpenSpec changes from the current repository, grouped by status (active / in-progress / done / archived)

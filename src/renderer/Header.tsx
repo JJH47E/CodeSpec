@@ -37,7 +37,7 @@ export function Header({ repoPath, prefs, onNewProposal, onRefresh, onOpenRepo, 
     }}>
       {/* App identity */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--accent-fg)' }}>
-        <Icon name="terminal" size={18} />
+        <Icon name="terminal" size={18} weight="regular" />
         <span style={{
           fontSize: 'var(--text-sm)',
           fontWeight: 'var(--weight-semibold)',
@@ -84,7 +84,7 @@ export function Header({ repoPath, prefs, onNewProposal, onRefresh, onOpenRepo, 
       <Button
         variant="primary"
         size="sm"
-        icon={<Icon name="plus" size={14} />}
+        icon={<Icon name="plus" size={14} weight="regular" />}
         onClick={onNewProposal}
         disabled={!hasTools}
         title={hasTools ? 'Create a new proposal' : 'Add a CLI tool in Settings first'}
@@ -96,7 +96,7 @@ export function Header({ repoPath, prefs, onNewProposal, onRefresh, onOpenRepo, 
       <Button
         variant="ghost"
         size="sm"
-        icon={<Icon name="arrows-clockwise" size={15} />}
+        icon={<Icon name="arrows-clockwise" size={15} weight="regular" />}
         loading={refreshing}
         onClick={handleRefresh}
         title="Refresh changes"

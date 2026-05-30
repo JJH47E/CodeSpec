@@ -159,7 +159,7 @@ export function ChangeDetail({ change, proposalText, designText, tasksText, onAp
             <Button
               variant="secondary"
               size="sm"
-              icon={<Icon name="terminal" size={14} />}
+              icon={<Icon name="terminal" size={14} weight="regular" />}
               onClick={onContinue}
             >
               Continue

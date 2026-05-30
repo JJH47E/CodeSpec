@@ -66,17 +66,18 @@ export type IconName = keyof typeof ICON_MAP
 interface IconProps {
   name: IconName
   size?: number
+  weight?: 'regular' | 'bold' | 'fill' | 'duotone' | 'light' | 'thin'
   className?: string
   style?: CSSProperties
 }
 
-export function Icon({ name, size = 16, className, style }: IconProps) {
+export function Icon({ name, size = 16, weight = 'duotone', className, style }: IconProps) {
   const Component = ICON_MAP[name]
   if (!Component) return null
   return (
     <Component
       size={size}
-      weight="duotone"
+      weight={weight}
       className={className}
       style={{ display: 'block', flex: 'none', ...style }}
     />
