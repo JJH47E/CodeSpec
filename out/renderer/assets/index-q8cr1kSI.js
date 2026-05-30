@@ -14,7 +14,7 @@ var react_production_min = {};
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-var l$4 = Symbol.for("react.element"), n$5 = Symbol.for("react.portal"), p$3 = Symbol.for("react.fragment"), q$2 = Symbol.for("react.strict_mode"), r$3 = Symbol.for("react.profiler"), t$2 = Symbol.for("react.provider"), u = Symbol.for("react.context"), v$2 = Symbol.for("react.forward_ref"), w = Symbol.for("react.suspense"), x = Symbol.for("react.memo"), y = Symbol.for("react.lazy"), z$2 = Symbol.iterator;
+var l$4 = Symbol.for("react.element"), n$5 = Symbol.for("react.portal"), p$3 = Symbol.for("react.fragment"), q$2 = Symbol.for("react.strict_mode"), r$4 = Symbol.for("react.profiler"), t$2 = Symbol.for("react.provider"), u = Symbol.for("react.context"), v$2 = Symbol.for("react.forward_ref"), w = Symbol.for("react.suspense"), x = Symbol.for("react.memo"), y = Symbol.for("react.lazy"), z$2 = Symbol.iterator;
 function A$1(a2) {
   if (null === a2 || "object" !== typeof a2) return null;
   a2 = z$2 && a2[z$2] || a2["@@iterator"];
@@ -159,7 +159,7 @@ react_production_min.Children = { map: S$2, forEach: function(a2, b2, e2) {
 } };
 react_production_min.Component = E$1;
 react_production_min.Fragment = p$3;
-react_production_min.Profiler = r$3;
+react_production_min.Profiler = r$4;
 react_production_min.PureComponent = G$2;
 react_production_min.StrictMode = q$2;
 react_production_min.Suspense = w;
@@ -276,13 +276,13 @@ const React = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-var f$1 = reactExports, k = Symbol.for("react.element"), l$3 = Symbol.for("react.fragment"), m$5 = Object.prototype.hasOwnProperty, n$4 = f$1.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner, p$2 = { key: true, ref: true, __self: true, __source: true };
+var f$1 = reactExports, k = Symbol.for("react.element"), l$3 = Symbol.for("react.fragment"), m$6 = Object.prototype.hasOwnProperty, n$4 = f$1.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner, p$2 = { key: true, ref: true, __self: true, __source: true };
 function q$1(c2, a2, g) {
   var b2, d = {}, e2 = null, h2 = null;
   void 0 !== g && (e2 = "" + g);
   void 0 !== a2.key && (e2 = "" + a2.key);
   void 0 !== a2.ref && (h2 = a2.ref);
-  for (b2 in a2) m$5.call(a2, b2) && !p$2.hasOwnProperty(b2) && (d[b2] = a2[b2]);
+  for (b2 in a2) m$6.call(a2, b2) && !p$2.hasOwnProperty(b2) && (d[b2] = a2[b2]);
   if (c2 && c2.defaultProps) for (b2 in a2 = c2.defaultProps, a2) void 0 === d[b2] && (d[b2] = a2[b2]);
   return { $$typeof: k, type: c2, key: e2, ref: h2, props: d, _owner: n$4.current };
 }
@@ -6961,10 +6961,10 @@ function checkDCE() {
   reactDom.exports = reactDom_production_min;
 }
 var reactDomExports = reactDom.exports;
-var m$4 = reactDomExports;
+var m$5 = reactDomExports;
 {
-  client.createRoot = m$4.createRoot;
-  client.hydrateRoot = m$4.hydrateRoot;
+  client.createRoot = m$5.createRoot;
+  client.hydrateRoot = m$5.hydrateRoot;
 }
 function Spinner({ size = 16, tone = "accent", className, style }) {
   const color = tone === "current" ? "inherit" : "var(--accent-fg)";
@@ -7006,7 +7006,7 @@ function Button({
     children
   ] });
 }
-const e$a = /* @__PURE__ */ new Map([
+const e$b = /* @__PURE__ */ new Map([
   [
     "bold",
     /* @__PURE__ */ reactExports.createElement(reactExports.Fragment, null, /* @__PURE__ */ reactExports.createElement("path", { d: "M224,44H32A20,20,0,0,0,12,64V88a20,20,0,0,0,16,19.6V192a20,20,0,0,0,20,20H208a20,20,0,0,0,20-20V107.6A20,20,0,0,0,244,88V64A20,20,0,0,0,224,44ZM36,68H220V84H36ZM52,188V108H204v80Zm112-52a12,12,0,0,1-12,12H104a12,12,0,0,1,0-24h48A12,12,0,0,1,164,136Z" }))
@@ -7030,6 +7030,32 @@ const e$a = /* @__PURE__ */ new Map([
   [
     "thin",
     /* @__PURE__ */ reactExports.createElement(reactExports.Fragment, null, /* @__PURE__ */ reactExports.createElement("path", { d: "M224,52H32A12,12,0,0,0,20,64V88a12,12,0,0,0,12,12h4v92a12,12,0,0,0,12,12H208a12,12,0,0,0,12-12V100h4a12,12,0,0,0,12-12V64A12,12,0,0,0,224,52ZM212,192a4,4,0,0,1-4,4H48a4,4,0,0,1-4-4V100H212ZM228,88a4,4,0,0,1-4,4H32a4,4,0,0,1-4-4V64a4,4,0,0,1,4-4H224a4,4,0,0,1,4,4ZM100,136a4,4,0,0,1,4-4h48a4,4,0,0,1,0,8H104A4,4,0,0,1,100,136Z" }))
+  ]
+]);
+const e$a = /* @__PURE__ */ new Map([
+  [
+    "bold",
+    /* @__PURE__ */ reactExports.createElement(reactExports.Fragment, null, /* @__PURE__ */ reactExports.createElement("path", { d: "M228,48V96a12,12,0,0,1-12,12H168a12,12,0,0,1,0-24h19l-7.8-7.8a75.55,75.55,0,0,0-53.32-22.26h-.43A75.49,75.49,0,0,0,72.39,75.57,12,12,0,1,1,55.61,58.41a99.38,99.38,0,0,1,69.87-28.47H126A99.42,99.42,0,0,1,196.2,59.23L204,67V48a12,12,0,0,1,24,0ZM183.61,180.43a75.49,75.49,0,0,1-53.09,21.63h-.43A75.55,75.55,0,0,1,76.77,179.8L69,172H88a12,12,0,0,0,0-24H40a12,12,0,0,0-12,12v48a12,12,0,0,0,24,0V189l7.8,7.8A99.42,99.42,0,0,0,130,226.06h.56a99.38,99.38,0,0,0,69.87-28.47,12,12,0,0,0-16.78-17.16Z" }))
+  ],
+  [
+    "duotone",
+    /* @__PURE__ */ reactExports.createElement(reactExports.Fragment, null, /* @__PURE__ */ reactExports.createElement("path", { d: "M216,128a88,88,0,1,1-88-88A88,88,0,0,1,216,128Z", opacity: "0.2" }), /* @__PURE__ */ reactExports.createElement("path", { d: "M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h28.69L182.06,73.37a79.56,79.56,0,0,0-56.13-23.43h-.45A79.52,79.52,0,0,0,69.59,72.71,8,8,0,0,1,58.41,61.27a96,96,0,0,1,135,.79L208,76.69V48a8,8,0,0,1,16,0ZM186.41,183.29a80,80,0,0,1-112.47-.66L59.31,168H88a8,8,0,0,0,0-16H40a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V179.31l14.63,14.63A95.43,95.43,0,0,0,130,222.06h.53a95.36,95.36,0,0,0,67.07-27.33,8,8,0,0,0-11.18-11.44Z" }))
+  ],
+  [
+    "fill",
+    /* @__PURE__ */ reactExports.createElement(reactExports.Fragment, null, /* @__PURE__ */ reactExports.createElement("path", { d: "M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1-5.66-13.66L180.65,72a79.48,79.48,0,0,0-54.72-22.09h-.45A79.52,79.52,0,0,0,69.59,72.71,8,8,0,0,1,58.41,61.27,96,96,0,0,1,192,60.7l18.36-18.36A8,8,0,0,1,224,48ZM186.41,183.29A80,80,0,0,1,75.35,184l18.31-18.31A8,8,0,0,0,88,152H40a8,8,0,0,0-8,8v48a8,8,0,0,0,13.66,5.66L64,195.3a95.42,95.42,0,0,0,66,26.76h.53a95.36,95.36,0,0,0,67.07-27.33,8,8,0,0,0-11.18-11.44Z" }))
+  ],
+  [
+    "light",
+    /* @__PURE__ */ reactExports.createElement(reactExports.Fragment, null, /* @__PURE__ */ reactExports.createElement("path", { d: "M222,48V96a6,6,0,0,1-6,6H168a6,6,0,0,1,0-12h33.52L183.47,72a81.51,81.51,0,0,0-57.53-24h-.46A81.5,81.5,0,0,0,68.19,71.28a6,6,0,1,1-8.38-8.58,93.38,93.38,0,0,1,65.67-26.76H126a93.45,93.45,0,0,1,66,27.53l18,18V48a6,6,0,0,1,12,0ZM187.81,184.72a81.5,81.5,0,0,1-57.29,23.34h-.46a81.51,81.51,0,0,1-57.53-24L54.48,166H88a6,6,0,0,0,0-12H40a6,6,0,0,0-6,6v48a6,6,0,0,0,12,0V174.48l18,18.05a93.45,93.45,0,0,0,66,27.53h.52a93.38,93.38,0,0,0,65.67-26.76,6,6,0,1,0-8.38-8.58Z" }))
+  ],
+  [
+    "regular",
+    /* @__PURE__ */ reactExports.createElement(reactExports.Fragment, null, /* @__PURE__ */ reactExports.createElement("path", { d: "M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h28.69L182.06,73.37a79.56,79.56,0,0,0-56.13-23.43h-.45A79.52,79.52,0,0,0,69.59,72.71,8,8,0,0,1,58.41,61.27a96,96,0,0,1,135,.79L208,76.69V48a8,8,0,0,1,16,0ZM186.41,183.29a80,80,0,0,1-112.47-.66L59.31,168H88a8,8,0,0,0,0-16H40a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V179.31l14.63,14.63A95.43,95.43,0,0,0,130,222.06h.53a95.36,95.36,0,0,0,67.07-27.33,8,8,0,0,0-11.18-11.44Z" }))
+  ],
+  [
+    "thin",
+    /* @__PURE__ */ reactExports.createElement(reactExports.Fragment, null, /* @__PURE__ */ reactExports.createElement("path", { d: "M220,48V96a4,4,0,0,1-4,4H168a4,4,0,0,1,0-8h38.34L184.89,70.54A84,84,0,0,0,66.8,69.85a4,4,0,1,1-5.6-5.72,92,92,0,0,1,129.34.76L212,86.34V48a4,4,0,0,1,8,0ZM189.2,186.15a83.44,83.44,0,0,1-58.68,23.91h-.47a83.52,83.52,0,0,1-58.94-24.6L49.66,164H88a4,4,0,0,0,0-8H40a4,4,0,0,0-4,4v48a4,4,0,0,0,8,0V169.66l21.46,21.45A91.43,91.43,0,0,0,130,218.06h.51a91.45,91.45,0,0,0,64.28-26.19,4,4,0,1,0-5.6-5.72Z" }))
   ]
 ]);
 const t$1 = /* @__PURE__ */ new Map([
@@ -7700,9 +7726,12 @@ const p = reactExports.forwardRef(
   }
 );
 p.displayName = "IconBase";
-const o$c = reactExports.forwardRef((r2, c2) => /* @__PURE__ */ reactExports.createElement(p, { ref: c2, ...r2, weights: e$a }));
+const o$c = reactExports.forwardRef((r2, c2) => /* @__PURE__ */ reactExports.createElement(p, { ref: c2, ...r2, weights: e$b }));
 o$c.displayName = "ArchiveIcon";
 const s$8 = o$c;
+const r$3 = reactExports.forwardRef((e2, s16) => /* @__PURE__ */ reactExports.createElement(p, { ref: s16, ...e2, weights: e$a }));
+r$3.displayName = "ArrowsClockwiseIcon";
+const m$4 = r$3;
 const e$2 = reactExports.forwardRef((r2, t2) => /* @__PURE__ */ reactExports.createElement(p, { ref: t2, ...r2, weights: t$1 }));
 e$2.displayName = "CaretDownIcon";
 const s$7 = e$2;
@@ -7768,6 +7797,7 @@ o$1.displayName = "XCircleIcon";
 const s = o$1;
 const ICON_MAP = {
   archive: s$8,
+  "arrows-clockwise": m$4,
   "caret-down": s$7,
   chat: m$3,
   check: n$3,
@@ -7923,6 +7953,42 @@ function Segmented({ options, value, onChange }) {
     o2.value
   )) });
 }
+function ConfirmDialog({ title, message, confirmLabel = "Confirm", onConfirm, onCancel }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+    position: "absolute",
+    inset: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "rgba(0,0,0,0.4)",
+    zIndex: 100
+  }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+    background: "var(--bg-surface)",
+    border: "1px solid var(--border-default)",
+    borderRadius: "var(--radius-lg)",
+    padding: "24px",
+    maxWidth: 380,
+    width: "90%",
+    display: "flex",
+    flexDirection: "column",
+    gap: 12
+  }, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+      fontSize: "var(--text-base)",
+      fontWeight: "var(--weight-semibold)",
+      color: "var(--fg-default)"
+    }, children: title }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+      fontSize: "var(--text-sm)",
+      color: "var(--fg-muted)",
+      lineHeight: "var(--leading-relaxed)"
+    }, children: message }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", gap: 8, justifyContent: "flex-end", marginTop: 4 }, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "sm", onClick: onCancel, children: "Cancel" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "danger", size: "sm", onClick: onConfirm, children: confirmLabel })
+    ] })
+  ] }) });
+}
 function RepoSelectorScreen({ onOpenRepo }) {
   const [error, setError] = reactExports.useState(null);
   const [loading, setLoading] = reactExports.useState(false);
@@ -8068,10 +8134,11 @@ function Header({ repoPath, prefs, onNewProposal, onRefresh, onOpenRepo, onSetti
       {
         variant: "ghost",
         size: "sm",
-        icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "play", size: 15 }),
+        icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "arrows-clockwise", size: 15 }),
         loading: refreshing,
         onClick: handleRefresh,
-        title: "Refresh changes"
+        title: "Refresh changes",
+        children: "Refresh"
       }
     ),
     /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -8086,20 +8153,24 @@ function Header({ repoPath, prefs, onNewProposal, onRefresh, onOpenRepo, onSetti
     )
   ] });
 }
-function ChangeList({ changes, filter, onFilterChange, selectedChange, onSelect }) {
+function ChangeList({ changes, filter, onFilterChange, selectedChange, onSelect, width, onDragStart }) {
+  const [handleHovered, setHandleHovered] = reactExports.useState(false);
   const FILTER_OPTIONS = [
     { value: "all", label: "All" },
     { value: "active", label: "Active" },
     { value: "archived", label: "Archived" }
   ];
-  const visible = changes.filter(
-    (c2) => filter === "all" ? true : c2.status === filter
-  );
-  const active = visible.filter((c2) => c2.status === "active");
+  const visible = changes.filter((c2) => {
+    if (filter === "all") return true;
+    if (filter === "active") return c2.status === "active" || c2.status === "in-progress" || c2.status === "done";
+    return c2.status === filter;
+  });
+  const active = visible.filter((c2) => c2.status === "active" || c2.status === "in-progress" || c2.status === "done");
   const archived = visible.filter((c2) => c2.status === "archived");
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("aside", { style: {
-    width: 280,
+    width,
     flexShrink: 0,
+    position: "relative",
     background: "var(--bg-surface)",
     borderRight: "1px solid var(--border-default)",
     display: "flex",
@@ -8158,7 +8229,30 @@ function ChangeList({ changes, filter, onFilterChange, selectedChange, onSelect 
           c2.path
         ))
       ] })
-    ] }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        onPointerDown: (e2) => {
+          e2.preventDefault();
+          onDragStart(e2.clientX);
+        },
+        onMouseEnter: () => setHandleHovered(true),
+        onMouseLeave: () => setHandleHovered(false),
+        style: {
+          position: "absolute",
+          right: -3,
+          top: 0,
+          bottom: 0,
+          width: 6,
+          cursor: "col-resize",
+          zIndex: 10,
+          background: handleHovered ? "var(--accent-default)" : "transparent",
+          opacity: handleHovered ? 0.4 : 1,
+          transition: "background 0.15s"
+        }
+      }
+    )
   ] });
 }
 function GroupLabel({ label, count }) {
@@ -8189,38 +8283,37 @@ function GroupLabel({ label, count }) {
   ] });
 }
 function ChangeListItem({ change, selected, onClick }) {
-  const icon = change.status === "archived" ? "archive" : "pull-request";
+  const icon = change.status === "archived" ? "archive" : change.status === "in-progress" ? "git-branch" : change.status === "done" ? "check-circle" : "pull-request";
+  const icStyle = change.status === "archived" ? { background: "var(--state-archived-bg)", color: "var(--state-archived-fg)" } : change.status === "in-progress" ? { background: "var(--warning-muted)", color: "var(--warning-fg)" } : change.status === "done" ? { background: "var(--success-muted)", color: "var(--success-fg)" } : { background: "var(--accent-subtle)", color: "var(--accent-fg)" };
+  const badgeTone = change.status === "archived" ? "neutral" : change.status === "in-progress" ? "warning" : change.status === "done" ? "success" : "accent";
+  const badgeLabel = change.status === "archived" ? "Archived" : change.status === "in-progress" ? "In Progress" : change.status === "done" ? "Done" : "Active";
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "div",
     {
       className: "row-item" + (selected ? " selected" : ""),
       onClick,
       children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            className: "row-ic",
-            style: change.status === "archived" ? { background: "var(--state-archived-bg)", color: "var(--state-archived-fg)" } : { background: "var(--accent-subtle)", color: "var(--accent-fg)" },
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: icon, size: 17 })
-          }
-        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "row-ic", style: icStyle, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: icon, size: 14 }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { minWidth: 0, flex: 1 }, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "row-title", style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }, children: change.name }),
           change.createdAt && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "row-sub", children: change.createdAt })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Badge,
-          {
-            tone: change.status === "archived" ? "neutral" : "accent",
-            icon,
-            children: change.status === "archived" ? "Archived" : "Active"
-          }
-        )
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { tone: badgeTone, icon, children: badgeLabel })
       ]
     }
   );
 }
-function ChangeDetail({ change, proposalText }) {
+function countIncomplete(tasksText) {
+  if (!tasksText) return 0;
+  return (tasksText.match(/^- \[ \]/gm) ?? []).length;
+}
+function ChangeDetail({ change, proposalText, designText, tasksText, onApply, onContinue, onDelete, onArchive }) {
+  const [activeTab, setActiveTab] = reactExports.useState("proposal");
+  const [confirmAction, setConfirmAction] = reactExports.useState(null);
+  reactExports.useEffect(() => {
+    setActiveTab("proposal");
+    setConfirmAction(null);
+  }, [change?.path]);
   if (!change) {
     return /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { style: {
       flex: 1,
@@ -8236,13 +8329,26 @@ function ChangeDetail({ change, proposalText }) {
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "var(--text-sm)" }, children: "Select a change to view its proposal." })
     ] });
   }
-  const icon = change.status === "archived" ? "archive" : "pull-request";
+  const icon = change.status === "archived" ? "archive" : change.status === "in-progress" ? "git-branch" : change.status === "done" ? "check-circle" : "pull-request";
+  const badgeTone = change.status === "archived" ? "neutral" : change.status === "in-progress" ? "warning" : change.status === "done" ? "success" : "accent";
+  const badgeLabel = change.status === "archived" ? "Archived" : change.status === "in-progress" ? "In Progress" : change.status === "done" ? "Done" : "Active";
+  const tabs = [
+    { id: "proposal", label: "Proposal" },
+    { id: "design", label: "Design" },
+    { id: "tasks", label: "Tasks" }
+  ];
+  const activeText = activeTab === "proposal" ? proposalText : activeTab === "design" ? designText : tasksText;
+  const emptyMessage = activeTab === "proposal" ? "No proposal written yet." : activeTab === "design" ? "No design document yet." : "No tasks written yet.";
+  const incomplete = countIncomplete(tasksText);
+  const confirmTitle = confirmAction === "delete" ? "Delete this change?" : "Archive this change?";
+  const confirmMessage = confirmAction && change?.status === "in-progress" ? `${incomplete} task${incomplete !== 1 ? "s are" : " is"} not yet complete. Are you sure you want to ${confirmAction} this change?` : confirmAction === "delete" ? "This will permanently remove the change directory. This cannot be undone." : "This will move the change to the archive.";
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { style: {
     flex: 1,
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",
-    background: "var(--bg-app)"
+    background: "var(--bg-app)",
+    position: "relative"
   }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
       padding: "12px 20px",
@@ -8269,16 +8375,79 @@ function ChangeDetail({ change, proposalText }) {
           marginTop: 2
         }, children: change.schema })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Badge,
-        {
-          tone: change.status === "archived" ? "neutral" : "accent",
-          icon,
-          children: change.status === "archived" ? "Archived" : "Active"
-        }
-      )
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+        change.status !== "archived" && onApply && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            variant: "secondary",
+            size: "sm",
+            icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "play", size: 14 }),
+            onClick: onApply,
+            children: "Apply"
+          }
+        ),
+        change.status !== "archived" && onContinue && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            variant: "secondary",
+            size: "sm",
+            icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "terminal", size: 14 }),
+            onClick: onContinue,
+            children: "Continue"
+          }
+        ),
+        change.status !== "archived" && onArchive && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            variant: "secondary",
+            size: "sm",
+            icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "archive", size: 14 }),
+            onClick: () => setConfirmAction("archive"),
+            children: "Archive"
+          }
+        ),
+        change.status !== "archived" && onDelete && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            variant: "danger",
+            size: "sm",
+            onClick: () => setConfirmAction("delete"),
+            children: "Delete"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { tone: badgeTone, icon, children: badgeLabel })
+      ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { flex: 1, overflowY: "auto", padding: 24 }, children: proposalText === null ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+      display: "flex",
+      borderBottom: "1px solid var(--border-default)",
+      background: "var(--bg-surface)",
+      flexShrink: 0,
+      paddingLeft: 20,
+      gap: 0
+    }, children: tabs.map((tab) => {
+      const isActive = tab.id === activeTab;
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: () => setActiveTab(tab.id),
+          style: {
+            background: "none",
+            border: "none",
+            borderBottom: isActive ? "2px solid var(--accent-default)" : "2px solid transparent",
+            padding: "8px 14px",
+            fontSize: "var(--text-sm)",
+            fontWeight: isActive ? "var(--weight-semibold)" : "var(--weight-normal)",
+            color: isActive ? "var(--fg-default)" : "var(--fg-subtle)",
+            cursor: "pointer",
+            marginBottom: -1
+          },
+          children: tab.label
+        },
+        tab.id
+      );
+    }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { flex: 1, overflowY: "auto", padding: 24 }, children: activeText === null ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -8288,8 +8457,22 @@ function ChangeDetail({ change, proposalText }) {
       color: "var(--fg-subtle)"
     }, children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "file-text", size: 32 }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "var(--text-sm)" }, children: "No proposal written yet." })
-    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { maxWidth: 680 }, children: renderMarkdown(proposalText) }) })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { fontSize: "var(--text-sm)" }, children: emptyMessage })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { maxWidth: 680 }, children: renderMarkdown(activeText) }) }),
+    confirmAction && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      ConfirmDialog,
+      {
+        title: confirmTitle,
+        message: confirmMessage,
+        confirmLabel: confirmAction === "delete" ? "Delete" : "Archive",
+        onConfirm: () => {
+          setConfirmAction(null);
+          if (confirmAction === "delete") onDelete?.();
+          else onArchive?.();
+        },
+        onCancel: () => setConfirmAction(null)
+      }
+    )
   ] });
 }
 function renderMarkdown(text) {
@@ -8376,6 +8559,9 @@ function SettingsSheet({ prefs, onPrefsChange, onClose }) {
   const [adding, setAdding] = reactExports.useState(false);
   const [form, setForm] = reactExports.useState(EMPTY_FORM);
   const [confirmRemove, setConfirmRemove] = reactExports.useState(null);
+  const [detectedTools, setDetectedTools] = reactExports.useState([]);
+  const [detecting, setDetecting] = reactExports.useState(true);
+  const [quickAddValue, setQuickAddValue] = reactExports.useState("");
   reactExports.useEffect(() => {
     const handler = (e2) => {
       if (e2.key === "Escape") onClose();
@@ -8383,6 +8569,12 @@ function SettingsSheet({ prefs, onPrefsChange, onClose }) {
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [onClose]);
+  reactExports.useEffect(() => {
+    window.api.cli.detectTools().then((found) => {
+      setDetectedTools(found);
+      setDetecting(false);
+    });
+  }, []);
   function commit(nextTools, nextDefault) {
     setTools(nextTools);
     setDefaultTool(nextDefault);
@@ -8529,7 +8721,30 @@ function SettingsSheet({ prefs, onPrefsChange, onClose }) {
           }
         }
       ) }),
-      !adding && editingId === null && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      !adding && editingId === null && (detecting ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Spinner, { size: 14 }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: "var(--text-sm)", color: "var(--fg-subtle)" }, children: "Detecting tools…" })
+      ] }) : detectedTools.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Select,
+        {
+          groups: buildQuickAddGroups(detectedTools),
+          value: quickAddValue,
+          onChange: (v2) => {
+            if (v2 === "__manual__") {
+              setAdding(true);
+              setForm(EMPTY_FORM);
+              setQuickAddValue("");
+            } else if (v2) {
+              const tool = detectedTools.find((t2) => t2.id === v2);
+              if (tool) {
+                setAdding(true);
+                setForm({ label: tool.label, command: tool.command, argsStr: tool.args.join(" ") });
+              }
+              setQuickAddValue("");
+            }
+          }
+        }
+      ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
         Button,
         {
           variant: "secondary",
@@ -8541,9 +8756,16 @@ function SettingsSheet({ prefs, onPrefsChange, onClose }) {
           },
           children: "Add Tool"
         }
-      )
+      ))
     ] })
   ] }) });
+}
+function buildQuickAddGroups(detected) {
+  return [
+    { options: [{ value: "", label: "Quick add…", icon: "plus" }] },
+    { label: "Detected", options: detected.map((t2) => ({ value: t2.id, label: t2.label, icon: "terminal" })) },
+    { options: [{ value: "__manual__", label: "Enter manually", icon: "pencil" }] }
+  ];
 }
 function ToolRow({ tool, isDefault, confirmingRemove, onEdit, onRemoveClick, onRemoveConfirm, onRemoveCancel, onSetDefault }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { padding: "12px 14px", display: "flex", flexDirection: "column", gap: 6 }, children: [
@@ -17187,11 +17409,17 @@ function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }) {
   const [description, setDescription] = reactExports.useState("");
   const [toolId, setToolId] = reactExports.useState(prefs.defaultTool ?? prefs.cliTools[0]?.id ?? "");
   const [exitCode, setExitCode] = reactExports.useState(null);
+  const [proposalReady, setProposalReady] = reactExports.useState(false);
   const terminalRef = reactExports.useRef(null);
   const cancelledRef = reactExports.useRef(false);
   reactExports.useEffect(() => {
     return window.api.cli.onData((data) => {
       terminalRef.current?.write(data);
+    });
+  }, []);
+  reactExports.useEffect(() => {
+    return window.api.cli.onProposalReady(() => {
+      setProposalReady(true);
     });
   }, []);
   reactExports.useEffect(() => {
@@ -17213,6 +17441,7 @@ function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }) {
     cancelledRef.current = false;
     setPhase("running");
     setExitCode(null);
+    setProposalReady(false);
     const escapedDesc = description.replace(/"/g, '\\"');
     const command = `/opsx:propose "${escapedDesc}"`;
     const dims = terminalRef.current?.getDimensions() ?? { cols: 80, rows: 24 };
@@ -17230,16 +17459,19 @@ function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }) {
       setPhase("error");
     }
   }
+  function killAndClose(callback) {
+    window.api.cli.cancel();
+    callback();
+  }
   function handleCancel() {
     cancelledRef.current = true;
-    window.api.cli.cancel();
-    onClose();
+    killAndClose(onClose);
   }
   function handleClose() {
     if (phase === "complete") {
-      onSuccess();
+      killAndClose(onSuccess);
     } else {
-      onClose();
+      killAndClose(onClose);
     }
   }
   const showTerminal = phase === "running" || phase === "complete" || phase === "error";
@@ -17251,7 +17483,7 @@ function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }) {
       onClick: (e2) => {
         if (e2.target === e2.currentTarget && phase !== "running") handleClose();
       },
-      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sheet", style: { width: 640 }, children: [
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sheet", style: { width: 860 }, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sheet-head", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "pull-request", size: 18, style: { color: "var(--accent-fg)" } }),
@@ -17294,6 +17526,21 @@ function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }) {
               ". See output below."
             ] })
           ] }),
+          phase === "running" && proposalReady && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 10,
+            padding: "12px 14px",
+            borderRadius: "var(--radius-md)",
+            background: "var(--success-muted)",
+            color: "var(--success-fg)",
+            fontSize: "var(--text-sm)"
+          }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "check-circle", size: 16, style: { flexShrink: 0, marginTop: 1 } }),
+            "Proposal created. Click ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Done" }),
+            " to view it."
+          ] }),
           phase === "complete" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
             display: "flex",
             alignItems: "flex-start",
@@ -17331,15 +17578,15 @@ function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }) {
               visible: showTerminal,
               style: {
                 display: showTerminal ? "block" : "none",
-                minHeight: 280,
-                maxHeight: 400
+                minHeight: 320,
+                maxHeight: 520
               }
             }
           )
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sheet-footer", children: [
           phase === "input" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "sm", onClick: onClose, children: "Cancel" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "sm", onClick: () => killAndClose(onClose), children: "Cancel" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               Button,
               {
@@ -17352,10 +17599,367 @@ function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }) {
               }
             )
           ] }),
+          phase === "running" && !proposalReady && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "danger", size: "sm", onClick: handleCancel, children: "Cancel" }),
+          phase === "running" && proposalReady && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "primary", size: "sm", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "check-circle", size: 14 }), onClick: () => killAndClose(onSuccess), children: "Done" }),
+          phase === "complete" && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "primary", size: "sm", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "check-circle", size: 14 }), onClick: handleClose, children: "Done" }),
+          phase === "error" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "sm", onClick: () => killAndClose(onClose), children: "Close" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                variant: "primary",
+                size: "sm",
+                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "play", size: 14 }),
+                onClick: () => setPhase("input"),
+                children: "Try Again"
+              }
+            )
+          ] })
+        ] })
+      ] })
+    }
+  );
+}
+function ConversationSheet({ repoPath, changeName, proposalText, prefs, onPrefsChange, onSuccess, onClose }) {
+  const initialTool = prefs.perChangeTool?.[changeName] ?? prefs.defaultTool ?? prefs.cliTools[0]?.id ?? "";
+  const [phase, setPhase] = reactExports.useState("input");
+  const [instruction, setInstruction] = reactExports.useState("");
+  const [toolId, setToolId] = reactExports.useState(initialTool);
+  const [exitCode, setExitCode] = reactExports.useState(null);
+  const terminalRef = reactExports.useRef(null);
+  const cancelledRef = reactExports.useRef(false);
+  reactExports.useEffect(() => {
+    return window.api.cli.onData((data) => {
+      terminalRef.current?.write(data);
+    });
+  }, []);
+  reactExports.useEffect(() => {
+    const handler = (e2) => {
+      if (e2.key === "Escape" && phase !== "running") handleClose();
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [phase]);
+  const hasTools = prefs.cliTools.length > 0;
+  const canSubmit = instruction.trim().length > 0 && hasTools && toolId !== "";
+  const toolGroups = [{
+    options: prefs.cliTools.map((t2) => ({ value: t2.id, label: t2.label, icon: "terminal" }))
+  }];
+  function handleToolChange(newToolId) {
+    setToolId(newToolId);
+    onPrefsChange({ ...prefs, perChangeTool: { ...prefs.perChangeTool, [changeName]: newToolId } });
+  }
+  async function handleSubmit() {
+    if (!canSubmit) return;
+    cancelledRef.current = false;
+    onPrefsChange({ ...prefs, perChangeTool: { ...prefs.perChangeTool, [changeName]: toolId } });
+    setPhase("running");
+    setExitCode(null);
+    const dims = terminalRef.current?.getDimensions() ?? { cols: 80, rows: 24 };
+    const command = proposalText ? `I'm working on a change called "${changeName}". Here is its proposal:
+
+---
+${proposalText}
+---
+
+${instruction}
+
+Please update the spec and other openspec files for this change as needed, keeping the existing OpenSpec format and structure.` : instruction;
+    const result = await window.api.cli.invoke({ toolId, command, repoPath, ...dims });
+    setExitCode(result.exitCode);
+    if (cancelledRef.current) return;
+    if (result.exitCode === 0) {
+      setPhase("complete");
+    } else {
+      if (result.exitCode === -2) {
+        terminalRef.current?.write(
+          "\r\nExecutable not found — verify the command in Settings or launch the app from a terminal.\r\n"
+        );
+      }
+      setPhase("error");
+    }
+  }
+  function killAndClose(callback) {
+    window.api.cli.cancel();
+    callback();
+  }
+  function handleCancel() {
+    cancelledRef.current = true;
+    killAndClose(onClose);
+  }
+  function handleClose() {
+    if (phase === "complete") {
+      killAndClose(onSuccess);
+    } else {
+      killAndClose(onClose);
+    }
+  }
+  const showTerminal = phase === "running" || phase === "complete" || phase === "error";
+  const showInputs = phase === "input" || phase === "error";
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      className: "sheet-overlay",
+      onClick: (e2) => {
+        if (e2.target === e2.currentTarget && phase !== "running") handleClose();
+      },
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sheet", style: { width: 860 }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sheet-head", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "terminal", size: 18, style: { color: "var(--accent-fg)" } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "sheet-title", children: phase === "complete" ? "Session complete" : phase === "error" ? "Error" : "Continue Conversation" })
+          ] }),
+          phase !== "running" && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "sm", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "x-circle", size: 16 }), onClick: handleClose })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sheet-body", style: { display: "flex", flexDirection: "column", gap: 16 }, children: [
+          phase === "error" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 10,
+            padding: "12px 14px",
+            borderRadius: "var(--radius-md)",
+            background: "var(--danger-muted)",
+            color: "var(--danger-fg)",
+            fontSize: "var(--text-sm)"
+          }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "warning", size: 16, style: { flexShrink: 0, marginTop: 1 } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              "CLI exited with code ",
+              exitCode,
+              ". See output below."
+            ] })
+          ] }),
+          phase === "complete" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 10,
+            padding: "12px 14px",
+            borderRadius: "var(--radius-md)",
+            background: "var(--success-muted)",
+            color: "var(--success-fg)",
+            fontSize: "var(--text-sm)"
+          }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "check-circle", size: 16, style: { flexShrink: 0, marginTop: 1 } }),
+            "Session complete. Click ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Done" }),
+            " to return to the change."
+          ] }),
+          showInputs && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Field, { label: "Instruction", help: "Describe the changes you'd like to make to this proposal.", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              TextArea,
+              {
+                placeholder: "e.g. Update the spec to also require email verification…",
+                value: instruction,
+                onChange: (e2) => setInstruction(e2.target.value),
+                style: { minHeight: 100, resize: "vertical" },
+                disabled: phase === "error",
+                autoFocus: phase === "input"
+              }
+            ) }),
+            hasTools && /* @__PURE__ */ jsxRuntimeExports.jsx(Field, { label: "CLI Tool", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Select, { groups: toolGroups, value: toolId, onChange: handleToolChange, icon: "terminal" }) })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            TerminalPane,
+            {
+              ref: terminalRef,
+              active: phase === "running",
+              visible: showTerminal,
+              style: {
+                display: showTerminal ? "block" : "none",
+                minHeight: 320,
+                maxHeight: 520
+              }
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sheet-footer", children: [
+          phase === "input" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "sm", onClick: () => killAndClose(onClose), children: "Cancel" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                variant: "primary",
+                size: "sm",
+                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "terminal", size: 14 }),
+                onClick: handleSubmit,
+                disabled: !canSubmit,
+                children: "Send"
+              }
+            )
+          ] }),
           phase === "running" && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "danger", size: "sm", onClick: handleCancel, children: "Cancel" }),
           phase === "complete" && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "primary", size: "sm", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "check-circle", size: 14 }), onClick: handleClose, children: "Done" }),
           phase === "error" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "sm", onClick: onClose, children: "Close" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "sm", onClick: () => killAndClose(onClose), children: "Close" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                variant: "primary",
+                size: "sm",
+                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "play", size: 14 }),
+                onClick: () => setPhase("input"),
+                children: "Try Again"
+              }
+            )
+          ] })
+        ] })
+      ] })
+    }
+  );
+}
+function ApplyProposalSheet({ repoPath, changeName, prefs, onPrefsChange, onSuccess, onClose }) {
+  const initialTool = prefs.perChangeTool?.[changeName] ?? prefs.defaultTool ?? prefs.cliTools[0]?.id ?? "";
+  const [phase, setPhase] = reactExports.useState("input");
+  const [toolId, setToolId] = reactExports.useState(initialTool);
+  const [exitCode, setExitCode] = reactExports.useState(null);
+  const terminalRef = reactExports.useRef(null);
+  const cancelledRef = reactExports.useRef(false);
+  reactExports.useEffect(() => {
+    return window.api.cli.onData((data) => {
+      terminalRef.current?.write(data);
+    });
+  }, []);
+  reactExports.useEffect(() => {
+    const handler = (e2) => {
+      if (e2.key === "Escape" && phase !== "running") handleClose();
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [phase]);
+  const hasTools = prefs.cliTools.length > 0;
+  const canSubmit = hasTools && toolId !== "";
+  const toolGroups = [{
+    options: prefs.cliTools.map((t2) => ({ value: t2.id, label: t2.label, icon: "terminal" }))
+  }];
+  function handleToolChange(newToolId) {
+    setToolId(newToolId);
+    onPrefsChange({ ...prefs, perChangeTool: { ...prefs.perChangeTool, [changeName]: newToolId } });
+  }
+  function buildCommand() {
+    if (toolId === "claude-code") {
+      return `/opsx:apply "${changeName}"`;
+    }
+    return `Read openspec/changes/${changeName}/proposal.md, design.md, specs/, and tasks.md, then implement all incomplete tasks marked "- [ ]", updating each to "- [x]" as you complete it.`;
+  }
+  async function handleSubmit() {
+    if (!canSubmit) return;
+    cancelledRef.current = false;
+    onPrefsChange({ ...prefs, perChangeTool: { ...prefs.perChangeTool, [changeName]: toolId } });
+    setPhase("running");
+    setExitCode(null);
+    const dims = terminalRef.current?.getDimensions() ?? { cols: 80, rows: 24 };
+    const result = await window.api.cli.invoke({ toolId, command: buildCommand(), repoPath, ...dims });
+    setExitCode(result.exitCode);
+    if (cancelledRef.current) return;
+    if (result.exitCode === 0) {
+      setPhase("complete");
+    } else {
+      if (result.exitCode === -2) {
+        terminalRef.current?.write(
+          "\r\nExecutable not found — verify the command in Settings or launch the app from a terminal.\r\n"
+        );
+      }
+      setPhase("error");
+    }
+  }
+  function killAndClose(callback) {
+    window.api.cli.cancel();
+    callback();
+  }
+  function handleCancel() {
+    cancelledRef.current = true;
+    killAndClose(onClose);
+  }
+  function handleClose() {
+    if (phase === "complete") {
+      killAndClose(onSuccess);
+    } else {
+      killAndClose(onClose);
+    }
+  }
+  const showTerminal = phase === "running" || phase === "complete" || phase === "error";
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      className: "sheet-overlay",
+      onClick: (e2) => {
+        if (e2.target === e2.currentTarget && phase !== "running") killAndClose(onClose);
+      },
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sheet", style: { width: 860 }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sheet-head", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "play", size: 18, style: { color: "var(--accent-fg)" } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "sheet-title", children: phase === "complete" ? "Apply complete" : phase === "error" ? "Error" : "Apply Proposal" })
+          ] }),
+          phase !== "running" && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "sm", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "x-circle", size: 16 }), onClick: handleClose })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sheet-body", style: { display: "flex", flexDirection: "column", gap: 16 }, children: [
+          phase === "error" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 10,
+            padding: "12px 14px",
+            borderRadius: "var(--radius-md)",
+            background: "var(--danger-muted)",
+            color: "var(--danger-fg)",
+            fontSize: "var(--text-sm)"
+          }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "warning", size: 16, style: { flexShrink: 0, marginTop: 1 } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              "CLI exited with code ",
+              exitCode,
+              ". See output below."
+            ] })
+          ] }),
+          phase === "complete" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 10,
+            padding: "12px 14px",
+            borderRadius: "var(--radius-md)",
+            background: "var(--success-muted)",
+            color: "var(--success-fg)",
+            fontSize: "var(--text-sm)"
+          }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "check-circle", size: 16, style: { flexShrink: 0, marginTop: 1 } }),
+            "Apply complete. Click ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Done" }),
+            " to return to the change."
+          ] }),
+          phase === "input" && hasTools && /* @__PURE__ */ jsxRuntimeExports.jsx(Field, { label: "CLI Tool", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Select, { groups: toolGroups, value: toolId, onChange: handleToolChange, icon: "terminal" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            TerminalPane,
+            {
+              ref: terminalRef,
+              active: phase === "running",
+              visible: showTerminal,
+              style: {
+                display: showTerminal ? "block" : "none",
+                minHeight: 320,
+                maxHeight: 520
+              }
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sheet-footer", children: [
+          phase === "input" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "sm", onClick: () => killAndClose(onClose), children: "Cancel" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                variant: "primary",
+                size: "sm",
+                icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "play", size: 14 }),
+                onClick: handleSubmit,
+                disabled: !canSubmit,
+                children: "Apply"
+              }
+            )
+          ] }),
+          phase === "running" && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "danger", size: "sm", onClick: handleCancel, children: "Cancel" }),
+          phase === "complete" && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "primary", size: "sm", icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { name: "check-circle", size: 14 }), onClick: handleClose, children: "Done" }),
+          phase === "error" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { variant: "ghost", size: "sm", onClick: () => killAndClose(onClose), children: "Close" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               Button,
               {
@@ -17373,19 +17977,29 @@ function NewProposalSheet({ repoPath, prefs, onSuccess, onClose }) {
   );
 }
 function App() {
-  const [prefs, setPrefs] = reactExports.useState({ repoPath: null, cliTools: [], defaultTool: null });
+  const [prefs, setPrefs] = reactExports.useState({ repoPath: null, cliTools: [], defaultTool: null, perChangeTool: {} });
   const [repoPath, setRepoPath] = reactExports.useState(null);
   const [loading, setLoading] = reactExports.useState(true);
   const [changes, setChanges] = reactExports.useState([]);
   const [selectedChange, setSelectedChange] = reactExports.useState(null);
   const [proposalText, setProposalText] = reactExports.useState(null);
+  const [designText, setDesignText] = reactExports.useState(null);
+  const [tasksText, setTasksText] = reactExports.useState(null);
+  const [proposalVersion, setProposalVersion] = reactExports.useState(0);
   const [filter, setFilter] = reactExports.useState("all");
   const [settingsOpen, setSettingsOpen] = reactExports.useState(false);
   const [proposalOpen, setProposalOpen] = reactExports.useState(false);
+  const [conversationOpen, setConversationOpen] = reactExports.useState(false);
+  const [applyOpen, setApplyOpen] = reactExports.useState(false);
+  const [sidebarWidth, setSidebarWidth] = reactExports.useState(280);
+  const sidebarWidthRef = reactExports.useRef(280);
   reactExports.useEffect(() => {
     window.api.prefs.get().then((p2) => {
       setPrefs(p2);
       if (p2.repoPath) setRepoPath(p2.repoPath);
+      const w2 = p2.sidebarWidth ?? 280;
+      setSidebarWidth(w2);
+      sidebarWidthRef.current = w2;
       setLoading(false);
     });
   }, []);
@@ -17400,10 +18014,20 @@ function App() {
   reactExports.useEffect(() => {
     if (!selectedChange) {
       setProposalText(null);
+      setDesignText(null);
+      setTasksText(null);
       return;
     }
-    window.api.changes.readProposal(selectedChange.path).then(setProposalText);
-  }, [selectedChange]);
+    Promise.all([
+      window.api.changes.readProposal(selectedChange.path),
+      window.api.changes.readArtifact(selectedChange.path, "design.md"),
+      window.api.changes.readArtifact(selectedChange.path, "tasks.md")
+    ]).then(([proposal, design, tasks]) => {
+      setProposalText(proposal);
+      setDesignText(design);
+      setTasksText(tasks);
+    });
+  }, [selectedChange, proposalVersion]);
   async function handleOpenRepo() {
     const result = await window.api.repo.openDirectory();
     if (!result) return null;
@@ -17425,6 +18049,47 @@ function App() {
       const newest = list.find((c2) => c2.status === "active") ?? null;
       setSelectedChange(newest);
     }
+  }
+  function handleConversationSuccess() {
+    setConversationOpen(false);
+    setProposalVersion((v2) => v2 + 1);
+  }
+  function handleApplySuccess() {
+    setApplyOpen(false);
+    setProposalVersion((v2) => v2 + 1);
+  }
+  async function handleDelete(change) {
+    const result = await window.api.changes.delete(change.path);
+    if ("error" in result) {
+      alert(result.error);
+      return;
+    }
+    setSelectedChange(null);
+    if (repoPath) loadChanges(repoPath);
+  }
+  async function handleArchive(change) {
+    const result = await window.api.changes.archive(change.path);
+    if ("error" in result) {
+      alert(result.error);
+      return;
+    }
+    setSelectedChange(null);
+    if (repoPath) loadChanges(repoPath);
+  }
+  function handleSidebarDrag(startX) {
+    const startWidth = sidebarWidthRef.current;
+    function onMove(e2) {
+      const next = Math.min(480, Math.max(180, startWidth + (e2.clientX - startX)));
+      setSidebarWidth(next);
+      sidebarWidthRef.current = next;
+    }
+    function onUp() {
+      document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerup", onUp);
+      window.api.prefs.set({ sidebarWidth: sidebarWidthRef.current });
+    }
+    document.addEventListener("pointermove", onMove);
+    document.addEventListener("pointerup", onUp);
   }
   function handlePrefsChange(updated) {
     setPrefs(updated);
@@ -17455,14 +18120,22 @@ function App() {
             filter,
             onFilterChange: setFilter,
             selectedChange,
-            onSelect: setSelectedChange
+            onSelect: setSelectedChange,
+            width: sidebarWidth,
+            onDragStart: handleSidebarDrag
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           ChangeDetail,
           {
             change: selectedChange,
-            proposalText
+            proposalText,
+            designText,
+            tasksText,
+            onApply: () => setApplyOpen(true),
+            onContinue: () => setConversationOpen(true),
+            onDelete: selectedChange ? () => handleDelete(selectedChange) : void 0,
+            onArchive: selectedChange ? () => handleArchive(selectedChange) : void 0
           }
         )
       ] })
@@ -17482,6 +18155,34 @@ function App() {
         prefs,
         onSuccess: handleProposalSuccess,
         onClose: () => setProposalOpen(false)
+      }
+    ),
+    applyOpen && selectedChange && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      ApplyProposalSheet,
+      {
+        repoPath,
+        changeName: selectedChange.name,
+        prefs,
+        onPrefsChange: handlePrefsChange,
+        onSuccess: handleApplySuccess,
+        onClose: () => {
+          setApplyOpen(false);
+        }
+      }
+    ),
+    conversationOpen && selectedChange && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      ConversationSheet,
+      {
+        repoPath,
+        changeName: selectedChange.name,
+        proposalText,
+        prefs,
+        onPrefsChange: handlePrefsChange,
+        onSuccess: handleConversationSuccess,
+        onClose: () => {
+          setConversationOpen(false);
+          setProposalVersion((v2) => v2 + 1);
+        }
       }
     )
   ] });

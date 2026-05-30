@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, dialog, nativeImage } from 'electron'
 import { join } from 'path'
 import { existsSync, readFileSync, writeFileSync, readdirSync, rmSync, renameSync, mkdirSync, watch } from 'fs'
 import type { FSWatcher } from 'fs'
@@ -6,6 +6,8 @@ import { execFile } from 'child_process'
 import * as pty from 'node-pty'
 import type { IPty } from 'node-pty'
 import type { Prefs, Change, DetectedTool } from '../shared/types'
+
+app.setName('CodeSpec')
 
 const isDev = !app.isPackaged
 
@@ -118,6 +120,15 @@ function readChangesDir(dir: string, status: 'active' | 'archived'): Change[] {
 
 let activeProcess: IPty | null = null
 
+// ---- Icons -----------------------------------------------------------------
+
+function resolveIconPath(): string {
+  const base = app.getAppPath()
+  if (process.platform === 'darwin') return join(base, 'resources', 'icon.icns')
+  if (process.platform === 'win32') return join(base, 'resources', 'icon.ico')
+  return join(base, 'resources', 'icon.png')
+}
+
 // ---- Window ----------------------------------------------------------------
 
 function createWindow(): void {
@@ -128,6 +139,7 @@ function createWindow(): void {
     minHeight: 600,
     show: false,
     backgroundColor: '#f6f8fa',
+    icon: resolveIconPath(),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: true,
@@ -301,6 +313,9 @@ ipcMain.handle('cli:detectTools', () => detectTools())
 
 app.whenReady().then(() => {
   resolveShellPath().then(p => { resolvedPath = p })
+  if (process.platform === 'darwin') {
+    app.dock.setIcon(nativeImage.createFromPath(resolveIconPath()))
+  }
   createWindow()
   app.on('activate', () => {
     if (!BrowserWindow.getAllWindows().length) createWindow()

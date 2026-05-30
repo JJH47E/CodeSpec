@@ -21,6 +21,7 @@ function _interopNamespaceDefault(e) {
   return Object.freeze(n);
 }
 const pty__namespace = /* @__PURE__ */ _interopNamespaceDefault(pty);
+electron.app.setName("CodeSpec");
 const isDev = !electron.app.isPackaged;
 let resolvedPath = process.env.PATH ?? "";
 let detectionCache = null;
@@ -109,6 +110,12 @@ function readChangesDir(dir, status) {
   return changes;
 }
 let activeProcess = null;
+function resolveIconPath() {
+  const base = electron.app.getAppPath();
+  if (process.platform === "darwin") return path.join(base, "resources", "icon.icns");
+  if (process.platform === "win32") return path.join(base, "resources", "icon.ico");
+  return path.join(base, "resources", "icon.png");
+}
 function createWindow() {
   const win = new electron.BrowserWindow({
     width: 1280,
@@ -117,6 +124,7 @@ function createWindow() {
     minHeight: 600,
     show: false,
     backgroundColor: "#f6f8fa",
+    icon: resolveIconPath(),
     webPreferences: {
       preload: path.join(__dirname, "../preload/index.js"),
       sandbox: true
@@ -250,6 +258,9 @@ electron.app.whenReady().then(() => {
   resolveShellPath().then((p) => {
     resolvedPath = p;
   });
+  if (process.platform === "darwin") {
+    electron.app.dock.setIcon(electron.nativeImage.createFromPath(resolveIconPath()));
+  }
   createWindow();
   electron.app.on("activate", () => {
     if (!electron.BrowserWindow.getAllWindows().length) createWindow();

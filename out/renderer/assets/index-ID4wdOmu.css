@@ -306,6 +306,14 @@
     visibility: visible;
   }
 
+  .absolute {
+    position: absolute;
+  }
+
+  .relative {
+    position: relative;
+  }
+
   .container {
     width: 100%;
   }
