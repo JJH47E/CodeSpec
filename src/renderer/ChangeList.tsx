@@ -209,7 +209,7 @@ function ChangeListItem({ change, selected, onClick }: {
       onClick={onClick}
     >
       <div className="row-ic" style={icStyle}>
-        <Icon name={icon} size={17} />
+        <Icon name={icon} size={14} />
       </div>
       <div style={{ minWidth: 0, flex: 1 }}>
         <div className="row-title" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
